@@ -1,3 +1,6 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include "subject.h"
 #include "board.h"
 #include "communicator.h"
@@ -16,3 +19,5 @@ public:
 
 
 };
+
+#endif

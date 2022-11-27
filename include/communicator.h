@@ -1,4 +1,5 @@
-
+#ifndef COMMUNICATOR_H
+#define COMMUNICATOR_H
 
 class Communicator {
 
@@ -6,3 +7,5 @@ class Communicator {
 
 
 };
+
+#endif
