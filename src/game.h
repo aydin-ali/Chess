@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "subject.h"
-#include "board.h"
-#include "communicator.h"
+#include "observer/subject.h"
+#include "board/board.h"
+#include "tools/communicator.h"
 
 class Piece;
 
@@ -18,7 +18,6 @@ public:
     void move();
     void setup(bool normalMode);
     Piece* getState(int row, int col);
-
 
 };
 

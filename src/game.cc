@@ -1,20 +1,20 @@
-#include "include/game.h"
+#include "game.h"
 
 
-using namespace std;
+// using namespace std;
 
-void Game::move() { 
+// void Game::move() { 
 
-}
+// }
 
-void Game::setup(bool normalMode) {
+// void Game::setup(bool normalMode) {
 
 
 
-}
+// }
 
-Piece* Game::getState(int row, int col) {
+// Piece* Game::getState(int row, int col) {
 
-    //return (board.getBoardArr())[row][col];
+//     //return (board.getBoardArr())[row][col];
 
-}
+// }

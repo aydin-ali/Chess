@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -MMD -Werror=vla -I /include
 EXEC = Chess
-OBJECTS = main.o game.o 
+SRC = $(shell find src/ -name "*.cc")
+HEADERS = $(shell find src/ -name "*.h")
+OBJECTS = $(SRC:%.cc=%.o)
 DEPENDS = ${OBJECTS:.o=.d}
-
-VPATH=src:include
 
 ${EXEC}: ${OBJECTS}
 	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
@@ -15,4 +15,5 @@ ${EXEC}: ${OBJECTS}
 
 clean:
 	rm ${OBJECTS} ${EXEC} ${DEPENDS}
+
 
