@@ -5,6 +5,8 @@
 #include "board.h"
 #include "communicator.h"
 
+class Piece;
+
 class Game : public Subject {
 
 private:
@@ -15,7 +17,7 @@ public:
     //ctor dtor?
     void move();
     void setup(bool normalMode);
-    
+    Piece* getState(int row, int col);
 
 
 };
