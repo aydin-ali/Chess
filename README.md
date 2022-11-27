@@ -1,8 +1,7 @@
 # Chess
 
-### [CS 246]
 ...\
-Chess engine\
+Chess \
 ...
 
 ## Git branching
