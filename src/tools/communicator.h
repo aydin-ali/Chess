@@ -10,8 +10,7 @@ private:
 
 public:
     void outputMessage(std::string msg);
-    std::string takeStringInput();
-    int takeIntInput();
+    std::string takeInput();
 
 };
 

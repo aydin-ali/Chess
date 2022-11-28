@@ -15,6 +15,7 @@ private:
 
 public:
     //ctor dtor?
+    void startGameLoop();
     void move();
     void setup(bool normalMode);
     Piece* getState(int row, int col);
