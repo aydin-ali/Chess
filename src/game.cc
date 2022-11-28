@@ -1,6 +1,9 @@
 #include <string>
 #include <sstream>
 
+#include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
+
+
 #include "game.h"
 #include "tools/communicator.h"
 
@@ -31,16 +34,30 @@ void Game::startGameLoop() {
             communicator.outputMessage(error);
         } 
 
-        if (gameMode == 1) {
-            communicator.outputMessage("1");
+        if (gameMode > 0 && gameMode < 3) {
 
-            
+            //create players here
 
-        } else if (gameMode == 2) {
-            communicator.outputMessage("2");
-        } else if (gameMode == 3) {
-            communicator.outputMessage("3");
-        } 
+            if (gameMode == 1) {
+
+                //output board here
+                communicator.outputMessage("Player 1, Enter move:");
+                try {
+                    string start = communicator.takeInput();
+                    string end = communicator.takeInput();
+
+                    
+                } catch (char const* error) {
+                    communicator.outputMessage(error);
+                } 
+
+
+            } else if (gameMode == 2) {
+                communicator.outputMessage("2");
+            } else if (gameMode == 3) {
+                communicator.outputMessage("3");
+            } 
+        }
 
     }
 
