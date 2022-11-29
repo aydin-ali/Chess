@@ -6,7 +6,7 @@ class Piece;
 
 class Observer{
 public:
-    virtual void notify(std::vector<std::vector<Piece*>> &b);
+    virtual void notify(std::vector<std::vector<Piece*>> &b) = 0;
     virtual ~Observer()=default;
 };
 
