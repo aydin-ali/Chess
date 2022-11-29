@@ -7,6 +7,8 @@ class Piece {
 
 private:
     char colour;
+    char letter;
+    bool moved;
 
 public:
     virtual bool validMove();
