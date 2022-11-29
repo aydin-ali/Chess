@@ -2,16 +2,13 @@
 #define PAWN_H
 
 #include "piece.h"
+#include <string>
 
 class Pawn : public Piece{
-
-private:
-
 public:
-    Pawn(const char colour);
-    bool validMove() override;
-    void checkForCheck() override;
-
+    Pawn(const std::string colour);
+   // bool validMove() override;
+    //void checkForCheck() override;
 };
 
 

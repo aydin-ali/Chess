@@ -3,7 +3,6 @@
 #include <memory>
 #include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
 
-
 #include "game.h"
 //#include "tools/communicator.h"
 
@@ -16,22 +15,22 @@ using namespace std;
 // Game::Game():
 //     gameBoard{make_unique<Board>()}, whiteFirst{true}{}
 
-void Game::setup(bool normalMode) {
-    // vector<vector<Piece*>> &b = gameBoard->getBoardArr();
-    // if(normalMode){
-    //     notifyObservers(b);
-    // }
+void Game::setupGame(bool normalMode) {
+    gameBoard->setupBoard();
+    vector<vector<Piece*>> &b = gameBoard->getBoardArr();
+    if(normalMode){
+        notifyObservers(b);
+    }
 }
 
 void Game::startGameLoop() {
-
-    //setup(true);
+    setupGame(true);
 
     //Communicator communicator;
     cout << ("Welcome to Chess!") << endl;
     cout << ("Enter a 1 to play Human vs. Human") << endl;
     cout << ("Enter a 2 to play Human vs. Computer") << endl;
-    cout << ("Enter a 3 to play Computer vs. Computer") << endl;
+    cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
 
     while (true) {
 

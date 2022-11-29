@@ -2,6 +2,7 @@
 #define SUBJECT_H
 
 #include<vector>
+#include <memory>
 
 class Observer;
 class Piece;
