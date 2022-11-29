@@ -6,8 +6,8 @@
 class Human : public PlayerType {
 
 public:
+    Human();
     void playerMove() override;
-
 
 };
 
