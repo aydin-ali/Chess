@@ -12,16 +12,14 @@ class Piece;
 class Board {
 
 private:
-
-    Piece* boardArr[8][8];
-
+    std::vector<std::vector<Piece *>> board;
     std::map<std::string, Piece*> boardMap;
 
 public:
+    Board();
     void setupBoard();
     void moveOnBoard();
-    //Piece[][] getBoardArr();
-
+    std::vector<std::vector<Piece*>> &getBoardArr();
 };
 
 #endif

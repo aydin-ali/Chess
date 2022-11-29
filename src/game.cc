@@ -9,11 +9,18 @@
 
 using namespace std;
 
+Game::Game():
+    gameBoard{make_unique<Board>()}, whiteFirst{true}{}
 
-
+void Game::setup(bool normalMode) {
+    vector<vector<Piece*>> &b = gameBoard->getBoardArr();
+    if(normalMode){
+        notifyObservers(b);
+    }
+}
 
 void Game::startGameLoop() {
-
+    setup(true);
     Communicator communicator;
     communicator.outputMessage("Welcome to Chess!");
     communicator.outputMessage("Enter a 1 to play Human vs. Human");
@@ -21,6 +28,7 @@ void Game::startGameLoop() {
     communicator.outputMessage("Enter a 3 to play Computer vs. Computer");
 
     while (true) {
+
         int gameMode;
         try {
             string gm = communicator.takeInput();
@@ -73,6 +81,3 @@ void Game::move() {
 
 }
 
-void Game::setup(bool normalMode) {
-
-}

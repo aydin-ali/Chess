@@ -8,6 +8,7 @@ class Pawn : public Piece{
 private:
 
 public:
+    Pawn(const char colour);
     bool validMove() override;
     void checkForCheck() override;
 
