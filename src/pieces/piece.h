@@ -1,19 +1,32 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <string>
+
 // abstract class Piece
+
+/* struct Posn{
+    int x;
+    int y;
+}; */
 
 class Piece {
 
 private:
-    char colour;
-    char letter;
+    std::string colour;
+    char type;
     bool moved;
 
 public:
-    virtual bool validMove();
-    virtual void checkForCheck();
-
+    Piece(const std::string &colour, const char &type);
+    virtual ~Piece();
+   // virtual bool validMove()=0;
+    //virtual void checkForCheck()=0;
+    std::string getColour();
+    char getType();
+    bool isMoved();
+  /*  void adjustMoved(); // NOT DONE
+    virtual bool validMove( fill this out );*/
 };
 
 

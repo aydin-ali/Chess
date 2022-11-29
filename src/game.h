@@ -7,9 +7,10 @@
 #include "observer/subject.h"
 #include "board/board.h"
 #include "tools/communicator.h"
+#include "pieces/piece.h"
 
-class Piece;
-
+/* class Piece;
+ */
 class Game : public Subject {
     std::unique_ptr<Board> gameBoard;
     Communicator communicator;
@@ -20,7 +21,7 @@ public:
     Game();
     void startGameLoop();
     void move();
-    void setup(bool normalMode);
+    void setupGame(bool normalMode);
     Piece* getState(int row, int col);
 
 };

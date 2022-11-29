@@ -1,5 +1,5 @@
 #include "pawn.h"
 using namespace std;
 
-//Pawn::Pawn(const char colour):
-//    Piece{colour, 'p'}{}
+Pawn::Pawn(const string colour):
+    Piece{colour, 'p'}{}
