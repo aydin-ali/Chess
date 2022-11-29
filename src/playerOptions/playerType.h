@@ -7,8 +7,11 @@ private:
     char colour;
 
 public:
-    virtual void playerMove();
 
+    //PlayerType();
+
+    virtual void playerMove();
+    virtual ~PlayerType() = 0;
 
 };
 
