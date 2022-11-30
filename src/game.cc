@@ -27,15 +27,14 @@ void Game::setupGame(bool normalMode) {
 }
 
 void Game::startGameLoop() {
-    setupGame(true);
 
     //Communicator communicator;
     cout << ("Welcome to Chess!") << endl;
+
+    while (!cin.eof()) {
     cout << ("Enter a 1 to play Human vs. Human") << endl;
     cout << ("Enter a 2 to play Human vs. Computer") << endl;
     cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
-
-    while (true) {
 
         try {
             // string gm = communicator.takeInput();
@@ -55,13 +54,19 @@ void Game::startGameLoop() {
 
             if (gameMode == 1) {
                 
-                player1 = make_unique<Human>();
-                player2 = make_unique<Human>();
+                // player1 = make_unique<Human>('W');
+                // player2 = make_unique<Human>('B');
+                players.emplace_back(make_unique<Human>('W'));
+                players.emplace_back(make_unique<Human>('B'));
+
 
             } else if (gameMode == 2) {
             } else if (gameMode == 3) {
             } 
+            //this starts a single instance of a game
             mainGameLoop();
+            //output all the end of game stats
+            //break;
         }
 
     }
@@ -69,24 +74,41 @@ void Game::startGameLoop() {
 }
 
 void Game::mainGameLoop() {
-    //call board ctor
-    //setupBoard();
-    cout << "player 1 enter a move: " << endl;
-    string s;
-    string start;
-    string end;
-    int beginEnd = 0;
-    while(cin >> s) {
+
+    setupGame(true);
+
+    int turn = 0;
+    cin.ignore();
+    while(!cin.eof()) {
+
+
+        cout << players[turn]->getColour() << " enter a move: " << endl;
         //if s is valid
-        
-        if (beginEnd == 1) {
-            end = s;
-        } else {
-            start = s;
-            beginEnd = 0;
+        string input;
+        getline(cin, input);
+        stringstream ss {input};
+        string cmd;
+        ss >> cmd;
+
+        if (cmd == "resign") {
+            //update win counters
+            cout << endl;
+            return;
         }
-        
+
+
+
+
+        if (turn == 0) {
+            turn = 1;
+        } else if (turn == 1) {
+            turn = 0;
+        }
+
     }
+
+    
+
 }
 
 // Piece* Game::getState(int row, int col) {

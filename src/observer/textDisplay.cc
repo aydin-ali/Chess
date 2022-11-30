@@ -8,6 +8,7 @@ TextDisplay::TextDisplay(){
 }
 
 void TextDisplay::notify(vector<vector<Piece*>> &b){
+    cout << endl;
     for(int row = 0; row < 8; ++row){
         for(int col = 0; col < 8; ++col){
             if(b[row][col] == nullptr){
@@ -34,4 +35,5 @@ void TextDisplay::notify(vector<vector<Piece*>> &b){
     }
     cout << endl;
     cout << "  abcdefgh" << endl;
+    cout << endl;
 }

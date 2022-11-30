@@ -1,6 +1,6 @@
 #include "human.h"
 
-Human::Human() {
+Human::Human(char colour) : PlayerType{colour} {
 
 }
 

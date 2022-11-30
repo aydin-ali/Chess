@@ -8,10 +8,10 @@ private:
 
 public:
 
-    //PlayerType();
-
+    PlayerType(char colour);
     virtual void playerMove();
     virtual ~PlayerType() = 0;
+    char getColour();
 
 };
 

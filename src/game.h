@@ -17,8 +17,9 @@ class Game : public Subject {
     std::unique_ptr<Board> gameBoard;
     Communicator communicator;
     bool whiteFirst;
-    std::unique_ptr<PlayerType> player1;
-    std::unique_ptr<PlayerType> player2;
+    // std::unique_ptr<PlayerType> player1;
+    // std::unique_ptr<PlayerType> player2;
+    std::vector<std::unique_ptr<PlayerType>> players;
 
     // PlayerType *player1;
     // PlayerType *player2;
