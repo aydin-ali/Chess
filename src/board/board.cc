@@ -6,9 +6,9 @@ Board::Board(){
 }
 
 void Board::setupBoard(){
-    for(int p = 0; p < 8; ++p){
+    for(int P = 0; P < 8; ++P){
         pieceArray.emplace_back(make_unique<Pawn>("white"));
-        board[1][p] = pieceArray.back().get();
+        board[P][1] = pieceArray.back().get();
     }
     pieceArray.emplace_back(make_unique<Rook>("white"));
     board[7][0] = pieceArray.back().get();
@@ -27,9 +27,9 @@ void Board::setupBoard(){
     pieceArray.emplace_back(make_unique<Rook>("white"));
     board[0][0] = pieceArray.back().get();
 
-    for(int P = 0; P < 8; ++P){
+    for(int p = 0; p < 8; ++p){
         pieceArray.emplace_back(make_unique<Pawn>("black"));
-        board[P][6] = pieceArray.back().get();
+        board[p][6] = pieceArray.back().get();
     }
     pieceArray.emplace_back(make_unique<Rook>("black"));
     board[0][7] = pieceArray.back().get();

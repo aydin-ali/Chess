@@ -12,10 +12,13 @@
 
 using namespace std;
 
-// Game::Game():
-//     gameBoard{make_unique<Board>()}, whiteFirst{true}{}
+Game::Game():
+    gameBoard{make_unique<Board>()}, whiteFirst{true}{}
 
 void Game::setupGame(bool normalMode) {
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
+    attach(textDisplay.get());
+
     gameBoard->setupBoard();
     vector<vector<Piece*>> &b = gameBoard->getBoardArr();
     if(normalMode){

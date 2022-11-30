@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -MMD -Werror=vla -I /include
+CXXFLAGS = -std=c++14 -g -Wall -MMD -Werror=vla -I /include
 EXEC = Chess
 SRC = $(shell find src/ -name "*.cc")
 HEADERS = $(shell find src/ -name "*.h")
