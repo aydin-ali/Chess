@@ -111,6 +111,38 @@ void Game::mainGameLoop() {
 
 }
 
+// Check if the moves inputted are within the bounds of the board
+bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
+    if((startRow < 0 || startRow > 7) || (startCol < 0 || startCol > 7) || (endRow < 0 || endRow > 7) || (endCol < 0 || endCol > 7)){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Read move from cin and process it
+bool readMove(string in) {
+    stringstream i;
+    i << in;
+    string trash;
+    i >> trash;
+    string startPos;
+    i >> startPos;
+    string endPos;
+    i >> endPos;
+    int startRow = startPos[0] - 97;
+    int endRow = endPos[0] - 97;
+    int startCol = startPos[1] - 49;
+    int endCol = endPos[1] - 49;
+    if(moveOutOfRange(startRow, startCol, endRow, endCol)){
+        return false;  
+    }
+    // NEED TO PUT THE END POSITIONS INTO SOMETHING
+    return true;
+}
+
+
+
 // Piece* Game::getState(int row, int col) {
 
 //     //return (board.getBoardArr())[row][col];
