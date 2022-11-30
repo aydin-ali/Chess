@@ -26,6 +26,37 @@ void Game::setupGame(bool normalMode) {
     }
 }
 
+// Check if the moves inputted are within the bounds of the board
+bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
+    if((startRow < 0 || startRow > 7) || (startCol < 0 || startCol > 7) || (endRow < 0 || endRow > 7) || (endCol < 0 || endCol > 7)){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Read move from cin and process it
+bool readMove(string in) {
+    stringstream i;
+    i << in;
+    string trash;
+    i >> trash;
+    string startPos;
+    i >> startPos;
+    string endPos;
+    i >> endPos;
+    int startRow = startPos[0] - 97;
+    int endRow = endPos[0] - 97;
+    int startCol = startPos[1] - 49;
+    int endCol = endPos[1] - 49;
+    if(moveOutOfRange(startRow, startCol, endRow, endCol)){
+        return false;  
+    }
+    // NEED TO PUT THE END POSITIONS INTO SOMETHING
+    return true;
+}
+
+
 void Game::startGameLoop() {
 
     //Communicator communicator;
@@ -96,14 +127,22 @@ void Game::mainGameLoop() {
             return;
         }
 
+        //check if the move entered is valid (input wise)
+        if (readMove(input)) {
 
+            //check if the move is valid (board + piece wise
+            if (true) { // [later : soon]
+                (turn == 0) ? turn = 1 : turn = 0;
+                
+            } else {
+                cout << "Invalid move: Invalid position(s)" << endl;
+            }
 
-
-        if (turn == 0) {
-            turn = 1;
-        } else if (turn == 1) {
-            turn = 0;
+        } else {
+            cout << "Invalid move: Invalid input" << endl;
         }
+
+
 
     }
 
@@ -111,35 +150,6 @@ void Game::mainGameLoop() {
 
 }
 
-// Check if the moves inputted are within the bounds of the board
-bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
-    if((startRow < 0 || startRow > 7) || (startCol < 0 || startCol > 7) || (endRow < 0 || endRow > 7) || (endCol < 0 || endCol > 7)){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// Read move from cin and process it
-bool readMove(string in) {
-    stringstream i;
-    i << in;
-    string trash;
-    i >> trash;
-    string startPos;
-    i >> startPos;
-    string endPos;
-    i >> endPos;
-    int startRow = startPos[0] - 97;
-    int endRow = endPos[0] - 97;
-    int startCol = startPos[1] - 49;
-    int endCol = endPos[1] - 49;
-    if(moveOutOfRange(startRow, startCol, endRow, endCol)){
-        return false;  
-    }
-    // NEED TO PUT THE END POSITIONS INTO SOMETHING
-    return true;
-}
 
 
 
