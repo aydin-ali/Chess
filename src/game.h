@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "observer/subject.h"
+#include "observer/textDisplay.h"
 #include "board/board.h"
 #include "tools/communicator.h"
 #include "pieces/piece.h"
@@ -25,7 +26,7 @@ class Game : public Subject {
 
 public:
     //ctor dtor?
-    //Game();
+    Game();
     void startGameLoop();
     void mainGameLoop();
     void move();

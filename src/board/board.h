@@ -22,7 +22,7 @@ class Board {
 private:
     std::vector<std::vector<Piece*>> board;
     std::vector<std::unique_ptr<Piece>> pieceArray;
-    std::map<std::string, Piece*> pieceMap;
+    //std::map<std::string, Piece*> pieceMap;
 
 public:
     Board();
