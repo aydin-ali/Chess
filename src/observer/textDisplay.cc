@@ -12,7 +12,7 @@ void TextDisplay::notify(vector<vector<Piece*>> &b){
         for(int col = 0; col < 8; ++col){
             if(b[row][col] == nullptr){
                 if((row + col) % 2 == 0){
-                    printedBoard[row][col] = '#';
+                    printedBoard[row][col] = '-';
                 } else {
                     printedBoard[row][col] = ' ';
                 }
