@@ -6,7 +6,7 @@
 class Human : public PlayerType {
 
 public:
-    Human();
+    Human(char colour);
     void playerMove() override;
 
 };
