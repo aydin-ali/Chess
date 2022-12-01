@@ -26,7 +26,7 @@ private:
 
 public:
     Board();
-    void setupBoard();
+    void setupBoardDefault();
     void moveOnBoard();
     std::vector<std::vector<Piece*>> &getBoardArr();
 };

@@ -5,7 +5,7 @@ Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
 }
 
-void Board::setupBoard(){
+void Board::setupBoardDefault(){
     // Set up White pieces on the Board
     for(int P = 0; P < 8; ++P){
         pieceArray.emplace_back(make_unique<Pawn>("white"));
