@@ -17,10 +17,8 @@ Game::Game():
     gameBoard{make_unique<Board>()}, whiteFirst{true}, whoStarts{"white"}, manualSetUp{false}{}
 
 void Game::setupGame(bool manualSetup) {
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
-    attach(textDisplay.get());
 
-    if(manualSetUp){
+    if (manualSetUp) {
         while(true){
             string in;
             getline(cin, in);
