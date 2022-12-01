@@ -38,7 +38,7 @@ void Game::setupGame(bool manualSetup) {
         cout << "Loop broken" << endl;
     } else { //default mode
         gameBoard->setupBoardDefault();
-        cin.ignore();
+        cin.ignore(); //IDK WHY
         // notifyObservers(gameBoard->getBoardArr());
     }
     notifyObservers(gameBoard->getBoardArr());
