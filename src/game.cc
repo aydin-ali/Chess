@@ -13,17 +13,33 @@
 using namespace std;
 
 Game::Game():
-    gameBoard{make_unique<Board>()}, whiteFirst{true}, manualSetUp{false}{}
+    gameBoard{make_unique<Board>()}, whiteFirst{true}, whoStarts{"white"}, manualSetUp{false}{}
 
-void Game::setupGame(bool normalMode) {
+void Game::setupGame(bool manualSetup) {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     attach(textDisplay.get());
 
-    if(!normalMode){
-        gameBoard->setupBoard();
+    if(manualSetUp){
+        while(true){
+            string in;
+            getline(cin, in);
+            if(in == "done"){ // NEED TO CHECK IF KING's have been placed
+                if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1) break;
+                else{
+                    cout << "You have to have ONE White King and ONE Black King placed!" << endl;
+                    notifyObservers(gameBoard->getBoardArr());
+                    }
+            } else {
+                readSetupMove(in);
+            }
+        }
+        cout << "Loop broken" << endl;
+    } else {
+        gameBoard->setupBoardDefault();
         vector<vector<Piece*>> &b = gameBoard->getBoardArr();
         notifyObservers(b);
     }
+    notifyObservers(gameBoard->getBoardArr());
 }
 
 // Check if the moves inputted are within the bounds of the board
@@ -54,6 +70,44 @@ bool readMove(string in) {
     }
     // NEED TO PUT THE END POSITIONS INTO SOMETHING
     return true;
+}
+
+void Game::readSetupMove(string in){
+    stringstream i;
+    i << in;
+    string op;
+    i >> op;
+    if(op == "+"){
+        string type;
+        i >> type;
+        string pos;
+        i >> pos;
+        int row = pos[0] - 97;
+        int col = pos[1] - 49;
+        gameBoard->setupBoardManual(row, col, type[0], op[0]);        
+    }
+    if(op == "-"){
+        string pos;
+        i >> pos;
+        int row = pos[0] - 97;
+        int col = pos[1] - 49;
+
+        gameBoard->setupBoardManual(row, col, gameBoard->getBoardArr()[row][col]->getType(), op[0]);        
+    }
+    if(op == "="){
+        string colour;
+        i >> colour;
+        if(colour == "white"){
+            whoStarts = "white";
+        } else if(colour == "black"){
+            whoStarts = "black";
+        } else {
+            //MAKE BEHAVIOUR FOR NON-ACCEPTED BEHAVIOUR
+        }
+    }
+
+    
+    notifyObservers(gameBoard->getBoardArr());
 }
 
 
@@ -89,19 +143,19 @@ void Game::startGameLoop() {
         }
 
         while (!setupModeChosen) {
-            cout << ("Enter 'normal' to play normally, Enter 'setup' to setup the board manually") << endl;;
+            cout << ("Enter 'default' to play normally, Enter 'setup' to setup the board manually") << endl;;
 
             try {
                 string manual;
                 cin >> manual;
                 if (manual == "setup") {
-                    manualSetUp = false;
-                    setupModeChosen = true;
-                } else if(manual == "default"){
                     manualSetUp = true;
                     setupModeChosen = true;
+                } else if(manual == "default"){
+                    manualSetUp = false;
+                    setupModeChosen = true;
                 } else {
-                    throw "Please type one of the options listed above!";
+                    throw "Please type one of the options listed!";
                 }
             } catch (char const* error) {
                 cout << error << endl;
@@ -127,9 +181,7 @@ void Game::startGameLoop() {
             //output all the end of game stats
             //break;
         }
-
     }
-
 }
 
 void Game::mainGameLoop() {

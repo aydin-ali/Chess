@@ -24,6 +24,9 @@ class Game : public Subject {
     // PlayerType *player1;
     // PlayerType *player2;
     int gameMode;
+
+    //For Set Up Mode
+    std::string whoStarts;
     bool manualSetUp;
 
 public:
@@ -33,9 +36,8 @@ public:
     void mainGameLoop();
     void move();
     void setupGame(bool normalMode);
+    void readSetupMove(std::string in);
     Piece* getState(int row, int col);
-
-
 };
 
 #endif

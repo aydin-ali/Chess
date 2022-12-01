@@ -22,13 +22,18 @@ class Board {
 private:
     std::vector<std::vector<Piece*>> board;
     std::vector<std::unique_ptr<Piece>> pieceArray;
+
+    int numWhiteKings, numBlackKings;
     //std::map<std::string, Piece*> pieceMap;
 
 public:
     Board();
-    void setupBoard();
+    void setupBoardDefault();
+    void setupBoardManual(int row, int col, char piece, char op);
     void moveOnBoard();
     std::vector<std::vector<Piece*>> &getBoardArr();
+    int getNumWhiteKings();
+    int getNumBlackKings();
 };
 
 #endif
