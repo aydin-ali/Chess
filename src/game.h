@@ -24,6 +24,7 @@ class Game : public Subject {
     // PlayerType *player1;
     // PlayerType *player2;
     int gameMode;
+    bool manualSetUp;
 
 public:
     //ctor dtor?
