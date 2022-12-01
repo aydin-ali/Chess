@@ -63,23 +63,51 @@ void Game::startGameLoop() {
     cout << ("Welcome to Chess!") << endl;
 
     while (!cin.eof()) {
-    cout << ("Enter a 1 to play Human vs. Human") << endl;
-    cout << ("Enter a 2 to play Human vs. Computer") << endl;
-    cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
 
-        try {
-            // string gm = communicator.takeInput();
-            string gm;
-            cin >> gm;
-            istringstream iss {gm};
-            if (iss >> gameMode) {
-                if (gameMode < 1 || gameMode > 3) throw "Enter a number between 1-3";
-            } else {
-                throw "Enter a number between 1-3";
+        bool gameModeChosen = false;
+        bool setupModeChosen = false;
+
+        while (!gameModeChosen) {
+            cout << ("Enter a 1 to play Human vs. Human") << endl;
+            cout << ("Enter a 2 to play Human vs. Computer") << endl;
+            cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
+
+            try {
+                // string gm = communicator.takeInput();
+                string gm;
+                getline(cin, gm);
+                istringstream iss {gm};
+                if (iss >> gameMode) {
+                    if (gameMode < 1 || gameMode > 3) throw "Enter a number between 1-3";
+                    gameModeChosen = true;
+                } else {
+                    throw "Enter a number between 1-3";
+                }
+            } catch (char const* error) {
+                cout << error << endl;
+            } 
+        }
+
+        while (!setupModeChosen) {
+            cout << ("Enter 'normal' to play normally, Enter 'setup' to setup the board manually") << endl;;
+
+            try {
+                string manual;
+                cin >> manual;
+                if (manual == "setup") {
+                    manualSetUp = true;
+                    setupModeChosen = true;
+                } else if(manual == "default"){
+                    manualSetUp = false;
+                    setupModeChosen = true;
+                } else {
+                    throw "Please type one of the options listed above!";
+                }
+            } catch (char const* error) {
+                cout << error << endl;
             }
-        } catch (char const* error) {
-            cout << error << endl;
-        } 
+
+        }
 
         if (gameMode > 0 && gameMode < 3) {
 
@@ -106,7 +134,7 @@ void Game::startGameLoop() {
 
 void Game::mainGameLoop() {
 
-    setupGame(true);
+    setupGame(manualSetUp);
 
     int turn = 0;
     cin.ignore();
@@ -130,6 +158,7 @@ void Game::mainGameLoop() {
         //check if the move entered is valid (input wise)
         if (readMove(input)) {
 
+            //conver the string to a move object
             //check if the move is valid (board + piece wise
             if (true) { // [later : soon]
                 (turn == 0) ? turn = 1 : turn = 0;
