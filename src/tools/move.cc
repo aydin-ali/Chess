@@ -1,6 +1,7 @@
 #include "move.h"
 
-Move::Move(std::string startPos, std::string endPos) : startPos{startPos}, endPos{endPos} {
+Move::Move(std::string startPos, std::string endPos, std::string colour) : 
+startPos{startPos}, endPos{endPos}, colour{colour} {
     convert();
 }
 
@@ -13,6 +14,10 @@ void Move::convert() {
 
 }
 
+
+std::string Move::getColour() {
+    return colour;
+}
 
 int Move::getStartRow() {
     return startRow;

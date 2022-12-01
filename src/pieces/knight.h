@@ -7,6 +7,8 @@
 class Knight : public Piece{
 public:
     Knight(const std::string &colour);
+    bool validMove(Move move) override;
+
 };
 
 

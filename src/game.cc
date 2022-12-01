@@ -172,7 +172,7 @@ void Game::mainGameLoop() {
 
 
             //convert the string to a move object
-            Move m {startPos, endPos};
+            Move m {startPos, endPos, players[turn]->getColour()};
             //check if the move is valid (board + piece wise)
             
             if (gameBoard->moveOnBoard(m)) { 
@@ -182,11 +182,11 @@ void Game::mainGameLoop() {
                 notifyObservers(gameBoard->getBoardArr());
                 
             } else {
-                cout << "Invalid move: Invalid position(s)" << endl;
+                cout << "Invalid move: Invalid position(s)" << endl << endl;
             }
 
         } else {
-            cout << "Invalid move: Invalid input" << endl;
+            cout << "Invalid move: Invalid input" << endl << endl;
         }
 
 

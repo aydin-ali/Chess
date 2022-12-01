@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <string>
+#include "../tools/move.h"
 
 // abstract class Piece
 
@@ -20,7 +21,7 @@ private:
 public:
     Piece(const std::string &colour, const char &type);
     virtual ~Piece();
-   // virtual bool validMove()=0;
+    virtual bool validMove(Move move) = 0;
     //virtual void checkForCheck()=0;
     std::string getColour();
     char getType();
