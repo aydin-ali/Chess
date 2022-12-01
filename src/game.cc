@@ -13,15 +13,15 @@
 using namespace std;
 
 Game::Game():
-    gameBoard{make_unique<Board>()}, whiteFirst{true}{}
+    gameBoard{make_unique<Board>()}, whiteFirst{true}, manualSetUp{false}{}
 
 void Game::setupGame(bool normalMode) {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     attach(textDisplay.get());
 
-    gameBoard->setupBoard();
-    vector<vector<Piece*>> &b = gameBoard->getBoardArr();
-    if(normalMode){
+    if(!normalMode){
+        gameBoard->setupBoard();
+        vector<vector<Piece*>> &b = gameBoard->getBoardArr();
         notifyObservers(b);
     }
 }
@@ -95,10 +95,10 @@ void Game::startGameLoop() {
                 string manual;
                 cin >> manual;
                 if (manual == "setup") {
-                    manualSetUp = true;
+                    manualSetUp = false;
                     setupModeChosen = true;
                 } else if(manual == "default"){
-                    manualSetUp = false;
+                    manualSetUp = true;
                     setupModeChosen = true;
                 } else {
                     throw "Please type one of the options listed above!";
