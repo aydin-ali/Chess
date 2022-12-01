@@ -20,7 +20,7 @@ void Game::setupGame(bool normalMode) {
     attach(textDisplay.get());
 
     if(!normalMode){
-        gameBoard->setupBoard();
+        gameBoard->setupBoardDefault();
         vector<vector<Piece*>> &b = gameBoard->getBoardArr();
         notifyObservers(b);
     }
@@ -158,7 +158,7 @@ void Game::mainGameLoop() {
         //check if the move entered is valid (input wise)
         if (readMove(input)) {
 
-            //conver the string to a move object
+            //convert the string to a move object
             //check if the move is valid (board + piece wise
             if (true) { // [later : soon]
                 (turn == 0) ? turn = 1 : turn = 0;
