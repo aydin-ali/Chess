@@ -4,10 +4,10 @@
 #include "piece.h"
 #include <string>
 
-class Pawn : public Piece{
+class Pawn : public Piece {
 public:
     Pawn(const std::string colour);
-   // bool validMove() override;
+    bool validMove(Move move) override;
     //void checkForCheck() override;
 };
 
