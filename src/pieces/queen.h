@@ -7,6 +7,7 @@
 class Queen : public Piece{
 public:
     Queen(const std::string &colour);
+    bool validMove(Move move) override;
 };
 
 #endif

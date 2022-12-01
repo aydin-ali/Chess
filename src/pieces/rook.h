@@ -7,6 +7,8 @@
 class Rook : public Piece{
 public:
     Rook(const std::string &colour);
+    bool validMove(Move move) override;
+
 };
 
 #endif

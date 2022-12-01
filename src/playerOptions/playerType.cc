@@ -1,6 +1,6 @@
 #include "playerType.h"
 
-PlayerType::PlayerType(char colour) : colour{colour} {
+PlayerType::PlayerType(std::string colour) : colour{colour} {
 
 }
 
@@ -10,6 +10,6 @@ void PlayerType::playerMove() {
 
 }
 
-char PlayerType::getColour() {
+std::string PlayerType::getColour() {
     return colour;
 }

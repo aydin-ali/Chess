@@ -7,6 +7,7 @@
 class Bishop : public Piece {
 public:
     Bishop(const std::string &colour);
+    bool validMove(Move move) override;
 };
 
 

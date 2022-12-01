@@ -6,6 +6,7 @@
 #include "game.h"
 //#include "tools/communicator.h"
 
+#include "tools/move.h" //can we make this just: class Move;?
 #include "playerOptions/human.h"
 #include "playerOptions/computerL1.h"
 
@@ -16,11 +17,9 @@ Game::Game():
     gameBoard{make_unique<Board>()}, whiteFirst{true}, manualSetUp{false}{}
 
 void Game::setupGame(bool normalMode) {
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
-    attach(textDisplay.get());
 
     if(!normalMode){
-        gameBoard->setupBoard();
+        gameBoard->setupBoardDefault();
         vector<vector<Piece*>> &b = gameBoard->getBoardArr();
         notifyObservers(b);
     }
@@ -89,16 +88,16 @@ void Game::startGameLoop() {
         }
 
         while (!setupModeChosen) {
-            cout << ("Enter 'normal' to play normally, Enter 'setup' to setup the board manually") << endl;;
+            cout << ("Enter 'default' to play normally, Enter 'setup' to setup the board manually") << endl;;
 
             try {
                 string manual;
                 cin >> manual;
                 if (manual == "setup") {
-                    manualSetUp = false;
+                    manualSetUp = true;
                     setupModeChosen = true;
                 } else if(manual == "default"){
-                    manualSetUp = true;
+                    manualSetUp = false;
                     setupModeChosen = true;
                 } else {
                     throw "Please type one of the options listed above!";
@@ -115,8 +114,8 @@ void Game::startGameLoop() {
                 
                 // player1 = make_unique<Human>('W');
                 // player2 = make_unique<Human>('B');
-                players.emplace_back(make_unique<Human>('W'));
-                players.emplace_back(make_unique<Human>('B'));
+                players.emplace_back(make_unique<Human>("white"));
+                players.emplace_back(make_unique<Human>("black"));
 
 
             } else if (gameMode == 2) {
@@ -134,6 +133,9 @@ void Game::startGameLoop() {
 
 void Game::mainGameLoop() {
 
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
+    attach(textDisplay.get());
+
     setupGame(manualSetUp);
 
     int turn = 0;
@@ -141,7 +143,7 @@ void Game::mainGameLoop() {
     while(!cin.eof()) {
 
 
-        cout << players[turn]->getColour() << " enter a move: " << endl;
+        cout << players[turn]->getColour() << " enter a move: ";
         //if s is valid
         string input;
         getline(cin, input);
@@ -158,17 +160,33 @@ void Game::mainGameLoop() {
         //check if the move entered is valid (input wise)
         if (readMove(input)) {
 
-            //conver the string to a move object
-            //check if the move is valid (board + piece wise
-            if (true) { // [later : soon]
+            //TEMPORARY
+            stringstream i;
+            i << input;
+            string trash;
+            i >> trash;
+            string startPos;
+            i >> startPos;
+            string endPos;
+            i >> endPos;
+
+
+            //convert the string to a move object
+            Move m {startPos, endPos, players[turn]->getColour()};
+            //check if the move is valid (board + piece wise)
+            
+            if (gameBoard->moveOnBoard(m)) { 
+                
                 (turn == 0) ? turn = 1 : turn = 0;
+                //print the new board
+                notifyObservers(gameBoard->getBoardArr());
                 
             } else {
-                cout << "Invalid move: Invalid position(s)" << endl;
+                cout << "Invalid move: Invalid position(s)" << endl << endl;
             }
 
         } else {
-            cout << "Invalid move: Invalid input" << endl;
+            cout << "Invalid move: Invalid input" << endl << endl;
         }
 
 

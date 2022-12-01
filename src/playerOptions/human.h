@@ -6,7 +6,7 @@
 class Human : public PlayerType {
 
 public:
-    Human(char colour);
+    Human(std::string colour);
     void playerMove() override;
 
 };
