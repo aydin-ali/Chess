@@ -6,6 +6,7 @@
 #include "game.h"
 //#include "tools/communicator.h"
 
+#include "tools/move.h" //can we make this just: class Move;?
 #include "playerOptions/human.h"
 #include "playerOptions/computerL1.h"
 
@@ -159,12 +160,22 @@ void Game::mainGameLoop() {
         //check if the move entered is valid (input wise)
         if (readMove(input)) {
 
+            //TEMPORARY
+            stringstream i;
+            i << input;
+            string trash;
+            i >> trash;
+            string startPos;
+            i >> startPos;
+            string endPos;
+            i >> endPos;
+
+
             //convert the string to a move object
+            Move m {startPos, endPos};
             //check if the move is valid (board + piece wise)
-
-
-
-            if (true) { 
+            
+            if (gameBoard->moveOnBoard(m)) { 
                 
                 (turn == 0) ? turn = 1 : turn = 0;
                 //print the new board

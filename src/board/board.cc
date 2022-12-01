@@ -54,3 +54,28 @@ void Board::setupBoardDefault(){
 vector<vector<Piece*>> &Board::getBoardArr() {
     return board;
 }
+
+bool Board::moveOnBoard(Move move){
+
+
+    //loop through to check if the move is allowed
+
+
+    //actually move the piece
+    board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];
+    board[move.getStartRow()][move.getStartCol()] = nullptr;
+    //two cases:
+    if (board[move.getEndRow()][move.getEndCol()] == nullptr) {     //if moving into an empty spot:
+        //nothing left to do
+    } else {     //if taking the piece:
+        //delete the piece from the piece array
+    }
+
+
+    //castling + pawn promotion (later)
+
+    return true;
+
+}
+
+

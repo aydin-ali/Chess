@@ -14,6 +14,8 @@
 #include "../pieces/rook.h"
 #include "../observer/subject.h"
 
+#include "../tools/move.h"
+
 class Piece;
 // don't need class Piece here because it's in game????
 
@@ -27,7 +29,7 @@ private:
 public:
     Board();
     void setupBoardDefault();
-    void moveOnBoard();
+    bool moveOnBoard(Move move);
     std::vector<std::vector<Piece*>> &getBoardArr();
 };
 
