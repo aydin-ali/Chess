@@ -102,7 +102,13 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             if(board[row][col]->getColour() == "white")--numWhiteKings;
             else{--numBlackKings;}
         };
-        board[row][col] = nullptr;
+        for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+            if(board[row][col] == it->get()){
+                pieceArray.erase(it);
+            }
+            board[row][col] = nullptr;
+            break;
+        }
     } else if(op == '='){
         
     }

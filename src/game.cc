@@ -14,11 +14,9 @@
 using namespace std;
 
 Game::Game():
-    gameBoard{make_unique<Board>()}, whiteFirst{true}, whoStarts{"white"}, manualSetUp{false}{}
+    gameBoard{make_unique<Board>()}, whoStarts{"white"}, manualSetUp{false}{}
 
 void Game::setupGame(bool manualSetup) {
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
-    attach(textDisplay.get());
 
     if(manualSetUp){
         while(true){
