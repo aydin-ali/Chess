@@ -1,17 +1,19 @@
 #ifndef PLAYERTYPE_H
 #define PLAYERTYPE_H
 
+#include <string>
+
 class PlayerType {
 
 private:
-    char colour;
+    std::string colour;
 
 public:
 
-    PlayerType(char colour);
+    PlayerType(std::string colour);
     virtual void playerMove();
     virtual ~PlayerType() = 0;
-    char getColour();
+    std::string getColour();
 
 };
 

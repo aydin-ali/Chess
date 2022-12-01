@@ -113,8 +113,8 @@ void Game::startGameLoop() {
                 
                 // player1 = make_unique<Human>('W');
                 // player2 = make_unique<Human>('B');
-                players.emplace_back(make_unique<Human>('W'));
-                players.emplace_back(make_unique<Human>('B'));
+                players.emplace_back(make_unique<Human>("white"));
+                players.emplace_back(make_unique<Human>("black"));
 
 
             } else if (gameMode == 2) {
@@ -161,6 +161,9 @@ void Game::mainGameLoop() {
 
             //convert the string to a move object
             //check if the move is valid (board + piece wise)
+
+
+
             if (true) { 
                 
                 (turn == 0) ? turn = 1 : turn = 0;
