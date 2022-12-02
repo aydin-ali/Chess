@@ -153,6 +153,7 @@ bool Board::moveOnBoard(Move move){
 
     //actually move the piece
     board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];//this has to be move ctor if it's taking a piece
+    board[move.getEndRow()][move.getEndCol()]->updatePosn(move.getEndRow(), move.getEndCol());
     board[move.getStartRow()][move.getStartCol()] = nullptr;
     
     //two cases:
