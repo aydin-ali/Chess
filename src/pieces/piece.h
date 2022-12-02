@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <string>
+#include <vector>
 #include "../tools/move.h"
 
 // abstract class Piece
@@ -14,14 +15,19 @@
 class Piece {
 
 private:
-    std::string colour;
     char type;
+
+protected:
+    std::string colour;
+    std::vector<Move> possibleMoves;
     bool moved;
 
 public:
     Piece(const std::string &colour, const char &type);
     virtual ~Piece();
-    virtual bool validMove(Move move) = 0;
+    virtual bool validMove(Move move, vector<vector<Piece*>>) = 0;
+    virtual void updatePossibleMoves(Move move, vector<vector<Piece*>>) = 0;
+
     //virtual void checkForCheck()=0;
     std::string getColour();
     char getType();

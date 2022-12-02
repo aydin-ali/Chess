@@ -7,7 +7,8 @@
 class Rook : public Piece{
 public:
     Rook(const std::string &colour);
-    bool validMove(Move move) override;
+    bool validMove(Move move, vector<vector<Piece*>> board) override;
+    void updatePossibleMoves(Move move, vector<vector<Piece*>>) override;
 
 };
 

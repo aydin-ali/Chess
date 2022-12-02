@@ -8,7 +8,7 @@ Piece::Piece(const string &colour, const char &type):
 
 Piece::~Piece() {}
 
-bool Piece::validMove(Move move){
+bool Piece::validMove(Move move, vector<vector<Piece*>>){
     return true;
 }
 

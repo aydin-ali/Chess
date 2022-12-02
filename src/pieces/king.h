@@ -7,7 +7,9 @@
 class King : public Piece {
 public:
     King( const std::string &colour );
-    bool validMove(Move move) override;
+    bool validMove(Move move, vector<vector<Piece*>> board) override;
+    void updatePossibleMoves(Move move, vector<vector<Piece*>>) override;
+
 };
 
 

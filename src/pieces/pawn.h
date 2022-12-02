@@ -7,7 +7,8 @@
 class Pawn : public Piece {
 public:
     Pawn(const std::string colour);
-    bool validMove(Move move) override;
+    bool validMove(Move move, vector<vector<Piece*>> board) override;
+    void updatePossibleMoves(Move move, vector<vector<Piece*>>) override;
     //void checkForCheck() override;
 };
 
