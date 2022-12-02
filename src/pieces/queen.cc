@@ -26,7 +26,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row, col - incr};
     
-    while (p.validPosn()) {
+    while (p.positionWithinBounds()) {
         if(board[p.getRow()][p.getCol()] == nullptr){
             possibleMoves.emplace_back(p);
             ++incr;
@@ -45,7 +45,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row, col + incr};
     
-    while (p.validPosn()) {
+    while (p.positionWithinBounds()) {
         if(board[p.getRow()][p.getCol()] == nullptr){
             possibleMoves.emplace_back(p);
             ++incr;
@@ -64,7 +64,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row - incr, col};
     
-    while (p.validPosn()) {
+    while (p.positionWithinBounds()) {
         if(board[p.getRow()][p.getCol()] == nullptr){
             possibleMoves.emplace_back(p);
             ++incr;
@@ -83,7 +83,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row + incr, col};
     
-    while (p.validPosn()) {
+    while (p.positionWithinBounds()) {
         if(board[p.getRow()][p.getCol()] == nullptr){
             possibleMoves.emplace_back(p);
             ++incr;
@@ -102,7 +102,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row - incr, col - incr};
 
-    while(p.validPosn()) {
+    while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
             ++incr;
@@ -121,7 +121,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row - incr, col + incr};
 
-    while(p.validPosn()) {
+    while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
             ++incr;
@@ -140,7 +140,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row + incr, col + incr};
 
-    while(p.validPosn()) {
+    while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
             ++incr;
@@ -159,7 +159,7 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     incr = 1;
     p = {row + incr, col - incr};
 
-    while(p.validPosn()) {
+    while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
             ++incr;
