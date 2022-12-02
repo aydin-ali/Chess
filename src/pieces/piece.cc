@@ -4,11 +4,11 @@ using namespace std;
 class Move;
 
 Piece::Piece(const string &colour, const char &type):
-    colour{colour}, type{type}, moved{false}{}
+    colour{colour}, type{type}, moved{false} {}
 
 Piece::~Piece() {}
 
-bool Piece::validMove(Move move, vector<vector<Piece*>>){
+bool Piece::validMove(Move move, vector<vector<Piece*>> board){
     return true;
 }
 

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "../tools/move.h"
+#include "../tools/position.h"
 
 // abstract class Piece
 
@@ -19,14 +20,14 @@ private:
 
 protected:
     std::string colour;
-    std::vector<Move> possibleMoves;
+    std::vector<Position> possibleMoves;
     bool moved;
 
 public:
     Piece(const std::string &colour, const char &type);
     virtual ~Piece();
-    virtual bool validMove(Move move, vector<vector<Piece*>>) = 0;
-    virtual void updatePossibleMoves(Move move, vector<vector<Piece*>>) = 0;
+    virtual bool validMove(Move move, std::vector<std::vector<Piece*>> board) = 0;
+    virtual void updatePossibleMoves(Move move, std::vector<std::vector<Piece*>> board) = 0;
 
     //virtual void checkForCheck()=0;
     std::string getColour();
