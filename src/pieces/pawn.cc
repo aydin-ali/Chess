@@ -4,16 +4,25 @@ using namespace std;
 Pawn::Pawn(const string colour, int row, int col):
     Piece{colour, 'p', row, col}{}
 
-bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
-    //rmb we're passing the board*
 
-    //call a function (pass move and board) that fills a vector w/ possible moves    
+#include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
+
+
+bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
+
+    //call a function that fills a vector w/ possible moves    
     //all the checking should happen here
     updatePossibleMoves(board);
 
+    //check if the given move is within the possibleMoves vector
+    for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
+        cout << it->getRow() << " " << it->getCol() << endl;
+        if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
+            return true;
+        }
+    }
+    return false;
 
-    //check if move exists within the possibleMoves vector
-    return true;
 }
 
 //side note: pawn promotion and poisson stuff
@@ -22,9 +31,9 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
 
     int rowIncrement;
     if (colour == "white") {
-        rowIncrement = -1;
-    } else {
         rowIncrement = 1;
+    } else {
+        rowIncrement = -1;
     }
 
     int row, col;
@@ -38,6 +47,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     if (p.positionWithinBounds()) {
         if (!moved) { 
             //check 1 square in front
+            cout << p.getRow() << " " << p.getCol() << endl;
             if (board[p.getRow()][p.getCol()] == nullptr) {
                 possibleMoves.emplace_back(p);
                 
@@ -65,7 +75,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() + 1;
     p = {row, col};
     if (p.positionWithinBounds()) {
-        if (board[p.getRow()][p.getCol()]->getColour() != colour){
+        if (board[p.getRow()][p.getCol()] != nullptr && board[p.getRow()][p.getCol()]->getColour() != colour){
             possibleMoves.emplace_back(p);
         }
     }
@@ -74,7 +84,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() - 1;
     p = {row, col};
     if (p.positionWithinBounds()) {
-        if (board[p.getRow()][p.getCol()]->getColour() != colour){
+        if (board[p.getRow()][p.getCol()] != nullptr && board[p.getRow()][p.getCol()]->getColour() != colour){
             possibleMoves.emplace_back(p);
         }
     }
