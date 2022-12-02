@@ -1,15 +1,15 @@
 #include "pawn.h"
 using namespace std;
 
-Pawn::Pawn(const string colour):
-    Piece{colour, 'p'}{}
+Pawn::Pawn(const string colour, int row, int col):
+    Piece{colour, 'p', row, col}{}
 
 bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
     //rmb we're passing the board*
 
     //call a function (pass move and board) that fills a vector w/ possible moves    
     //all the checking should happen here
-    updatePossibleMoves(move, board);
+    updatePossibleMoves(board);
 
 
     //check if move exists within the possibleMoves vector
@@ -18,7 +18,8 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
 
 //side note: pawn promotion and poisson stuff
 
-void Pawn::updatePossibleMoves(Move move, vector<vector<Piece*>> board) {
+void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
+
     int rowIncrement;
     if (colour == "white") {
         rowIncrement = -1;
@@ -26,27 +27,61 @@ void Pawn::updatePossibleMoves(Move move, vector<vector<Piece*>> board) {
         rowIncrement = 1;
     }
 
-    if (!moved) { //if the pawn hasn't moved yet
-        //check 1 sq in front
-        if (board[move.getStartRow() + rowIncrement][move.getStartCol()] != nullptr) {
-            possibleMoves.emplace_back(Position{
-                move.getStartRow()+rowIncrement, 
-                move.getStartCol()
-            });
+    int row, col;
+    Position p = {0, 0};
+
+    row = posn.getRow() + rowIncrement;
+    col = posn.getCol();
+    p = {row, col};
+
+    //if the pawn hasn't moved yet
+    if (p.positionWithinBounds()) {
+        if (!moved) { 
+            //check 1 square in front
+            if (board[p.getRow()][p.getCol()] == nullptr) {
+                possibleMoves.emplace_back(p);
+                
+                //if that's a valid move, check 2 squares in front --------
+                row = posn.getRow() + (rowIncrement * 2);
+                col = posn.getCol();
+                if (p.positionWithinBounds()) { //recheck if the new position is valid because we changed it
+                    if (board[p.getRow()][p.getCol()] == nullptr) {
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+                //---------------------------------------------------------
+            }
+        } else {
+            //check only one square in front
+            if (board[p.getRow()][p.getCol()] == nullptr) {
+                possibleMoves.emplace_back(p);
+            }
         }
-
- 
-        //if that's a valid move, check 2 squares in front
-    } else {
-        //check one sq in front
-        //check if that spot is being blocked (own colour or opposing colour)
-        //if the pawn moving leads to its own king being checked (LATER)
     }
-    //check if -> pawn can move diaganolly (one left/right then one up) if there is an opposing colours piece 
 
+    //check if pawn can move diaganolly (if there is an opposing colours piece at that position)
+    //diagonal right
+    row = posn.getRow() + rowIncrement;
+    col = posn.getCol() + 1;
+    p = {row, col};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()]->getColour() != colour){
+            possibleMoves.emplace_back(p);
+        }
+    }
+    //diagonal left
+    row = posn.getRow() + rowIncrement;
+    col = posn.getCol() - 1;
+    p = {row, col};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()]->getColour() != colour){
+            possibleMoves.emplace_back(p);
+        }
+    }
 
 }
 
+//if the pawn moving leads to its own king being checked (LATER)
 
 
 //side note: to keep track of wins/losses in player, write a visitor?

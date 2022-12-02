@@ -6,9 +6,9 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(const std::string colour);
+    Pawn(const std::string colour, int row, int col);
     bool validMove(Move move, std::vector<std::vector<Piece*>> board) override;
-    void updatePossibleMoves(Move move, std::vector<std::vector<Piece*>> board) override;
+    void updatePossibleMoves(std::vector<std::vector<Piece*>> board) override;
     //void checkForCheck() override;
 };
 
