@@ -24,4 +24,7 @@ bool Piece::isMoved(){
     return moved;
 }
 
+void Piece::updatePosn(int row, int col) {
+    posn = {row, col};
+}
 
