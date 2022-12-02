@@ -8,6 +8,6 @@ bool Rook::validMove(Move move, vector<vector<Piece*>> board) {
     return true;
 }
 
-void Rook::updatePossibleMoves(Move move, vector<vector<Piece*>>) {
+void Rook::updatePossibleMoves(vector<vector<Piece*>>) {
     
 }

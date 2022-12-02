@@ -9,6 +9,6 @@ bool King::validMove(Move move, vector<vector<Piece*>> board) {
 }
 
 
-void King::updatePossibleMoves(Move move, vector<vector<Piece*>>) {
+void King::updatePossibleMoves(vector<vector<Piece*>>) {
     
 }
