@@ -2,6 +2,7 @@
 #include <sstream>
 #include <memory>
 #include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
+#include <algorithm>
 
 #include "game.h"
 //#include "tools/communicator.h"
@@ -72,6 +73,7 @@ bool readMove(string in) {
 }
 
 void Game::readSetupMove(string in){
+    vector<char> allowedPieces = {'k', 'K', 'q', 'Q', 'b', 'B', 'n', 'N', 'r', 'R', 'p', 'P'};
     stringstream i;
     i << in;
     string op;
@@ -83,17 +85,37 @@ void Game::readSetupMove(string in){
         i >> pos;
         int row = pos[0] - 97;
         int col = pos[1] - 49;
-        gameBoard->setupBoardManual(row, col, type[0], op[0]);        
-    }
-    if(op == "-"){
+        auto it = find(allowedPieces.begin(), allowedPieces.end(), type[0]);
+        if(it == allowedPieces.end()){
+            cout << "------That is not a valid piece type to place!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
+        }
+        if(row < 0 || row > 7 || col < 0 || col > 7){
+            cout << "------That is not a valid position to place a piece!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
+        }
+        gameBoard->setupBoardManual(row, col, type[0], op[0]);
+        cout << "------Piece successfully added!------" << endl;        
+    } else if(op == "-"){
         string pos;
         i >> pos;
         int row = pos[0] - 97;
         int col = pos[1] - 49;
-
-        gameBoard->setupBoardManual(row, col, gameBoard->getBoardArr()[row][col]->getType(), op[0]);        
-    }
-    if(op == "="){
+        if(row < 0 || row > 7 || col < 0 || col > 7){
+            cout << "------You did not enter a valid coordinate on the board!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
+        }
+        if(gameBoard->getBoardArr()[row][col] == nullptr){
+            cout << "------There is no piece there to remove!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
+        }
+        gameBoard->setupBoardManual(row, col, gameBoard->getBoardArr()[row][col]->getType(), op[0]);   
+        cout << "------Piece successfully removed!------" << endl;     
+    } else if(op == "="){
         string colour;
         i >> colour;
         if(colour == "white"){
@@ -101,11 +123,14 @@ void Game::readSetupMove(string in){
         } else if(colour == "black"){
             whoStarts = "black";
         } else {
-            //MAKE BEHAVIOUR FOR NON-ACCEPTED BEHAVIOUR
+            cout << "------You did not enter a valid player colour!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
         }
+        cout << "------Starting player colour successfully changed!------" << endl;
+    } else if(op != ""){
+        cout << "------That is not a valid setup operator!------" << endl;
     }
-
-    
     notifyObservers(gameBoard->getBoardArr());
 }
 
@@ -150,11 +175,12 @@ void Game::startGameLoop() {
                 if (manual == "setup") {
                     manualSetUp = true;
                     setupModeChosen = true;
+                    cout << "------You Have Entered Setup Mode!------" << endl;
                 } else if(manual == "default"){
                     manualSetUp = false;
                     setupModeChosen = true;
                 } else {
-                    throw "Please type one of the options listed!";
+                    throw "------Please type one of the options listed!------";
                 }
             } catch (char const* error) {
                 cout << error << endl;
@@ -165,7 +191,6 @@ void Game::startGameLoop() {
         if (gameMode > 0 && gameMode < 3) {
 
             if (gameMode == 1) {
-                
                 // player1 = make_unique<Human>('W');
                 // player2 = make_unique<Human>('B');
                 players.emplace_back(make_unique<Human>("white"));
@@ -193,8 +218,6 @@ void Game::mainGameLoop() {
     int turn = 0;
     cin.ignore();
     while(!cin.eof()) {
-
-
         cout << players[turn]->getColour() << " enter a move: ";
         //if s is valid
         string input;

@@ -109,10 +109,7 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             board[row][col] = nullptr;
             break;
         }
-    } else if(op == '='){
-        
     }
-
 }
 
 int Board::getNumWhiteKings(){
