@@ -11,6 +11,6 @@ int Position::getCol() {
     return col;
 } 
 
-bool Position::validPosn() {
+bool Position::positionWithinBounds() {
     return (((0 <= row) && (row <= 7)) && ((0 <= col) && (col <= 7)));
 }

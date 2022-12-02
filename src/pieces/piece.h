@@ -28,7 +28,7 @@ public:
     Piece(const std::string &colour, const char &type, int row, int col);
     virtual ~Piece();
     virtual bool validMove(Move move, std::vector<std::vector<Piece*>> board) = 0;
-    virtual void updatePossibleMoves(Move move, std::vector<std::vector<Piece*>> board) = 0;
+    virtual void updatePossibleMoves(std::vector<std::vector<Piece*>> board) = 0;
 
     //virtual void checkForCheck()=0;
     std::string getColour();
