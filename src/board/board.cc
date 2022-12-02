@@ -137,7 +137,7 @@ bool Board::moveOnBoard(Move move){
 
 
     //calls the individual pieces validMove() function to check if the move is allowed for that given piece
-    if (!(board[move.getStartRow()][move.getStartCol()]->validMove(move))) return false;
+    if (!(board[move.getStartRow()][move.getStartCol()]->validMove(move, board))) return false;
 
     //loop... for checks...
 
@@ -145,7 +145,7 @@ bool Board::moveOnBoard(Move move){
 
 
     //actually move the piece
-    board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];
+    board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];//this has to be move ctor if it's taking a piece
     board[move.getStartRow()][move.getStartCol()] = nullptr;
     
     //two cases:
