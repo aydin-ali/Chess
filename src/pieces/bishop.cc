@@ -1,8 +1,8 @@
 #include "bishop.h"
 using namespace std;
 
-Bishop::Bishop(const string &colour):
-    Piece{colour, 'b'}{}
+Bishop::Bishop(const string &colour, int row, int col):
+    Piece{colour, 'b', row, col}{}
 
 bool Bishop::validMove(Move move, vector<vector<Piece*>> board) {
     return true;

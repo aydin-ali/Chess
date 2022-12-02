@@ -23,10 +23,13 @@ class Game : public Subject {
     // PlayerType *player1;
     // PlayerType *player2;
     int gameMode;
-
     //For Set Up Mode
     std::string whoStarts;
     bool manualSetUp;
+
+    int whiteWins;
+    int blackWins;
+    int ties;
 
 public:
     //ctor dtor?
