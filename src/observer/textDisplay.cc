@@ -26,9 +26,9 @@ void TextDisplay::notify(vector<vector<Piece*>> &b){
             }
         }
     }
-    for(int col = 7; col >=0; --col){
-        cout << col + 1 << " ";
-        for(size_t row = 0; row < printedBoard.size(); ++row){
+    for(int row = 0; row < 8; ++row){
+        cout << 8 - row << " ";
+        for(size_t col = 0; col < printedBoard.size(); ++col){
             cout << printedBoard[row][col];
         }
         cout << endl;

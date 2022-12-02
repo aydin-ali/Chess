@@ -8,6 +8,6 @@ bool Queen::validMove(Move move, vector<vector<Piece*>> board) {
     return true;
 }
 
-void Queen::updatePossibleMoves(Move move, vector<vector<Piece*>>) {
+void Queen::updatePossibleMoves(vector<vector<Piece*>>) {
     
 }

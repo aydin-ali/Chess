@@ -13,46 +13,46 @@ void Board::setupBoardDefault(){
     // Set up White pieces on the Board
     for(int P = 0; P < 8; ++P){
         pieceArray.emplace_back(make_unique<Pawn>("white", P, 1));
-        board[P][1] = pieceArray.back().get();
+        board[6][P] = pieceArray.back().get();
     }
+    pieceArray.emplace_back(make_unique<Rook>("white", 7, 7));
+    board[7][7] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Knight>("white", 7, 6));
+    board[7][6] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Bishop>("white", 7, 5));
+    board[7][5] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<King>("white", 7, 4));
+    board[7][4] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Queen>("white", 7, 3));
+    board[7][3] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Bishop>("white", 7, 2));
+    board[7][2] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Knight>("white", 7, 1));
+    board[7][1] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Rook>("white", 7, 0));
     board[7][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("white", 6, 0));
-    board[6][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("white", 5, 0));
-    board[5][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("white", 4, 0));
-    board[4][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("white", 3, 0));
-    board[3][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("white", 2, 0));
-    board[2][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("white", 1, 0));
-    board[1][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Rook>("white", 0, 0));
-    board[0][0] = pieceArray.back().get();
 
     // Set up Black pieces on the Board
     for(int p = 0; p < 8; ++p){
         pieceArray.emplace_back(make_unique<Pawn>("black", p, 6));
-        board[p][6] = pieceArray.back().get();
+        board[1][p] = pieceArray.back().get();
     }
+    pieceArray.emplace_back(make_unique<Rook>("black", 0, 0));
+    board[0][0] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Knight>("black", 0, 1));
+    board[0][1] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Bishop>("black", 0, 2));
+    board[0][2] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<King>("black", 0, 3));
+    board[0][3] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Queen>("black", 0, 4));
+    board[0][4] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Bishop>("black", 0, 5));
+    board[0][5] = pieceArray.back().get();
+    pieceArray.emplace_back(make_unique<Knight>("black", 0, 6));
+    board[0][6] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("black", 1, 7));
-    board[1][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("black", 2, 7));
-    board[2][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("black", 3, 7));
-    board[3][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("black", 4, 7));
-    board[4][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("black", 5, 7));
-    board[5][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("black", 6, 7));
-    board[6][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Rook>("black", 7, 7));
-    board[7][7] = pieceArray.back().get();
 }
 
 void Board::setupBoardManual(int row, int col, char type, char op){
