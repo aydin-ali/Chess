@@ -7,10 +7,10 @@ startPos{startPos}, endPos{endPos}, colour{colour} {
 
 void Move::convert() {
 
-    startRow = startPos[0]-97;
-    startCol = startPos[1]-49;
-    endRow = endPos[0]-97;
-    endCol = endPos[1]-49;
+    startRow = 7 - startPos[1] + 49;
+    startCol = startPos[0] - 97;
+    endRow = 7 - endPos[1] + 49;
+    endCol = endPos[0] - 97;
 
 }
 
