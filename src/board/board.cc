@@ -12,46 +12,46 @@ void Board::setupBoardDefault(){
     numBlackKings = 1;
     // Set up White pieces on the Board
     for(int P = 0; P < 8; ++P){
-        pieceArray.emplace_back(make_unique<Pawn>("white"));
+        pieceArray.emplace_back(make_unique<Pawn>("white", P, 1));
         board[P][1] = pieceArray.back().get();
     }
-    pieceArray.emplace_back(make_unique<Rook>("white"));
+    pieceArray.emplace_back(make_unique<Rook>("white", 7, 0));
     board[7][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("white"));
+    pieceArray.emplace_back(make_unique<Knight>("white", 6, 0));
     board[6][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("white"));
+    pieceArray.emplace_back(make_unique<Bishop>("white", 5, 0));
     board[5][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("white"));
+    pieceArray.emplace_back(make_unique<King>("white", 4, 0));
     board[4][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("white"));
+    pieceArray.emplace_back(make_unique<Queen>("white", 3, 0));
     board[3][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("white"));
+    pieceArray.emplace_back(make_unique<Bishop>("white", 2, 0));
     board[2][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("white"));
+    pieceArray.emplace_back(make_unique<Knight>("white", 1, 0));
     board[1][0] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Rook>("white"));
+    pieceArray.emplace_back(make_unique<Rook>("white", 0, 0));
     board[0][0] = pieceArray.back().get();
 
     // Set up Black pieces on the Board
     for(int p = 0; p < 8; ++p){
-        pieceArray.emplace_back(make_unique<Pawn>("black"));
+        pieceArray.emplace_back(make_unique<Pawn>("black", p, 6));
         board[p][6] = pieceArray.back().get();
     }
-    pieceArray.emplace_back(make_unique<Rook>("black"));
+    pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("black"));
+    pieceArray.emplace_back(make_unique<Knight>("black", 1, 7));
     board[1][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("black"));
+    pieceArray.emplace_back(make_unique<Bishop>("black", 2, 7));
     board[2][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("black"));
+    pieceArray.emplace_back(make_unique<King>("black", 3, 7));
     board[3][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("black"));
+    pieceArray.emplace_back(make_unique<Queen>("black", 4, 7));
     board[4][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Bishop>("black"));
+    pieceArray.emplace_back(make_unique<Bishop>("black", 5, 7));
     board[5][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Knight>("black"));
+    pieceArray.emplace_back(make_unique<Knight>("black", 6, 7));
     board[6][7] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Rook>("black"));
+    pieceArray.emplace_back(make_unique<Rook>("black", 7, 7));
     board[7][7] = pieceArray.back().get();
 }
 
@@ -66,42 +66,42 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             }
         }
         if(type == 'K'){
-            pieceArray.emplace_back(make_unique<King>("white"));
+            pieceArray.emplace_back(make_unique<King>("white", row , col));
             board[row][col] = pieceArray.back().get();
             ++numWhiteKings;
         } else if(type == 'Q'){
-            pieceArray.emplace_back(make_unique<Queen>("white"));
+            pieceArray.emplace_back(make_unique<Queen>("white", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'B'){
-            pieceArray.emplace_back(make_unique<Bishop>("white"));
+            pieceArray.emplace_back(make_unique<Bishop>("white", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'N'){
-            pieceArray.emplace_back(make_unique<Knight>("white"));
+            pieceArray.emplace_back(make_unique<Knight>("white", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'R'){
-            pieceArray.emplace_back(make_unique<Rook>("white"));
+            pieceArray.emplace_back(make_unique<Rook>("white", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'P'){
-            pieceArray.emplace_back(make_unique<Pawn>("white"));
+            pieceArray.emplace_back(make_unique<Pawn>("white", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'k'){
-            pieceArray.emplace_back(make_unique<King>("black"));
+            pieceArray.emplace_back(make_unique<King>("black", row , col));
             board[row][col] = pieceArray.back().get();
             ++numBlackKings;
         } else if(type == 'q'){
-            pieceArray.emplace_back(make_unique<Queen>("black"));
+            pieceArray.emplace_back(make_unique<Queen>("black", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'b'){
-            pieceArray.emplace_back(make_unique<Bishop>("black"));
+            pieceArray.emplace_back(make_unique<Bishop>("black", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'n'){
-            pieceArray.emplace_back(make_unique<Knight>("black"));
+            pieceArray.emplace_back(make_unique<Knight>("black", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'r'){
-            pieceArray.emplace_back(make_unique<Rook>("black"));
+            pieceArray.emplace_back(make_unique<Rook>("black", row , col));
             board[row][col] = pieceArray.back().get();
         } else if(type == 'p'){
-            pieceArray.emplace_back(make_unique<Pawn>("black"));
+            pieceArray.emplace_back(make_unique<Pawn>("black", row , col));
             board[row][col] = pieceArray.back().get();
         }
     } else if(op == '-'){
