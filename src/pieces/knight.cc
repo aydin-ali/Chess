@@ -23,7 +23,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() - 1;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -35,7 +35,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() - 2;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -47,7 +47,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() + 1;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -59,7 +59,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() + 2;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -71,7 +71,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() - 1;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -83,7 +83,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() - 2;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -95,7 +95,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() + 1;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
@@ -107,7 +107,7 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     col = posn.getCol() + 2;
     p = {row, col};
 
-    if (p.validPosn()) {
+    if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
