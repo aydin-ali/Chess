@@ -1,8 +1,8 @@
 #include "pawn.h"
 using namespace std;
 
-Pawn::Pawn(const string colour):
-    Piece{colour, 'p'}{}
+Pawn::Pawn(const string colour, int row, int col):
+    Piece{colour, 'p', row, col}{}
 
 bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
     //rmb we're passing the board*
