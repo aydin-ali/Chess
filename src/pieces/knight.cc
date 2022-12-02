@@ -5,11 +5,16 @@ Knight::Knight(const string &colour, int row, int col):
     Piece{colour, 'n', row, col} {}
 
 bool Knight::validMove(Move move, vector<vector<Piece*>> board) {
-    return true;
+    for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
+        if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
-void Knight::updatePossibleMoves(Move move, vector<vector<Piece*>> board) {
+void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     int row;
     int col;
     Position p = {0, 0};
