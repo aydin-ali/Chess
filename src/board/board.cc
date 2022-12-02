@@ -57,7 +57,14 @@ void Board::setupBoardDefault(){
 
 void Board::setupBoardManual(int row, int col, char type, char op){
     if(op == '+'){
-        if(board[row][col] != nullptr) pieceArray.pop_back(); // DO I NEED THIS??
+        if(board[row][col] != nullptr){
+            for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                if(board[row][col] == it->get()){
+                    pieceArray.erase(it);
+                }
+                break;
+            }
+        }
         if(type == 'K'){
             pieceArray.emplace_back(make_unique<King>("white"));
             board[row][col] = pieceArray.back().get();

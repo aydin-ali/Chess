@@ -29,14 +29,14 @@ void Game::setupGame(bool manualSetup) {
             if(in == "done"){ // NEED TO CHECK IF KING's have been placed
                 if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1) break;
                 else {
-                    cout << "You have to have ONE White King and ONE Black King placed!" << endl;
+                    cout << "------You have to have ONE White King and ONE Black King placed!------" << endl;
                     notifyObservers(gameBoard->getBoardArr());
                 }
             } else {
                 readSetupMove(in);
             }
         }
-        cout << "Loop broken" << endl;
+        cout << "------You Have Begun a Custom Setup Game!------" << endl;
     } else { //default mode
         gameBoard->setupBoardDefault();
         cin.ignore(); //IDK WHY
