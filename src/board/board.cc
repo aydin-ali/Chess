@@ -12,7 +12,7 @@ void Board::setupBoardDefault(){
     numBlackKings = 1;
     // Set up White pieces on the Board
     for(int P = 0; P < 8; ++P){
-        pieceArray.emplace_back(make_unique<Pawn>("white", P, 1));
+        pieceArray.emplace_back(make_unique<Pawn>("white", 6, P));
         board[6][P] = pieceArray.back().get();
     }
     pieceArray.emplace_back(make_unique<Rook>("white", 7, 7));
@@ -34,7 +34,7 @@ void Board::setupBoardDefault(){
 
     // Set up Black pieces on the Board
     for(int p = 0; p < 8; ++p){
-        pieceArray.emplace_back(make_unique<Pawn>("black", p, 6));
+        pieceArray.emplace_back(make_unique<Pawn>("black", 1, p));
         board[1][p] = pieceArray.back().get();
     }
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 0));
