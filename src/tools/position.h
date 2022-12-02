@@ -13,6 +13,7 @@ public:
     Position(int row, int col);
     int getRow();
     int getCol();
+    bool validPosn();
 
 };
 

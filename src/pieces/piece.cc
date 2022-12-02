@@ -3,8 +3,8 @@ using namespace std;
 
 class Move;
 
-Piece::Piece(const string &colour, const char &type):
-    colour{colour}, type{type}, moved{false} {}
+Piece::Piece(const string &colour, const char &type, int row, int col):
+    colour{colour}, type{type}, posn{row, col}, moved{false} {}
 
 Piece::~Piece() {}
 
