@@ -34,6 +34,7 @@ public:
     std::string getColour();
     char getType();
     bool isMoved();
+    void updatePosn(int row, int col);
   /*  void adjustMoved(); // NOT DONE
     virtual bool validMove( fill this out );*/
 };
