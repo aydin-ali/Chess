@@ -5,9 +5,6 @@ Pawn::Pawn(const string colour, int row, int col):
     Piece{colour, 'p', row, col}{}
 
 
-#include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
-
-
 bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
 
     //call a function that fills a vector w/ possible moves    
@@ -16,7 +13,6 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
 
     //check if the given move is within the possibleMoves vector
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
-        cout << "possible move: " << it->getRow() << " " << it->getCol() << endl;
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;
         }
@@ -39,7 +35,6 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     int row, col;
     Position p = {0, 0};
     
-    cout << "before: " << posn.getRow() << " " << posn.getCol() << endl;
     row = posn.getRow() + rowIncrement;
     col = posn.getCol();
     p = {row, col};
@@ -48,7 +43,6 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     if (p.positionWithinBounds()) {
         if (!moved) { 
             //check 1 square in front
-            cout << "in: " << p.getRow() << " " << p.getCol() << endl;
             if (board[p.getRow()][p.getCol()] == nullptr) {
                 possibleMoves.emplace_back(p);
                 
