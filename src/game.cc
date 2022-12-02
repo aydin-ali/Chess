@@ -19,25 +19,28 @@ Game::Game():
 
 void Game::setupGame(bool manualSetup) {
 
-    if(manualSetUp){
+    gameBoard = make_unique<Board>(); //I THINK WE CAN REMOVE the gameboard initialization from the ctor
+
+    //manual setup mode
+    if (manualSetUp) {
         while(true){
             string in;
             getline(cin, in);
             if(in == "done"){ // NEED TO CHECK IF KING's have been placed
                 if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1) break;
-                else{
+                else {
                     cout << "You have to have ONE White King and ONE Black King placed!" << endl;
                     notifyObservers(gameBoard->getBoardArr());
-                    }
+                }
             } else {
                 readSetupMove(in);
             }
         }
         cout << "Loop broken" << endl;
-    } else {
+    } else { //default mode
         gameBoard->setupBoardDefault();
-        vector<vector<Piece*>> &b = gameBoard->getBoardArr();
-        notifyObservers(b);
+        cin.ignore(); //IDK WHY
+        // notifyObservers(gameBoard->getBoardArr());
     }
     notifyObservers(gameBoard->getBoardArr());
 }
@@ -146,6 +149,7 @@ void Game::startGameLoop() {
         bool setupModeChosen = false;
 
         while (!gameModeChosen) {
+            cout << ("NEW GAME:") << endl;
             cout << ("Enter a 1 to play Human vs. Human") << endl;
             cout << ("Enter a 2 to play Human vs. Computer") << endl;
             cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
@@ -179,6 +183,7 @@ void Game::startGameLoop() {
                 } else if(manual == "default"){
                     manualSetUp = false;
                     setupModeChosen = true;
+                    cout << "------You Have Begun A Default Chess Game!------" << endl;
                 } else {
                     throw "------Please type one of the options listed!------";
                 }
@@ -191,11 +196,9 @@ void Game::startGameLoop() {
         if (gameMode > 0 && gameMode < 3) {
 
             if (gameMode == 1) {
-                // player1 = make_unique<Human>('W');
-                // player2 = make_unique<Human>('B');
+                
                 players.emplace_back(make_unique<Human>("white"));
                 players.emplace_back(make_unique<Human>("black"));
-
 
             } else if (gameMode == 2) {
             } else if (gameMode == 3) {
@@ -203,6 +206,10 @@ void Game::startGameLoop() {
             //this starts a single instance of a game
             mainGameLoop();
             //output all the end of game stats
+            cout << "White wins: " << endl;
+            cout << "Black wins: " << endl;
+            cout << "------------------------------" << endl;
+            cout << endl;
             //break;
         }
     }
@@ -216,7 +223,7 @@ void Game::mainGameLoop() {
     setupGame(manualSetUp);
 
     int turn = 0;
-    cin.ignore();
+
     while(!cin.eof()) {
         cout << players[turn]->getColour() << " enter a move: ";
         //if s is valid
