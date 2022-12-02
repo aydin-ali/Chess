@@ -21,10 +21,11 @@ private:
 protected:
     std::string colour;
     std::vector<Position> possibleMoves;
+    Position posn;
     bool moved;
 
 public:
-    Piece(const std::string &colour, const char &type);
+    Piece(const std::string &colour, const char &type, int row, int col);
     virtual ~Piece();
     virtual bool validMove(Move move, std::vector<std::vector<Piece*>> board) = 0;
     virtual void updatePossibleMoves(Move move, std::vector<std::vector<Piece*>> board) = 0;
