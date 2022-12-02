@@ -86,8 +86,8 @@ void Game::readSetupMove(string in){
         i >> type;
         string pos;
         i >> pos;
-        int row = pos[0] - 97;
-        int col = pos[1] - 49;
+        int row = 7 - pos[1] + 49;
+        int col = pos[0] - 97;
         auto it = find(allowedPieces.begin(), allowedPieces.end(), type[0]);
         if(it == allowedPieces.end()){
             cout << "------That is not a valid piece type to place!------" << endl;
@@ -104,8 +104,8 @@ void Game::readSetupMove(string in){
     } else if(op == "-"){
         string pos;
         i >> pos;
-        int row = pos[0] - 97;
-        int col = pos[1] - 49;
+        int row = 7 - pos[1] + 49;
+        int col = pos[0] - 97;
         if(row < 0 || row > 7 || col < 0 || col > 7){
             cout << "------You did not enter a valid coordinate on the board!------" << endl;
             notifyObservers(gameBoard->getBoardArr());
