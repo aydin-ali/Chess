@@ -26,6 +26,7 @@ private:
     std::vector<std::unique_ptr<Piece>> pieceArray;
 
     int numWhiteKings, numBlackKings;
+    bool whiteInCheck, blackInCheck;
     //std::map<std::string, Piece*> pieceMap;
 
 public:
@@ -37,10 +38,12 @@ public:
     std::vector<std::vector<Piece*>> &getBoardArr();
     int getNumWhiteKings();
     int getNumBlackKings();
+    void updateBoard();
+    bool checkForCheck(const std::string &colour);
+
     bool inPositionToPromote(Move move);
     bool canPromote(Move move, std::string colour, char promoteType);
     void actuallyPromote(Move move, std::string colour, char promoteType);
 };
 
 #endif
-

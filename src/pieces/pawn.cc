@@ -43,6 +43,8 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
 
     int row, col;
     Position p = {0, 0};
+
+    possibleMoves.clear();
     
     row = posn.getRow() + rowIncrement;
     col = posn.getCol();
