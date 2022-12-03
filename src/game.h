@@ -6,6 +6,7 @@
 #include <vector>
 #include "observer/subject.h"
 #include "observer/textDisplay.h"
+#include "observer/graphicDisplay.h"
 #include "board/board.h"
 #include "pieces/piece.h"
 #include "playerOptions/playerType.h"

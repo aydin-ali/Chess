@@ -66,6 +66,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
                 }
                 //---------------------------------------------------------
             }
+            moved = true;
         } else {
             //check only one square in front
             if (board[p.getRow()][p.getCol()] == nullptr) {
