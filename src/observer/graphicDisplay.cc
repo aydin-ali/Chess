@@ -5,7 +5,7 @@ using namespace std;
 
 
 GraphicDisplay::GraphicDisplay(int rows, int cols) : 
-rows{rows}, cols{cols}, windowFrame { make_unique<Xwindow>( 500, 500 ) } {
+rows{rows}, cols{cols}, windowFrame { make_unique<Xwindow>(rows * 62.5, cols * 62.5) } {
 
 }
 
@@ -28,9 +28,9 @@ void GraphicDisplay::notify(std::vector<std::vector<Piece*>> &b) {
     //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 0);
     //   }
         if ((i + j) % 2 == 0) {
-            windowFrame->fillRectangle( j * 60, i * 60, 60, 60, 0);
+            windowFrame->fillRectangle( j * 62.5, i * 62.5, 62.5, 62.5, 0);
         } else {
-            windowFrame->fillRectangle( j * 60, i * 60, 60, 60, 1);
+            windowFrame->fillRectangle( j * 62.5, i * 62.5, 62.5, 62.5, 1);
         }
 
     }
