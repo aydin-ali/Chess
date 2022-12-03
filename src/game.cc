@@ -13,8 +13,11 @@
 
 using namespace std;
 
+// Game Constructor
 Game::Game():
     gameBoard{make_unique<Board>()}, whoStarts{"white"}, manualSetUp{false}{}
+
+
 
 void Game::setupGame(bool manualSetup) {
 
@@ -53,7 +56,7 @@ bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
     }
 }
 
-// Read move from cin and process it
+// Read move from cin and process it 
 bool readMove(string in) {
     stringstream i;
     i << in;
@@ -70,10 +73,10 @@ bool readMove(string in) {
     if(moveOutOfRange(startRow, startCol, endRow, endCol)){
         return false;  
     }
-    // NEED TO PUT THE END POSITIONS INTO SOMETHING
     return true;
 }
 
+// Read a setup operation 
 void Game::readSetupMove(string in){
     vector<char> allowedPieces = {'k', 'K', 'q', 'Q', 'b', 'B', 'n', 'N', 'r', 'R', 'p', 'P'};
     stringstream i;
@@ -136,7 +139,7 @@ void Game::readSetupMove(string in){
     notifyObservers(gameBoard->getBoardArr());
 }
 
-
+// Loop to begin each specific game instance
 void Game::startGameLoop() {
 
     cout << ("Welcome to Chess!") << endl;
@@ -146,6 +149,7 @@ void Game::startGameLoop() {
         bool gameModeChosen = false;
         bool setupModeChosen = false;
 
+        // Player selects the match up style of the game instance 
         while (!gameModeChosen) {
             cout << ("NEW GAME:") << endl;
             cout << ("Enter a 1 to play Human vs. Human") << endl;
@@ -167,6 +171,7 @@ void Game::startGameLoop() {
             } 
         }
 
+        // Player selects either a default game or to set up their own game
         while (!setupModeChosen) {
             cout << ("Enter 'default' to play normally, Enter 'setup' to setup the board manually") << endl;;
 
@@ -212,6 +217,7 @@ void Game::startGameLoop() {
     }
 }
 
+
 void Game::mainGameLoop() {
 
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
@@ -252,14 +258,35 @@ void Game::mainGameLoop() {
             i >> startPos;
             string endPos;
             i >> endPos;
+            char promoteType;
+            i >> promoteType;
 
 
             //convert the string to a move object
             Move m {startPos, endPos, players[turn]->getColour()};
-            //check if the move is valid (board + piece wise)
-            
-            if (gameBoard->moveOnBoard(m)) { 
-                
+
+            // Check if move is valid            
+            if (gameBoard->validMoveOnBoard(m)) { 
+                // Check if piece is a pawn
+                if(gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()] != nullptr && gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()]->getType() == 'p'){
+                    // Check if pawn is in position to promote 
+                    if (gameBoard->inPositionToPromote(m)) {
+                        // Check all other conditions for pawn to actually promote
+                        if(gameBoard->canPromote(m, gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()]->getColour(), promoteType)){
+                            gameBoard->moveOnBoard(m);
+                            gameBoard->actuallyPromote(m, gameBoard->getBoardArr()[m.getEndRow()][m.getEndCol()]->getColour(), promoteType);
+                            promoteType = ' ';
+                        } else {
+                            cout << "Not a valid piece to promote your pawn to!" << endl;
+                            notifyObservers(gameBoard->getBoardArr());
+                            continue;
+                        }
+                    } else {
+                        gameBoard->moveOnBoard(m);
+                    }
+                } else {
+                    gameBoard->moveOnBoard(m);
+                }
                 (turn == 0) ? turn = 1 : turn = 0;
                 //print the new board
                 notifyObservers(gameBoard->getBoardArr());
@@ -271,25 +298,5 @@ void Game::mainGameLoop() {
         } else {
             cout << "Invalid move: Invalid input" << endl << endl;
         }
-
-
-
     }
-
-    
-
 }
-
-
-
-
-// Piece* Game::getState(int row, int col) {
-
-//     //return (board.getBoardArr())[row][col];
-
-// }
-
-void Game::move() { 
-
-}
-
