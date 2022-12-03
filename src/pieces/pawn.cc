@@ -18,8 +18,17 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
         }
     }
     return false;
-
 }
+
+/* bool Pawn::canPromote(){
+    if(colour == "white"){
+        if(posn.getRow() == 0) return true; 
+        else return false;
+    } else {
+        if(posn.getRow() == 7) return true; 
+        else return false;
+    }
+} */
 
 //side note: pawn promotion and poisson stuff
 
@@ -59,6 +68,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
                 }
                 //---------------------------------------------------------
             }
+            moved = true;
         } else {
             //check only one square in front
             if (board[p.getRow()][p.getCol()] == nullptr) {
