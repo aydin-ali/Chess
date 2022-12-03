@@ -5,32 +5,33 @@ using namespace std;
 
 
 GraphicDisplay::GraphicDisplay(int rows, int cols) : 
-rows{rows}, cols{cols}, windowFrame { make_unique<Xwindow>(rows * 62.5, cols * 62.5) } {
-
+rows{rows}, cols{cols}, windowFrame { make_unique<Xwindow>(rows * 75, cols * 75) } {
+    windowFrame->fillRectangle( 0, 0, 75 * rows, 75 * cols, 5);
 }
 
 
 
+//NEXT: redraw as little of thes screen as possible for each new move
+
 void GraphicDisplay::notify(std::vector<std::vector<Piece*>> &b) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-    //   char character = s->getState(i, j);
 
-    //   if (character >= 'a' && character <= 'z') {
-    //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 2);
-    //   } else if (character >= 'A' && character <= 'Z') {
-    //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 3);
-    //   } else if (character >= '0' && character <= '9') {
-    //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 4);
-    //   } else if (character != ' ') {
-    //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 1);
-    //   } else {
-    //     windowFrame->fillRectangle( (j - l) * 10, (i - t) * 10, 10, 10, 0);
-    //   }
-        if ((i + j) % 2 == 0) {
-            windowFrame->fillRectangle( j * 62.5, i * 62.5, 62.5, 62.5, 0);
-        } else {
-            windowFrame->fillRectangle( j * 62.5, i * 62.5, 62.5, 62.5, 1);
+        if ((i + j) % 2 == 0) { //white squares
+            windowFrame->fillRectangle(j * 75, i * 75, 75, 75, 0);
+        } else { //black squares
+            windowFrame->fillRectangle(j * 75, i * 75, 75, 75, 2);
+        }
+
+        if (b[i][j] != nullptr){
+            string type;
+            if (b[i][j]->getColour() == "white") {
+                type += toupper(b[i][j]->getType());
+            } else {
+                type += b[i][j]->getType();
+            }
+            windowFrame->drawString(75 * j + 35, i * 75 + 40, type);
+            //75 is the distance between the pieces, 38 is the position within the square
         }
 
     }
