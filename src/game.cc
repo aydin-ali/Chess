@@ -1,11 +1,10 @@
 #include <string>
 #include <sstream>
 #include <memory>
-#include <iostream> //FOR NOW IN CASE WE DECIDE THE COMMUNICATOR IS STUPID
+#include <iostream>
 #include <algorithm>
 
 #include "game.h"
-//#include "tools/communicator.h"
 
 #include "tools/move.h" //can we make this just: class Move;?
 #include "playerOptions/human.h"
@@ -143,7 +142,6 @@ void Game::readSetupMove(string in){
 // Loop to begin each specific game instance
 void Game::startGameLoop() {
 
-    //Communicator communicator;
     cout << ("Welcome to Chess!") << endl;
 
     while (!cin.eof()) {

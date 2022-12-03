@@ -7,7 +7,6 @@
 #include "observer/subject.h"
 #include "observer/textDisplay.h"
 #include "board/board.h"
-#include "tools/communicator.h"
 #include "pieces/piece.h"
 #include "playerOptions/playerType.h"
 
@@ -15,7 +14,6 @@
  */
 class Game : public Subject {
     std::unique_ptr<Board> gameBoard;
-    Communicator communicator;
     // std::unique_ptr<PlayerType> player1;
     // std::unique_ptr<PlayerType> player2;
     std::vector<std::unique_ptr<PlayerType>> players;
