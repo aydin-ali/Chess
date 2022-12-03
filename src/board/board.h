@@ -32,10 +32,14 @@ public:
     Board();
     void setupBoardDefault();
     void setupBoardManual(int row, int col, char piece, char op);
-    bool moveOnBoard(Move move);
+    bool validMoveOnBoard(Move move);
+    void moveOnBoard(Move move);
     std::vector<std::vector<Piece*>> &getBoardArr();
     int getNumWhiteKings();
     int getNumBlackKings();
+    bool inPositionToPromote(Move move);
+    bool canPromote(Move move, std::string colour, char promoteType);
+    void actuallyPromote(Move move, std::string colour, char promoteType);
 };
 
 #endif
