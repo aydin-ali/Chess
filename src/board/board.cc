@@ -235,10 +235,10 @@ void Board::moveOnBoard(Move move){
      } else {     //if taking the piece:
         //delete the piece from the piece array NEED TO TEST THIS
         for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
-            if(board[move.getEndRow()][move.getEndCol()] == it->get()){
+            if(it->get() == board[move.getEndRow()][move.getEndCol()]){
                 pieceArray.erase(it);
+                break;
             }
-            break;
         }
     }
     //actually move the piece

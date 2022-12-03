@@ -37,8 +37,14 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     int rowIncrement;
     if (colour == "white") {
         rowIncrement = -1;
+        if (posn.getRow() != 6) {
+            moved = true;
+        }
     } else {
         rowIncrement = 1;
+        if (posn.getRow() != 1) {
+            moved = true;
+        }
     }
 
     int row, col;
@@ -68,7 +74,6 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
                 }
                 //---------------------------------------------------------
             }
-            moved = true;
         } else {
             //check only one square in front
             if (board[p.getRow()][p.getCol()] == nullptr) {
