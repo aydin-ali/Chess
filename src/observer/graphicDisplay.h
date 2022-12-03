@@ -10,12 +10,11 @@
 class Subject;
 
 class GraphicDisplay : public Observer {
-    Game *g;
     int rows, cols;
     std::unique_ptr<Xwindow> windowFrame;
 
 public:
-    GraphicDisplay(Game *s, int rows, int cols);
+    GraphicDisplay(int rows, int cols);
     void notify(std::vector<std::vector<Piece*>> &b) override;
     ~GraphicDisplay();
 };

@@ -216,6 +216,8 @@ void Game::mainGameLoop() {
 
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     attach(textDisplay.get());
+    unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+    attach(graphicDisplay.get());
 
     setupGame(manualSetUp);
 
