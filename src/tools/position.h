@@ -14,7 +14,7 @@ public:
     int getRow();
     int getCol();
     bool positionWithinBounds();
-
+    bool operator==(Position &other);
 };
 
 #endif
