@@ -20,6 +20,8 @@ void Bishop::updatePossibleMoves(vector<vector<Piece*>> board) {
     int incr;
     Position p{0 ,0};
 
+    possibleMoves.clear();
+
     row = posn.getRow();
     col = posn.getCol();
     incr = 1;
@@ -83,7 +85,7 @@ void Bishop::updatePossibleMoves(vector<vector<Piece*>> board) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
             possibleMoves.emplace_back(p);
             ++incr;
-            p = {row + incr, col + incr};
+            p = {row + incr, col - incr};
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
             possibleMoves.emplace_back(p);
             break;

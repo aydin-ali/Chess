@@ -33,7 +33,9 @@ public:
     //virtual void checkForCheck()=0;
     std::string getColour();
     char getType();
+    Position getPosn();
     bool isMoved();
+    bool inPossibleMoves(Position p);
     void updatePosn(int row, int col);
   /*  void adjustMoved(); // NOT DONE
     virtual bool validMove( fill this out );*/

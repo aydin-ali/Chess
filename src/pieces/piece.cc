@@ -20,8 +20,19 @@ char Piece::getType(){
     return type;
 }
 
+Position Piece::getPosn() {
+    return posn;
+}
+
 bool Piece::isMoved(){
     return moved;
+}
+
+bool Piece::inPossibleMoves(Position p) {
+    for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
+        if ((*it) == p) return true;
+    }
+    return false;
 }
 
 void Piece::updatePosn(int row, int col) {

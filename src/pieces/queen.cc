@@ -20,6 +20,8 @@ void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
     int incr;
     Position p = {0, 0};
 
+    possibleMoves.clear();
+
     // Moving the Queen left
     row = posn.getRow();
     col = posn.getCol();

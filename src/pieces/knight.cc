@@ -19,6 +19,8 @@ void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
     int col;
     Position p = {0, 0};
 
+    possibleMoves.clear();
+
     row = posn.getRow() - 2;
     col = posn.getCol() - 1;
     p = {row, col};

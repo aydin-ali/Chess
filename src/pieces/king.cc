@@ -10,5 +10,5 @@ bool King::validMove(Move move, vector<vector<Piece*>> board) {
 
 
 void King::updatePossibleMoves(vector<vector<Piece*>>) {
-    
+    possibleMoves.clear();
 }

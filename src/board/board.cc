@@ -1,10 +1,13 @@
 #include "board.h"
+#include <iostream>
 using namespace std;
 
 Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
     numWhiteKings = 0;
     numBlackKings = 0;
+    whiteInCheck = false;
+    blackInCheck = false;
 }
 
 void Board::setupBoardDefault(){
@@ -53,6 +56,8 @@ void Board::setupBoardDefault(){
     board[0][6] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
+
+    updateBoard();
 }
 
 void Board::setupBoardManual(int row, int col, char type, char op){
@@ -156,6 +161,8 @@ bool Board::moveOnBoard(Move move){
     board[move.getEndRow()][move.getEndCol()]->updatePosn(move.getEndRow(), move.getEndCol());
     board[move.getStartRow()][move.getStartCol()] = nullptr;
     
+    updateBoard();
+    
     //two cases:
     if (board[move.getEndRow()][move.getEndCol()] == nullptr) {     //if moving into an empty spot:
         //nothing left to do
@@ -170,4 +177,45 @@ bool Board::moveOnBoard(Move move){
 
 }
 
+void Board::updateBoard() {
+    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
+        (*it)->updatePossibleMoves(board);
+    }
 
+    //change to checking for other team's check once piece's possible moves is properly updated
+    if (checkForCheck("white")) {
+        whiteInCheck = true;
+        cout << "White in check" << endl;
+    } else {
+        whiteInCheck = false;
+    }
+    if (checkForCheck("black")) {
+        blackInCheck = true;
+        cout << "Black in check" << endl;
+    } else {
+        blackInCheck = false;
+    }
+}
+
+bool Board::checkForCheck(const string &colour) {
+    Position kingPosn{0, 0};
+
+    // Finding the position of colour's king
+    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
+        if (((*it)->getType() == 'k') && ((*it)->getColour() == colour)) {
+            kingPosn = {(*it)->getPosn()};
+            break;
+        }
+    }
+
+    // Checking if any pieces on the opposing team are attacking the King
+    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
+        if (((*it)->getType() != 'k') && ((*it)->getColour() != colour)) {
+            if ((*it)->inPossibleMoves(kingPosn)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
