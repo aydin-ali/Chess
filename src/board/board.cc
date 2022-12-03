@@ -130,9 +130,82 @@ int Board::getNumBlackKings(){
 vector<vector<Piece*>> &Board::getBoardArr() {
     return board;
 }
+bool Board::inPositionToPromote(Move move){
+    if((board[move.getStartRow()][move.getStartCol()]->getColour() == "white") && (move.getEndRow() == 0)) return true;
+    else if((board[move.getStartRow()][move.getStartCol()]->getColour() == "black") && (move.getEndRow() == 7)) return true;
+    else return false;
+}
 
-bool Board::moveOnBoard(Move move){
+bool Board::canPromote(Move move, string colour, char promoteType){
+    // If it is a White pawn
+     if(board[move.getStartRow()][move.getStartCol()]->getColour() == "white"){
+        if(move.getEndRow() == 0){
+            if(promoteType == 'q' || promoteType == 'r' || promoteType == 'b' || promoteType == 'n'){
+                return true;
+            } 
+            return false;
+        } else {
+            return false;
+        }
+    } else {
+        if(move.getEndRow() == 7){
+            if(promoteType == 'q' || promoteType == 'r' || promoteType == 'b' || promoteType == 'n'){
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    } 
+}
 
+void Board::actuallyPromote(Move move, string colour, char promoteType){
+    if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white"){
+        // Remove existing pawn from pieceArray
+        for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+            if(board[move.getEndRow()][move.getEndCol()] == it->get()){
+                pieceArray.erase(it);
+            }
+        break;
+        }
+        if(promoteType == 'q') {
+            pieceArray.emplace_back(make_unique<Queen>("white", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'r') {
+            pieceArray.emplace_back(make_unique<Rook>("white", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'b') {
+            pieceArray.emplace_back(make_unique<Bishop>("white", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'n') {
+            pieceArray.emplace_back(make_unique<Knight>("white", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        }
+    } else {
+        // Remove existing pawn from pieceArray
+        for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+            if(board[move.getEndRow()][move.getEndCol()] == it->get()){
+                pieceArray.erase(it);
+            }
+        break;
+        }
+        if(promoteType == 'q') {
+            pieceArray.emplace_back(make_unique<Queen>("black", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'r') {
+            pieceArray.emplace_back(make_unique<Rook>("black", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'b') {
+            pieceArray.emplace_back(make_unique<Bishop>("black", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        } else if(promoteType == 'n') {
+            pieceArray.emplace_back(make_unique<Knight>("black", move.getEndRow(), move.getEndCol()));
+            board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
+        }
+    }
+}
+
+bool Board::validMoveOnBoard(Move move){
     //invalid cases:
     
     //start spot is the same as the end spot, ex: move b3 b3
@@ -145,29 +218,38 @@ bool Board::moveOnBoard(Move move){
 
     //calls the individual pieces validMove() function to check if the move is allowed for that given piece
     if (!(board[move.getStartRow()][move.getStartCol()]->validMove(move, board))) return false;
+    return true;
+}
 
+void Board::moveOnBoard(Move move){
     //loop... for checks...
 
-
-
-
+        //two cases:
+    if (board[move.getEndRow()][move.getEndCol()] == nullptr) {     //if moving into an empty spot:
+        //nothing left to do
+     } else {     //if taking the piece:
+        //delete the piece from the piece array NEED TO TEST THIS
+        for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+            if(board[move.getEndRow()][move.getEndCol()] == it->get()){
+                pieceArray.erase(it);
+            }
+            break;
+        }
+    }
     //actually move the piece
     board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];//this has to be move ctor if it's taking a piece
     board[move.getEndRow()][move.getEndCol()]->updatePosn(move.getEndRow(), move.getEndCol());
+    // apply pawn promotion if possible
+/*     if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
+        
+    } */
+
     board[move.getStartRow()][move.getStartCol()] = nullptr;
     
-    //two cases:
-    if (board[move.getEndRow()][move.getEndCol()] == nullptr) {     //if moving into an empty spot:
-        //nothing left to do
-    } else {     //if taking the piece:
-        //delete the piece from the piece array
-    }
+ 
 
 
     //castling + pawn promotion (later)
-
-    return true;
-
 }
 
 
