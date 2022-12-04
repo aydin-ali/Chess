@@ -2,7 +2,7 @@
 using namespace std;
 
 Pawn::Pawn(const string colour, int row, int col):
-    Piece{colour, 'p', row, col}{}
+    Piece{colour, 'p', row, col}, hasntMoved{true}, enpassantAble{false}{}
 
 
 bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
@@ -20,16 +20,6 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
     return false;
 }
 
-/* bool Pawn::canPromote(){
-    if(colour == "white"){
-        if(posn.getRow() == 0) return true; 
-        else return false;
-    } else {
-        if(posn.getRow() == 7) return true; 
-        else return false;
-    }
-} */
-
 //side note: pawn promotion and poisson stuff
 
 void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
@@ -38,12 +28,14 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
     if (colour == "white") {
         rowIncrement = -1;
         if (posn.getRow() != 6) {
-            moved = true;
+            moved = true; // For double jump
+            hasntMoved = false; // For enpassant 
         }
     } else {
         rowIncrement = 1;
         if (posn.getRow() != 1) {
-            moved = true;
+            moved = true; // For double jump
+            hasntMoved = false; // For enpassant 
         }
     }
 
@@ -78,6 +70,61 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
             //check only one square in front
             if (board[p.getRow()][p.getCol()] == nullptr) {
                 possibleMoves.emplace_back(p);
+            } 
+            // If pawn is white
+            if(colour == "white"){
+                // Check if there is nothing to left and then skip
+                if (board[posn.getRow()][posn.getCol() - 1] == nullptr){
+
+                }
+                // Check if there is enemy pawn to left
+                else if (board[posn.getRow()][posn.getCol() - 1]->getType() == 'p' && board[posn.getRow()][posn.getCol() - 1]->getColour() != colour){
+                    Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() - 1]);
+                    if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
+                        p = {posn.getRow() - 1, posn.getCol() - 1};
+                        possibleMoves.emplace_back(p);
+                    }
+                } 
+                // Check if there is nothing to right and then skip
+                if (board[posn.getRow()][posn.getCol() + 1] == nullptr){
+
+                }
+                // Check if there is enemy pawn to right
+                else if(board[posn.getRow()][posn.getCol() + 1]->getType() == 'p' && board[posn.getRow()][posn.getCol() + 1]->getColour() != colour){
+                    Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() + 1]);
+                    if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
+                        p = {posn.getRow() - 1, posn.getCol() + 1};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+            }
+            // If pawn is black 
+            else {
+                // Check if there is nothing to left and then skip
+                if (board[posn.getRow()][posn.getCol() - 1] == nullptr){
+
+                }
+                // Check if there is enemy pawn to left
+                else if (board[posn.getRow()][posn.getCol() - 1]->getType() == 'p' && board[posn.getRow()][posn.getCol() - 1]->getColour() != colour){
+                    Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() - 1]);
+                    if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
+                        p = {posn.getRow() + 1, posn.getCol() - 1};
+                        possibleMoves.emplace_back(p);
+                    }
+                    possibleMoves.emplace_back(p);
+                } 
+                // Check if there is nothing to right and then skip
+                if (board[posn.getRow()][posn.getCol() + 1] == nullptr){
+
+                }
+                // Check if there is enemy pawn to right
+                else if(board[posn.getRow()][posn.getCol() + 1]->getType() == 'p' && board[posn.getRow()][posn.getCol() + 1]->getColour() != colour){
+                    Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() + 1]);
+                    if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
+                        p = {posn.getRow() + 1, posn.getCol() + 1};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
             }
         }
     }
@@ -104,6 +151,17 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board) {
 
 }
 
+bool Pawn::getHasntMoved(){
+    return hasntMoved;
+}
+
+void Pawn::setEnpassantAble(bool set){
+    enpassantAble = set;
+}
+
+bool Pawn::getEnpassantAble(){
+    return enpassantAble;
+}
 //if the pawn moving leads to its own king being checked (LATER)
 
 

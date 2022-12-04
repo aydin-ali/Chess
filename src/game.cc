@@ -235,7 +235,9 @@ void Game::mainGameLoop() {
             players.emplace_back(make_unique<Human>("white"));
         }
     } else if (gameMode == 2) {
+
     } else if (gameMode == 3) {
+
     } 
 
     int turn = 0;
