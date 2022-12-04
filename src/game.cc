@@ -9,6 +9,9 @@
 #include "tools/move.h" //can we make this just: class Move;?
 #include "playerOptions/human.h"
 #include "playerOptions/computerL1.h"
+#include "playerOptions/computerL2.h"
+#include "playerOptions/computerL3.h"
+#include "playerOptions/computerL4.h"
 
 
 using namespace std;
@@ -243,13 +246,13 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("white"));
             } else if (whitePlayer.substr(0,8) == "computer") {
                 if (whiteLevel == 1) {
-
+                    players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
-
+                    players.emplace_back(make_unique<ComputerL2>("white"));
                 } else if (whiteLevel == 3) {
-
+                    players.emplace_back(make_unique<ComputerL3>("white"));
                 } else if (whiteLevel == 4) {
-
+                    players.emplace_back(make_unique<ComputerL4>("white"));
                 }
             }
 
@@ -257,13 +260,13 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("black"));
             } else if (blackPlayer.substr(0,8) == "computer") {
                 if (blackLevel == 1) {
-
+                    players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
-
+                    players.emplace_back(make_unique<ComputerL2>("black"));
                 } else if (blackLevel == 3) {
-
+                    players.emplace_back(make_unique<ComputerL3>("black"));
                 } else if (blackLevel == 4) {
-                    
+                    players.emplace_back(make_unique<ComputerL4>("black"));
                 }
             }
 
@@ -291,7 +294,7 @@ void Game::mainGameLoop() {
 
     setupGame(manualSetUp);
 
-    if(whoStarts == "black"){
+    if (whoStarts == "black"){
         reverse(players.begin(), players.end());
     }
 
