@@ -34,7 +34,14 @@ void Game::setupGame(bool manualSetup) {
             string clr;
             s >> clr;
             if(in == "done"){ // NEED TO CHECK IF KING's have been placed
-                if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1) break;
+                if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1){
+                    if(gameBoard->pawnInIllegalRow()){
+                        cout << "------You cannot have pawns placed in the first or last rows!------" << endl;
+                        notifyObservers(gameBoard->getBoardArr());
+                    } else {
+                        break;
+                    }
+                }
                 else {
                     cout << "------You have to have ONE White King and ONE Black King placed!------" << endl;
                     notifyObservers(gameBoard->getBoardArr());

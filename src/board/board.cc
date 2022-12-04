@@ -124,6 +124,20 @@ void Board::setupBoardManual(int row, int col, char type, char op){
     }
 }
 
+bool Board::pawnInIllegalRow(){
+    for(int col = 0; col < 8; ++col){
+        if(board[0][col] == nullptr){} 
+        else if(board[0][col]->getType() == 'p'){
+            return true;
+        }
+        if(board[7][col] == nullptr){} 
+        else if(board[7][col]->getType() == 'p'){
+            return true;
+        }
+    }
+    return false;
+}
+
 int Board::getNumWhiteKings(){
     return numWhiteKings;
 }
