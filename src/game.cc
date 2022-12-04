@@ -153,32 +153,69 @@ void Game::startGameLoop() {
 
         bool gameModeChosen = false;
         bool setupModeChosen = false;
+        string game;
+        string whitePlayer;
+        string blackPlayer;
+        int whiteLevel;
+        int blackLevel;
+
+        cout << ("NEW GAME:") << endl;
 
         // Player selects the match up style of the game instance 
         while (!gameModeChosen) {
-            cout << ("NEW GAME:") << endl;
-            cout << ("Enter a 1 to play Human vs. Human") << endl;
-            cout << ("Enter a 2 to play Human vs. Computer") << endl;
-            cout << ("Enter a 3 to play Computer vs. Computer") << endl;;
+            cout << ("Start a game as follows: 'game white-player black-player'") << endl;
+            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-4]'") << endl;;
 
             try {
-                string gm;
-                getline(cin, gm);
-                istringstream iss {gm};
-                if (iss >> gameMode) {
-                    if (gameMode < 1 || gameMode > 3) throw "Enter a number between 1-3";
-                    gameModeChosen = true;
-                } else {
-                    throw "Enter a number between 1-3";
+                string inputLine;
+                getline(cin, inputLine);
+                stringstream ss {inputLine};
+                ss >> game;
+                ss >> whitePlayer;
+                ss >> blackPlayer;
+
+                if (game == "game") {
+                        
+                    if (whitePlayer.substr(0,8) == "computer") {
+                        try { 
+                            whiteLevel = stoi(whitePlayer.substr(8));
+                            if (whiteLevel < 1 || whiteLevel > 4) {
+                                throw "Enter a valid computer level"; 
+                            }
+                        } catch (const invalid_argument& other) {
+                            throw "Enter a valid computer level";
+                        }
+                    } else if (whitePlayer != "human") {
+                        throw "Enter a valid player type";
+                    }
+
+                    if (blackPlayer == "human") {
+                        gameModeChosen = true;
+                    } else if (blackPlayer.substr(0,8) == "computer") {
+                        try { 
+                            blackLevel = stoi(blackPlayer.substr(8));
+                            if (blackLevel < 1 || blackLevel > 4) {
+                                throw "Enter a valid computer level"; 
+                            }
+                            gameModeChosen = true;
+                        } catch (const invalid_argument& other) {
+                            throw "Enter a number between 1-3";
+                        }
+                    } else {
+                        throw "Enter a valid player type";
+                    }
+
                 }
+
             } catch (char const* error) {
-                cout << error << endl;
+                cout << endl << "------ Error: " << error << "  ------" << endl << endl;
             } 
         }
 
+
         // Player selects either a default game or to set up their own game
         while (!setupModeChosen) {
-            cout << ("Enter 'default' to play normally, Enter 'setup' to setup the board manually") << endl;;
+            cout << endl << ("Enter 'default' to play normally, Enter 'setup' to setup the board manually") << endl;;
 
             try {
                 string manual;
@@ -200,7 +237,35 @@ void Game::startGameLoop() {
 
         }
 
-        if (gameMode > 0 && gameMode < 3) {
+        if (gameModeChosen && setupModeChosen) {
+
+            if (whitePlayer == "human") {
+                players.emplace_back(make_unique<Human>("white"));
+            } else if (whitePlayer.substr(0,8) == "computer") {
+                if (whiteLevel == 1) {
+
+                } else if (whiteLevel == 2) {
+
+                } else if (whiteLevel == 3) {
+
+                } else if (whiteLevel == 4) {
+
+                }
+            }
+
+            if (blackPlayer == "human") {
+                players.emplace_back(make_unique<Human>("black"));
+            } else if (blackPlayer.substr(0,8) == "computer") {
+                if (blackLevel == 1) {
+
+                } else if (blackLevel == 2) {
+
+                } else if (blackLevel == 3) {
+
+                } else if (blackLevel == 4) {
+                    
+                }
+            }
 
             //this starts a single instance of a game
             mainGameLoop();
@@ -220,23 +285,15 @@ void Game::mainGameLoop() {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     attach(textDisplay.get());
 
-    unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-    attach(graphicDisplay.get());
+    // unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+    // attach(graphicDisplay.get());
 
 
     setupGame(manualSetUp);
 
-    if (gameMode == 1) {
-        if(whoStarts == "white"){
-            players.emplace_back(make_unique<Human>("white"));
-            players.emplace_back(make_unique<Human>("black"));
-        } else if(whoStarts == "black"){
-            players.emplace_back(make_unique<Human>("black"));
-            players.emplace_back(make_unique<Human>("white"));
-        }
-    } else if (gameMode == 2) {
-    } else if (gameMode == 3) {
-    } 
+    if(whoStarts == "black"){
+        reverse(players.begin(), players.end());
+    }
 
     int turn = 0;
 

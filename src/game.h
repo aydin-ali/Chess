@@ -19,9 +19,6 @@ class Game : public Subject {
     // std::unique_ptr<PlayerType> player2;
     std::vector<std::unique_ptr<PlayerType>> players;
 
-    // PlayerType *player1;
-    // PlayerType *player2;
-    int gameMode;
     //For Set Up Mode
     std::string whoStarts;
     bool manualSetUp;
