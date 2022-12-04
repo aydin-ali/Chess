@@ -241,15 +241,137 @@ void Board::moveOnBoard(Move move){
             }
         }
     }
+
+
     //actually move the piece
     board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];//this has to be move ctor if it's taking a piece
     board[move.getEndRow()][move.getEndCol()]->updatePosn(move.getEndRow(), move.getEndCol());
-    // apply pawn promotion if possible
-/*     if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
-        
-    } */
 
     board[move.getStartRow()][move.getStartCol()] = nullptr;
+
+        // ----- Check if player made an enpassant move -----
+    // Check if piece moved is a pawn
+    if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
+        // Check if pawn is white
+        if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white"){
+            // Check if pawn moved diagonally up right into open space
+            if(move.getEndRow() == move.getStartRow() - 1 && move.getEndCol() == move.getStartCol() + 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() + 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() + 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() + 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() + 1][move.getEndCol()] = nullptr;
+                }
+            }
+            // Check if pawn moved diagonally up left into open space  
+            else if(move.getEndRow() == move.getStartRow() - 1 && move.getEndCol() == move.getStartCol() - 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() + 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() + 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() + 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() + 1][move.getEndCol()] = nullptr;
+                }
+            } 
+        } else if(board[move.getEndRow()][move.getEndCol()]->getColour() == "black"){
+            // Check if pawn moved diagonally down right into open space
+            if(move.getEndRow() == move.getStartRow() + 1 && move.getEndCol() == move.getStartCol() + 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() - 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() - 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() - 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() - 1][move.getEndCol()] = nullptr;
+                }
+            }
+            // Check if pawn moved diagonally down left into open space  
+            else if(move.getEndRow() == move.getStartRow() + 1 && move.getEndCol() == move.getStartCol() - 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() - 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() - 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() - 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() - 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() - 1][move.getEndCol()] = nullptr;
+                }
+            }
+        }
+    }
+
+    // ------ Check if a pawn moved such that they can be taken by enpassant by the opposing player ------
+    // Check if piece moved if a pawn
+    if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
+        Pawn *tmpPawn = dynamic_cast<Pawn*>(board[move.getEndRow()][move.getEndCol()]);
+        // Check if pawn white, if on first move, and if it double jumped
+        if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white" && tmpPawn->getHasntMoved() && move.getEndRow() == 4){
+            // Check if there is nothing to the left
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the left 
+            else if(board[move.getEndRow()][move.getEndCol() - 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() - 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+            // Check if there is nothing to the right
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the right
+            else if(board[move.getEndRow()][move.getEndCol() + 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() + 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+        // Check if pawn black, if on first move, and if it double jumped
+        } else if(board[move.getEndRow()][move.getEndCol()]->getColour() == "black" && tmpPawn->getHasntMoved() && move.getEndRow() == 3){
+            // Check if there is nothing to the left
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the left
+            else if(board[move.getEndRow()][move.getEndCol() - 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() - 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            } 
+            // Check if there is nothing to the right
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the right
+            // SEG FAULT
+            else if(board[move.getEndRow()][move.getEndCol() + 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() + 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+        }
+    }
+
+    // Check if pawn enpassanted (check if start position and end position are diagonal from each other and then delete the piece behind the end position)
+    
     
     updateBoard();
     
