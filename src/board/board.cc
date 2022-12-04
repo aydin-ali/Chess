@@ -145,7 +145,7 @@ bool Board::canPromote(Move move, string colour, char promoteType){
     // If it is a White pawn
      if(board[move.getStartRow()][move.getStartCol()]->getColour() == "white"){
         if(move.getEndRow() == 0){
-            if(promoteType == 'q' || promoteType == 'r' || promoteType == 'b' || promoteType == 'n'){
+            if(promoteType == 'Q' || promoteType == 'R' || promoteType == 'B' || promoteType == 'N'){
                 return true;
             } 
             return false;
@@ -173,16 +173,16 @@ void Board::actuallyPromote(Move move, string colour, char promoteType){
             }
         break;
         }
-        if(promoteType == 'q') {
+        if(promoteType == 'Q') {
             pieceArray.emplace_back(make_unique<Queen>("white", move.getEndRow(), move.getEndCol()));
             board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
-        } else if(promoteType == 'r') {
+        } else if(promoteType == 'R') {
             pieceArray.emplace_back(make_unique<Rook>("white", move.getEndRow(), move.getEndCol()));
             board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
-        } else if(promoteType == 'b') {
+        } else if(promoteType == 'B') {
             pieceArray.emplace_back(make_unique<Bishop>("white", move.getEndRow(), move.getEndCol()));
             board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
-        } else if(promoteType == 'n') {
+        } else if(promoteType == 'N') {
             pieceArray.emplace_back(make_unique<Knight>("white", move.getEndRow(), move.getEndCol()));
             board[move.getEndRow()][move.getEndCol()] = pieceArray.back().get();
         }

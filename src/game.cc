@@ -28,6 +28,11 @@ void Game::setupGame(bool manualSetup) {
         while(true){
             string in;
             getline(cin, in);
+            stringstream s{in};
+            char equal;
+            s >> equal;
+            string clr;
+            s >> clr;
             if(in == "done"){ // NEED TO CHECK IF KING's have been placed
                 if(gameBoard->getNumWhiteKings() == 1 && gameBoard->getNumBlackKings() == 1) break;
                 else {
@@ -197,14 +202,6 @@ void Game::startGameLoop() {
 
         if (gameMode > 0 && gameMode < 3) {
 
-            if (gameMode == 1) {
-                
-                players.emplace_back(make_unique<Human>("white"));
-                players.emplace_back(make_unique<Human>("black"));
-
-            } else if (gameMode == 2) {
-            } else if (gameMode == 3) {
-            } 
             //this starts a single instance of a game
             mainGameLoop();
             //output all the end of game stats
@@ -228,6 +225,18 @@ void Game::mainGameLoop() {
 
 
     setupGame(manualSetUp);
+
+    if (gameMode == 1) {
+        if(whoStarts == "white"){
+            players.emplace_back(make_unique<Human>("white"));
+            players.emplace_back(make_unique<Human>("black"));
+        } else if(whoStarts == "black"){
+            players.emplace_back(make_unique<Human>("black"));
+            players.emplace_back(make_unique<Human>("white"));
+        }
+    } else if (gameMode == 2) {
+    } else if (gameMode == 3) {
+    } 
 
     int turn = 0;
 
@@ -277,7 +286,7 @@ void Game::mainGameLoop() {
                             gameBoard->actuallyPromote(m, gameBoard->getBoardArr()[m.getEndRow()][m.getEndCol()]->getColour(), promoteType);
                             promoteType = ' ';
                         } else {
-                            cout << "Not a valid piece to promote your pawn to!" << endl;
+                            cout << "------Not a valid piece to promote your pawn to!------" << endl;
                             notifyObservers(gameBoard->getBoardArr());
                             continue;
                         }
