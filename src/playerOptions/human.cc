@@ -64,7 +64,7 @@ bool Human::playerMove(string input, Board &gameBoard) {
         i >> promoteType;
 
         //convert the string to a move object
-        Move m {startPos, endPos, colour};
+        Move m {startPos, endPos, getColour()};
 
         // Check if the move is valid (board wise)         
         if (gameBoard.validMoveOnBoard(m)) { 
