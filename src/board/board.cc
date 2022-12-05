@@ -514,6 +514,12 @@ void Board::updateBoard() {
     whiteInCheckmate = InCheck("white") && MovesLeft("white");
     blackInCheckmate = InCheck("black") && MovesLeft("black");
     boardInStalemate = !InCheck("white") && !InCheck("black") && (MovesLeft("white") || MovesLeft("black"));
+
+    if (!boardInStalemate) {
+        if (pieceArray.size() == 2) {
+            boardInStalemate = true;
+        }
+    }
 }
 
 bool Board::InCheck(const string &colour) {

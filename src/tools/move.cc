@@ -36,3 +36,6 @@ int Move::getEndCol() {
     return endCol;
 }
 
+bool Move::operator==(Move &other) {
+        return ((startRow == other.getStartRow()) && (startCol == other.getStartCol()) && (endRow == other.getEndRow()) && (endCol == other.getEndCol()));
+}

@@ -39,6 +39,7 @@ public:
     Position getPosn();
     bool isMoved();
     bool moveAllowed(Board &b, Position p);
+    bool checkingMove(Board &b, Position p);
     bool inPossibleMoves(Position p);
     int numPossibleMoves();
     void updatePosn(int row, int col);
