@@ -8,10 +8,10 @@
 
 #include "tools/move.h" //can we make this just: class Move;?
 #include "playerOptions/human.h"
-#include "playerOptions/computerL1.h"
-#include "playerOptions/computerL2.h"
-#include "playerOptions/computerL3.h"
-#include "playerOptions/computerL4.h"
+// #include "playerOptions/computerL1.h"
+// #include "playerOptions/computerL2.h"
+// #include "playerOptions/computerL3.h"
+// #include "playerOptions/computerL4.h"
 
 
 using namespace std;
@@ -48,41 +48,17 @@ void Game::setupGame(bool manualSetup) {
         }
         cout << "------You Have Begun a Custom Setup Game!------" << endl;
     } else { //default mode
+
         gameBoard->setupBoardDefault();
+
         cin.ignore(); //IDK WHY
         // notifyObservers(gameBoard->getBoardArr());
     }
+
     notifyObservers(gameBoard->getBoardArr());
+
 }
 
-// Check if the moves inputted are within the bounds of the board
-bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
-    if((startRow < 0 || startRow > 7) || (startCol < 0 || startCol > 7) || (endRow < 0 || endRow > 7) || (endCol < 0 || endCol > 7)){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// Read move from cin and process it 
-bool readMove(string in) {
-    stringstream i;
-    i << in;
-    string trash;
-    i >> trash;
-    string startPos;
-    i >> startPos;
-    string endPos;
-    i >> endPos;
-    int startRow = startPos[0] - 97;
-    int endRow = endPos[0] - 97;
-    int startCol = startPos[1] - 49;
-    int endCol = endPos[1] - 49;
-    if(moveOutOfRange(startRow, startCol, endRow, endCol)){
-        return false;  
-    }
-    return true;
-}
 
 // Read a setup operation 
 void Game::readSetupMove(string in){
@@ -246,13 +222,13 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("white"));
             } else if (whitePlayer.substr(0,8) == "computer") {
                 if (whiteLevel == 1) {
-                    players.emplace_back(make_unique<ComputerL1>("white"));
+                    // players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
-                    players.emplace_back(make_unique<ComputerL2>("white"));
+                    // players.emplace_back(make_unique<ComputerL2>("white"));
                 } else if (whiteLevel == 3) {
-                    players.emplace_back(make_unique<ComputerL3>("white"));
+                    // players.emplace_back(make_unique<ComputerL3>("white"));
                 } else if (whiteLevel == 4) {
-                    players.emplace_back(make_unique<ComputerL4>("white"));
+                    // players.emplace_back(make_unique<ComputerL4>("white"));
                 }
             }
 
@@ -260,18 +236,20 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("black"));
             } else if (blackPlayer.substr(0,8) == "computer") {
                 if (blackLevel == 1) {
-                    players.emplace_back(make_unique<ComputerL1>("black"));
+                    // players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
-                    players.emplace_back(make_unique<ComputerL2>("black"));
+                    // players.emplace_back(make_unique<ComputerL2>("black"));
                 } else if (blackLevel == 3) {
-                    players.emplace_back(make_unique<ComputerL3>("black"));
+                    // players.emplace_back(make_unique<ComputerL3>("black"));
                 } else if (blackLevel == 4) {
-                    players.emplace_back(make_unique<ComputerL4>("black"));
+                    // players.emplace_back(make_unique<ComputerL4>("black"));
                 }
             }
 
             //this starts a single instance of a game
             mainGameLoop();
+            players.clear();
+            
             //output all the end of game stats
             cout << "White wins: " << endl;
             cout << "Black wins: " << endl;
@@ -285,14 +263,16 @@ void Game::startGameLoop() {
 
 void Game::mainGameLoop() {
 
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
 
     // unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
     // attach(graphicDisplay.get());
 
-
     setupGame(manualSetUp);
+
+// players.emplace_back(make_unique<Human>("white"));
+// players.emplace_back(make_unique<Human>("black"));
 
     if (whoStarts == "black"){
         reverse(players.begin(), players.end());
@@ -312,60 +292,16 @@ void Game::mainGameLoop() {
         if (cmd == "resign") {
             //update win counters
             cout << endl;
-            return;
+            break;
         }
 
-        //check if the move entered is valid (input wise)
-        if (readMove(input)) {
-
-            //TEMPORARY
-            stringstream i;
-            i << input;
-            string trash;
-            i >> trash;
-            string startPos;
-            i >> startPos;
-            string endPos;
-            i >> endPos;
-            char promoteType;
-            i >> promoteType;
-
-
-            //convert the string to a move object
-            Move m {startPos, endPos, players[turn]->getColour()};
-
-            // Check if move is valid            
-            if (gameBoard->validMoveOnBoard(m)) { 
-                // Check if piece is a pawn
-                if(gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()] != nullptr && gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()]->getType() == 'p'){
-                    // Check if pawn is in position to promote 
-                    if (gameBoard->inPositionToPromote(m)) {
-                        // Check all other conditions for pawn to actually promote
-                        if(gameBoard->canPromote(m, gameBoard->getBoardArr()[m.getStartRow()][m.getStartCol()]->getColour(), promoteType)){
-                            gameBoard->moveOnBoard(m);
-                            gameBoard->actuallyPromote(m, gameBoard->getBoardArr()[m.getEndRow()][m.getEndCol()]->getColour(), promoteType);
-                            promoteType = ' ';
-                        } else {
-                            cout << "------Not a valid piece to promote your pawn to!------" << endl;
-                            notifyObservers(gameBoard->getBoardArr());
-                            continue;
-                        }
-                    } else {
-                        gameBoard->moveOnBoard(m);
-                    }
-                } else {
-                    gameBoard->moveOnBoard(m);
-                }
-                (turn == 0) ? turn = 1 : turn = 0;
-                //print the new board
-                notifyObservers(gameBoard->getBoardArr());
-                
-            } else {
-                cout << "Invalid move: Invalid position(s)" << endl << endl;
-            }
-
-        } else {
-            cout << "Invalid move: Invalid input" << endl << endl;
+        if (players[turn]->playerMove(input, *gameBoard)) {
+            (turn == 0) ? turn = 1 : turn = 0;
         }
+        notifyObservers(gameBoard->getBoardArr());
+
+
     }
+
+    detach(textDisplay.get());
 }

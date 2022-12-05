@@ -7,7 +7,7 @@ class ComputerL2 : public Computer {
 
 public:
     ComputerL2(std::string colour);
-    void playerMove() override;
+    bool playerMove(std::string input, Board &gameBoard) override;
 
 };
 
