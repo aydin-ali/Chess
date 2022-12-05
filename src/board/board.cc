@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+// Board Constructor
 Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
     numWhiteKings = 0;
@@ -13,15 +14,16 @@ Board::Board(){
     boardInStalemate = false;
 }
 
+// Set up the board with a game of classical chess (starting positions)
 void Board::setupBoardDefault(){
     numWhiteKings = 1;
     numBlackKings = 1;
     // Set up White pieces on the Board
-    for(int P = 0; P < 8; ++P){
+    for(int P = 0; P < 8; ++P){ 
         pieceArray.emplace_back(make_unique<Pawn>("white", 6, P));
         board[6][P] = pieceArray.back().get();
     }
-    pieceArray.emplace_back(make_unique<Rook>("white", 7, 7));
+    pieceArray.emplace_back(make_unique<Rook>("white", 7, 7)); 
     board[7][7] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Knight>("white", 7, 6));
     board[7][6] = pieceArray.back().get();
@@ -59,13 +61,14 @@ void Board::setupBoardDefault(){
     board[0][6] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
-
-    // updateBoard();
 }
 
+// Set up pieces on board one by one through user inputted values
 void Board::setupBoardManual(int row, int col, char type, char op){
+    // Add a piece to the board
     if(op == '+'){
         if(board[row][col] != nullptr){
+            // Lower king counters to check number of kings on board later
             if (board[row][col]->getType() == 'k') {
                 if (board[row][col]->getColour() == "white") {
                     --numWhiteKings;
@@ -80,6 +83,7 @@ void Board::setupBoardManual(int row, int col, char type, char op){
                 break;
             }
         }
+        // Add piece based on what was inputted
         if(type == 'K'){
             pieceArray.emplace_back(make_unique<King>("white", row , col));
             board[row][col] = pieceArray.back().get();
@@ -119,7 +123,10 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             pieceArray.emplace_back(make_unique<Pawn>("black", row , col));
             board[row][col] = pieceArray.back().get();
         }
-    } else if(op == '-'){
+    } 
+    // Remove piece in setup mode
+    else if(op == '-'){
+        // 
         if(board[row][col]->getType() == 'k') {
             if(board[row][col]->getColour() == "white")--numWhiteKings;
             else{--numBlackKings;}

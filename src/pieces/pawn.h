@@ -15,7 +15,6 @@ public:
     bool getHasntMoved();
     void setEnpassantAble(bool set);
     bool getEnpassantAble();
-    //void checkForCheck() override;
 };
 
 

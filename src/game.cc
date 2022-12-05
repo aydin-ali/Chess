@@ -271,7 +271,6 @@ void Game::startGameLoop() {
             cout << "Black: " << blackScore << endl;
             cout << "------------------------------" << endl;
             cout << endl;
-            //break;
         }
     }
     //output all the end of game stats
@@ -351,9 +350,6 @@ void Game::mainGameLoop() {
             cout << "The board is in stalemate!\n" << endl;
             break;
         }
-
-
     }
-
     detach(textDisplay.get());
 }
