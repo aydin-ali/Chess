@@ -12,6 +12,8 @@ class Subject;
 class GraphicDisplay : public Observer {
     int rows, cols;
     std::unique_ptr<Xwindow> windowFrame;
+    std::vector<std::vector<std::string>> previousStateOfBoard;
+
 
 public:
     GraphicDisplay(int rows, int cols);
