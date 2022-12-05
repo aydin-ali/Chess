@@ -40,6 +40,11 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
             hasntMoved = false; // For enpassant 
         }
     }
+    
+    // If an enpassantAble pawn hasn't been taken after first chance it is no longer enpassantable
+    if(enpassantAble){
+        enpassantAble = false;
+    }
 
     int row, col;
     Position p = {0, 0};

@@ -5,6 +5,10 @@ startPos{startPos}, endPos{endPos}, colour{colour} {
     convert();
 }
 
+Move::Move(int startRow, int startCol, int endRow, int endCol) :
+startRow{startRow}, startCol{startCol}, endRow{endRow}, endCol{endCol} {}
+
+
 void Move::convert() {
 
     startRow = 7 - startPos[1] + 49;

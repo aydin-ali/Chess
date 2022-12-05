@@ -11,7 +11,7 @@ class Board;
 
 class PlayerType {
 
-protected:
+private:
     std::string colour;
 
 
