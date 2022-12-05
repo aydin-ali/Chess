@@ -33,6 +33,7 @@ public:
     virtual void updatePossibleMoves(std::vector<std::vector<Piece*>> board, Board &b) = 0;
 
     //virtual void checkForCheck()=0;
+    std::vector<Position> getPossibleMoves();
     std::string getColour();
     char getType();
     Position getPosn();

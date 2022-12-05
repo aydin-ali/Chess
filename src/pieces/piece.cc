@@ -13,6 +13,10 @@ bool Piece::validMove(Move move, vector<vector<Piece*>> board){
     return true;
 }
 
+vector<Position> Piece::getPossibleMoves() {
+    return possibleMoves;
+}
+
 string Piece::getColour(){
     return colour;
 }
