@@ -66,6 +66,13 @@ void Board::setupBoardDefault(){
 void Board::setupBoardManual(int row, int col, char type, char op){
     if(op == '+'){
         if(board[row][col] != nullptr){
+            if (board[row][col]->getType() == 'k') {
+                if (board[row][col]->getColour() == "white") {
+                    --numWhiteKings;
+                } else {
+                    --numBlackKings;
+                }
+            }
             for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
                 if(board[row][col] == it->get()){
                     pieceArray.erase(it);
@@ -113,16 +120,16 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             board[row][col] = pieceArray.back().get();
         }
     } else if(op == '-'){
-        if(type == 'k') {
+        if(board[row][col]->getType() == 'k') {
             if(board[row][col]->getColour() == "white")--numWhiteKings;
             else{--numBlackKings;}
         };
         for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
             if(board[row][col] == it->get()){
                 pieceArray.erase(it);
+                board[row][col] = nullptr;
+                break;
             }
-            board[row][col] = nullptr;
-            break;
         }
     }
     // updateBoard();
@@ -137,6 +144,48 @@ bool Board::pawnInIllegalRow(){
         if(board[7][col] == nullptr){} 
         else if(board[7][col]->getType() == 'p'){
             return true;
+        }
+    }
+    return false;
+}
+
+bool Board::kingBesideKing(){
+    for(size_t p = 0; p < pieceArray.size(); ++p){
+        if(pieceArray[p]->getType() == 'k'){
+            if(pieceArray[p]->getColour() == "white"){
+                // left 
+                if(pieceArray[p]->getPosn().getCol() != 0 && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() - 1] != nullptr && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() - 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() - 1]->getColour() == "black"){
+                    return true;
+                }
+                // right
+                if(pieceArray[p]->getPosn().getCol() != 7 && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() + 1] != nullptr && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() + 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow()][pieceArray[p]->getPosn().getCol() + 1]->getColour() == "black"){
+                    return true;
+                }
+                // up
+                if(pieceArray[p]->getPosn().getRow() != 0 && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol()] != nullptr && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol()]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol()]->getColour() == "black"){
+                    return true;
+                }
+                // down
+                if(pieceArray[p]->getPosn().getRow() != 7 && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol()] != nullptr && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol()]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol()]->getColour() == "black"){
+                    return true;
+                }
+                // down left
+                if(pieceArray[p]->getPosn().getCol() != 0 && pieceArray[p]->getPosn().getRow() != 7 && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() - 1] != nullptr && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() - 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() - 1]->getColour() == "black"){
+                    return true;
+                }
+                // down right
+                if(pieceArray[p]->getPosn().getRow() != 7 && pieceArray[p]->getPosn().getCol() != 7 && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() + 1] != nullptr && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() + 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() + 1][pieceArray[p]->getPosn().getCol() + 1]->getColour() == "black"){
+                    return true;
+                }
+                // up right
+                if(pieceArray[p]->getPosn().getRow() != 0 && pieceArray[p]->getPosn().getCol() != 7 && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() + 1] != nullptr && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() + 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() + 1]->getColour() == "black"){
+                    return true;
+                }
+                // up left
+                if(pieceArray[p]->getPosn().getRow() != 0 && pieceArray[p]->getPosn().getCol() != 0 && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() - 1] != nullptr && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() - 1]->getType() == 'k' && board[pieceArray[p]->getPosn().getRow() - 1][pieceArray[p]->getPosn().getCol() - 1]->getColour() == "black"){
+                    return true;
+                }
+            }
         }
     }
     return false;
@@ -371,7 +420,7 @@ void Board::moveOnBoard(Move move){
         // Check if pawn white, if on first move, and if it double jumped
         if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white" && tmpPawn->getHasntMoved() && move.getEndRow() == 4){
             // Check if there is nothing to the left
-            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr || move.getEndCol() == 0){
 
             }
             // Check if there is an enemy pawn to the left 
@@ -379,7 +428,7 @@ void Board::moveOnBoard(Move move){
                 tmpPawn->setEnpassantAble(true);
             }
             // Check if there is nothing to the right
-            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr || move.getEndCol() == 7){
 
             }
             // Check if there is an enemy pawn to the right
@@ -389,7 +438,7 @@ void Board::moveOnBoard(Move move){
         // Check if pawn black, if on first move, and if it double jumped
         } else if(board[move.getEndRow()][move.getEndCol()]->getColour() == "black" && tmpPawn->getHasntMoved() && move.getEndRow() == 3){
             // Check if there is nothing to the left
-            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr || move.getEndCol() == 0){
 
             }
             // Check if there is an enemy pawn to the left
@@ -397,19 +446,49 @@ void Board::moveOnBoard(Move move){
                 tmpPawn->setEnpassantAble(true);
             } 
             // Check if there is nothing to the right
-            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr || move.getEndCol() == 7){
 
             }
             // Check if there is an enemy pawn to the right
-            // SEG FAULT
             else if(board[move.getEndRow()][move.getEndCol() + 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() + 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
                 tmpPawn->setEnpassantAble(true);
             }
         }
     }
 
-    // Check if pawn enpassanted (check if start position and end position are diagonal from each other and then delete the piece behind the end position)
-    
+    // Check if King castled
+    if(board[move.getEndRow()][move.getEndCol()]->getType() == 'k'){
+        // Check if King is white
+        if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white"){
+            // Check if King moved two moves from starting position to the right
+            if(move.getStartRow() == 7 && move.getStartCol() == 4 && move.getEndRow() == 7 && move.getEndCol() == 6){
+                board[7][5] = board[7][7];
+                board[7][5]->updatePosn(7, 5);
+                board[7][7] = nullptr;
+            }
+            // Check if King moved two moves from starting position to the left
+            if(move.getStartRow() == 7 && move.getStartCol() == 4 && move.getEndRow() == 7 && move.getEndCol() == 2){
+                board[7][3] = board[7][0];
+                board[7][3]->updatePosn(7, 3);
+                board[7][0] = nullptr;
+            }
+        }
+        // Check if King is black
+        else {
+            // Check if King moved two moves from starting position to the right
+            if(move.getStartRow() == 0 && move.getStartCol() == 4 && move.getEndRow() == 0 && move.getEndCol() == 6){
+                board[0][5] = board[0][7];
+                board[0][5]->updatePosn(0, 5);
+                board[0][7] = nullptr;
+            }
+            // Check if King moved two moves from starting position to the left
+            if(move.getStartRow() == 0 && move.getStartCol() == 4 && move.getEndRow() == 0 && move.getEndCol() == 2){
+                board[0][3] = board[0][0];
+                board[0][3]->updatePosn(0, 3);
+                board[0][0] = nullptr;
+            }
+        }
+    }
     
     // updateBoard();
     

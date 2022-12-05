@@ -2,7 +2,7 @@
 using namespace std;
 
 Rook::Rook(const string &colour, int row, int col):
-    Piece{colour, 'r', row, col}{}
+    Piece{colour, 'r', row, col}, hasMoved{false}, initPosn{row, col}{}
 
 bool Rook::validMove(Move move, vector<vector<Piece*>> board) {
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
@@ -13,7 +13,13 @@ bool Rook::validMove(Move move, vector<vector<Piece*>> board) {
     return false;
 }
 
+    
+
 void Rook::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
+    if (posn.getRow() != initPosn.getRow() || posn.getCol() != initPosn.getCol()) {
+        hasMoved = true; 
+    }
+
     int row;
     int col;
     int incr;
@@ -112,4 +118,8 @@ void Rook::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
             break;
         }
     }
+}
+
+bool Rook::getHasMoved(){
+    return hasMoved;
 }
