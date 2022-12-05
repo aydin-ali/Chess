@@ -10,7 +10,8 @@ class King : public Piece {
 public:
     King( const std::string &colour, int row, int col);
     bool validMove(Move move, std::vector<std::vector<Piece*>> board) override;
-    void updatePossibleMoves(std::vector<std::vector<Piece*>>) override;
+    bool moveNotWithinOtherKing(std::vector<std::vector<Piece*>> board, Position p);
+    void updatePossibleMoves(std::vector<std::vector<Piece*>>, Board &b) override;
 
 };
 
