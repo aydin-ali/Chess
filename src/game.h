@@ -23,9 +23,8 @@ class Game : public Subject {
     std::string whoStarts;
     bool manualSetUp;
 
-    int whiteWins;
-    int blackWins;
-    int ties;
+    float whiteScore;
+    float blackScore;
 
 public:
     //ctor dtor?

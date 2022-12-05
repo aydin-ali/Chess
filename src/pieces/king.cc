@@ -251,45 +251,61 @@ void King::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
 
     // Check if can castle
     if(!hasMoved){
-        if(colour == "white") {
+        if((colour == "white") && (moveAllowed(b, posn))) {
             // Check castle right
-            if (board[7][7] != nullptr) {
-                if(board[7][5] == nullptr && board[7][6] == nullptr && board[7][7]->getType() == 'r'){
-                    Rook *tmpRook = static_cast<Rook*>(board[7][7]);
-                    if(!tmpRook->getHasMoved()){
-                        p = {7, 6};
-                        possibleMoves.emplace_back(p);
+            if ((board[7][5] == nullptr) && (board[7][6] == nullptr)) {
+                if (moveAllowed(b, {7, 5}) && moveAllowed(b, {7, 6})) {
+                    if (board[7][7] != nullptr) {
+                        if (board[7][7]->getType() == 'r') {
+                            Rook *tmpRook = static_cast<Rook*>(board[7][7]);
+                            if (!tmpRook->getHasMoved()) {
+                                p = {7, 6};
+                                possibleMoves.emplace_back(p);
+                            }
+                        }
                     }
                 }
             }
             // Check castle left 
-            if (board[0][0] != nullptr) {
-                if(board[7][3] == nullptr && board[7][2] == nullptr && board[7][1] == nullptr && board[7][0]->getType() == 'r'){
-                    Rook *tmpRook = static_cast<Rook*>(board[7][0]);
-                    if(!tmpRook->getHasMoved()){
-                        p = {7, 2};
-                        possibleMoves.emplace_back(p);
+            if ((board[7][3] == nullptr) && (board[7][2] == nullptr) && (board[7][1] == nullptr)) {
+                if (moveAllowed(b, {7, 3}) && moveAllowed(b, {7, 2})) {
+                    if (board[7][0] != nullptr) {
+                        if (board[7][0]->getType() == 'r') {
+                            Rook *tmpRook = static_cast<Rook*>(board[7][0]);
+                            if (!tmpRook->getHasMoved()) {
+                                p = {7, 2};
+                                possibleMoves.emplace_back(p);
+                            }
+                        }
                     }
                 }
             }
-        } else {
+        } else if (moveAllowed(b, posn)) {
             // Check castle right 
-            if (board[0][7] != nullptr) {
-                if(board[0][5] == nullptr && board[0][6] == nullptr && board[0][7]->getType() == 'r'){
-                    Rook *tmpRook = static_cast<Rook*>(board[0][7]);
-                    if(!tmpRook->getHasMoved()){
-                        p = {0, 6};
-                        possibleMoves.emplace_back(p);
+            if ((board[0][5] == nullptr) && (board[0][6] == nullptr)) {
+                if (moveAllowed(b, {0, 5}) && moveAllowed(b, {0, 6})) {
+                    if (board[0][7] != nullptr) {
+                        if (board[0][7]->getType() == 'r') {
+                            Rook *tmpRook = static_cast<Rook*>(board[0][7]);
+                            if (!tmpRook->getHasMoved()) {
+                                p = {0, 6};
+                                possibleMoves.emplace_back(p);
+                            }
+                        }
                     }
                 }
             }
             // Check castle left 
-            if (board[0][0] != nullptr) {
-                if(board[0][1] == nullptr && board[0][2] == nullptr && board[0][3] == nullptr && board[0][0]->getType() == 'r'){
-                    Rook *tmpRook = static_cast<Rook*>(board[0][0]);
-                    if(!tmpRook->getHasMoved()){
-                        p = {0, 2};
-                        possibleMoves.emplace_back(p);
+            if ((board[0][3] == nullptr) && (board[0][2] == nullptr) && (board[0][1] == nullptr)) {
+                if (moveAllowed(b, {0, 3}) && moveAllowed(b, {0, 2})) {
+                    if (board[0][0] != nullptr) {
+                        if (board[0][0]->getType() == 'r') {
+                            Rook *tmpRook = static_cast<Rook*>(board[0][0]);
+                            if (!tmpRook->getHasMoved()) {
+                                p = {0, 2};
+                                possibleMoves.emplace_back(p);
+                            }
+                        }
                     }
                 }
             }

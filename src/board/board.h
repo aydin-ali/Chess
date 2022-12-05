@@ -25,7 +25,7 @@ private:
     std::vector<std::unique_ptr<Piece>> pieceArray;
 
     int numWhiteKings, numBlackKings;
-    bool WhiteInCheck, BlackInCheck, WhiteInCheckmate, BlackInCheckmate, BoardInStalemate;
+    bool whiteInCheck, blackInCheck, whiteInCheckmate, blackInCheckmate, boardInStalemate;
     //std::map<std::string, Piece*> pieceMap;
 
 public:
@@ -37,6 +37,11 @@ public:
     std::vector<std::vector<Piece*>> &getBoardArr();
     int getNumWhiteKings();
     int getNumBlackKings();
+    bool getWhiteInCheck();
+    bool getBlackInCheck();
+    bool getWhiteInCheckmate();
+    bool getBlackInCheckmate();
+    bool getBoardInStalemate();
     void updateBoard();
     bool InCheck(const std::string &colour);
     bool MovesLeft(const std::string &colour);

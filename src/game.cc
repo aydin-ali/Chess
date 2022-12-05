@@ -18,9 +18,7 @@ using namespace std;
 
 // Game Constructor
 Game::Game():
-    gameBoard{make_unique<Board>()}, whoStarts{"white"}, manualSetUp{false}{}
-
-
+    gameBoard{make_unique<Board>()}, whoStarts{"white"}, manualSetUp{false}, whiteScore{0}, blackScore{0} {}
 
 void Game::setupGame(bool manualSetup) {
 
@@ -69,7 +67,6 @@ void Game::setupGame(bool manualSetup) {
     gameBoard->updateBoard();
 
 }
-
 
 // Read a setup operation 
 void Game::readSetupMove(string in){
@@ -268,13 +265,22 @@ void Game::startGameLoop() {
             players.clear();
 
             //output all the end of game stats
-            cout << "White wins: " << endl;
-            cout << "Black wins: " << endl;
+            cout << "\n------------------------------" << endl;
+            cout << "Current Score:" << endl;
+            cout << "White: " << whiteScore << endl;
+            cout << "Black: " << blackScore << endl;
             cout << "------------------------------" << endl;
             cout << endl;
             //break;
         }
     }
+    //output all the end of game stats
+    cout << "------------------------------" << endl;
+    cout << "Final Score:" << endl;
+    cout << "White: " << whiteScore << endl;
+    cout << "Black: " << blackScore << endl;
+    cout << "------------------------------" << endl;
+    cout << endl;
 }
 
 
@@ -282,9 +288,9 @@ void Game::mainGameLoop() {
 
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
-
+    
     unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-     attach(graphicDisplay.get()); 
+    attach(graphicDisplay.get()); 
 
     setupGame(manualSetUp);
 
@@ -305,8 +311,19 @@ void Game::mainGameLoop() {
         ss >> cmd;
 
         if (cmd == "resign") {
-            //update win counters
-            cout << endl;
+            if (turn == 0) {
+                if (players[0]->getColour() == "white") {
+                    ++blackScore;
+                } else {
+                    ++whiteScore;
+                }
+            } else {
+                if (players[1]->getColour() == "white") {
+                    ++blackScore;
+                } else {
+                    ++whiteScore;
+                }
+            }
             break;
         }
 
@@ -314,6 +331,26 @@ void Game::mainGameLoop() {
             (turn == 0) ? turn = 1 : turn = 0;
         }
         notifyObservers(gameBoard->getBoardArr()); //display the board (after every move command)
+        gameBoard->updateBoard(); // updates the boards (after every move command)
+
+        if (gameBoard->getWhiteInCheckmate()) {
+            ++blackScore;
+            cout << "White is in checkmate!\n" << endl;
+            break;
+        } else if (gameBoard->getBlackInCheckmate()) {
+            ++whiteScore;
+            cout << "Black is in checkmate!\n" << endl;
+            break;
+        } else if (gameBoard->getWhiteInCheck()) {
+            cout << "White is in check!\n" << endl;
+        } else if (gameBoard->getBlackInCheck()) {
+            cout << "Black is in check!\n" << endl;
+        } if (gameBoard->getBoardInStalemate()) {
+            whiteScore += 0.5;
+            blackScore += 0.5;
+            cout << "The board is in stalemate!\n" << endl;
+            break;
+        }
 
 
     }
