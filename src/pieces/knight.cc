@@ -5,7 +5,6 @@ Knight::Knight(const string &colour, int row, int col):
     Piece{colour, 'n', row, col} {}
 
 bool Knight::validMove(Move move, vector<vector<Piece*>> board) {
-    updatePossibleMoves(board);
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;
@@ -14,106 +13,122 @@ bool Knight::validMove(Move move, vector<vector<Piece*>> board) {
     return false;
 }
 
-void Knight::updatePossibleMoves(vector<vector<Piece*>> board) {
+void Knight::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
     int row;
     int col;
     Position p = {0, 0};
 
     possibleMoves.clear();
 
-    row = posn.getRow() - 2;
-    col = posn.getCol() - 1;
-    p = {row, col};
+    p = {posn.getRow() - 2, posn.getCol() - 1};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() - 1;
-    col = posn.getCol() - 2;
-    p = {row, col};
+    p = {posn.getRow() - 1, posn.getCol() - 2};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() - 2;
-    col = posn.getCol() + 1;
-    p = {row, col};
+    p = {posn.getRow() - 2, posn.getCol() + 1};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() - 1;
-    col = posn.getCol() + 2;
-    p = {row, col};
+    p = {posn.getRow() - 1, posn.getCol() + 2};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() + 2;
-    col = posn.getCol() - 1;
-    p = {row, col};
+    p = {posn.getRow() + 2, posn.getCol() - 1};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() + 1;
-    col = posn.getCol() - 2;
-    p = {row, col};
+    p = {posn.getRow() + 1, posn.getCol() - 2};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() + 2;
-    col = posn.getCol() + 1;
-    p = {row, col};
+    p = {posn.getRow() + 2, posn.getCol() + 1};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 
-    row = posn.getRow() + 1;
-    col = posn.getCol() + 2;
-    p = {row, col};
+    p = {posn.getRow() + 1, posn.getCol() + 2};
 
     if (p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
         }
     }
 }

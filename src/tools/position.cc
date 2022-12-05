@@ -18,3 +18,7 @@ bool Position::positionWithinBounds() {
 bool Position::operator==(Position &other) {
         return ((row == other.getRow()) && (col == other.getCol()));
     }
+
+bool Position::operator!=(Position &other) {
+    return ((row != other.getRow()) || (col != other.getCol()));
+}

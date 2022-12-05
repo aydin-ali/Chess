@@ -6,8 +6,11 @@ Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
     numWhiteKings = 0;
     numBlackKings = 0;
-    whiteInCheck = false;
-    blackInCheck = false;
+    WhiteInCheck = false;
+    BlackInCheck = false;
+    WhiteInCheckmate = false;
+    BlackInCheckmate = false;
+    BoardInStalemate = false;
 }
 
 void Board::setupBoardDefault(){
@@ -46,9 +49,9 @@ void Board::setupBoardDefault(){
     board[0][1] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Bishop>("black", 0, 2));
     board[0][2] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("black", 0, 3));
+    pieceArray.emplace_back(make_unique<Queen>("black", 0, 3));
     board[0][3] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("black", 0, 4));
+    pieceArray.emplace_back(make_unique<King>("black", 0, 4));
     board[0][4] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Bishop>("black", 0, 5));
     board[0][5] = pieceArray.back().get();
@@ -57,7 +60,7 @@ void Board::setupBoardDefault(){
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
 
-    updateBoard();
+    // updateBoard();
 }
 
 void Board::setupBoardManual(int row, int col, char type, char op){
@@ -122,6 +125,7 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             break;
         }
     }
+    // updateBoard();
 }
 
 bool Board::pawnInIllegalRow(){
@@ -389,34 +393,39 @@ void Board::moveOnBoard(Move move){
     
     updateBoard();
     
-
-
-
     //castling + pawn promotion (later)
 }
 
 void Board::updateBoard() {
     for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
-        (*it)->updatePossibleMoves(board);
+        (*it)->updatePossibleMoves(board, *this);
     }
 
     //change to checking for other team's check once piece's possible moves is properly updated
-    if (checkForCheck("white")) {
-        whiteInCheck = true;
-        cout << "White in check" << endl;
-    } else {
-        whiteInCheck = false;
-    }
-    if (checkForCheck("black")) {
-        blackInCheck = true;
-        cout << "Black in check" << endl;
-    } else {
-        blackInCheck = false;
+    // cout << "Here 1" << endl;
+    WhiteInCheck = InCheck("white");
+    BlackInCheck = InCheck("black");
+    WhiteInCheckmate = InCheck("white") && MovesLeft("white");
+    BlackInCheckmate = InCheck("black") && MovesLeft("black");
+    BoardInStalemate = !InCheck("white") && !InCheck("black") && (MovesLeft("white") || MovesLeft("black"));
+
+    if (BoardInStalemate) {
+        cout << "Stalemate!" << endl;
+    } else if (WhiteInCheckmate) {
+        cout << "White in checkmate!" << endl;
+    } else if (BlackInCheckmate) {
+        cout << "Black in checkmate!" << endl;
+    } else if (WhiteInCheck) {
+        cout << "White in check!" << endl;
+    } else if (BlackInCheck) {
+        cout << "Black in check!" << endl;
     }
 }
 
-bool Board::checkForCheck(const string &colour) {
+bool Board::InCheck(const string &colour) {
     Position kingPosn{0, 0};
+    int incr;
+    Position p = {0, 0};
 
     // Finding the position of colour's king
     for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
@@ -424,16 +433,288 @@ bool Board::checkForCheck(const string &colour) {
             kingPosn = {(*it)->getPosn()};
             break;
         }
-    }
+    } 
 
-    // Checking if any pieces on the opposing team are attacking the King
-    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
-        if (((*it)->getType() != 'k') && ((*it)->getColour() != colour)) {
-            if ((*it)->inPossibleMoves(kingPosn)) {
-                return true;
+    // checking if King is in check by a pawn
+    if (colour == "white") {
+        p = {kingPosn.getRow() - 1, kingPosn.getCol() - 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }
+        p = {kingPosn.getRow() - 1, kingPosn.getCol() + 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }
+    } else {
+        p = {kingPosn.getRow() + 1, kingPosn.getCol() - 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }   
+        p = {kingPosn.getRow() + 1, kingPosn.getCol() + 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
             }
         }
     }
 
+    // checking if King is in check from a knight
+    p = {kingPosn.getRow() - 2, kingPosn.getCol() - 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 1, kingPosn.getCol() - 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 2, kingPosn.getCol() + 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 1, kingPosn.getCol() + 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 2, kingPosn.getCol() - 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 1, kingPosn.getCol() - 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 2, kingPosn.getCol() + 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 1, kingPosn.getCol() + 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    // checking if King is in check from the left
+    incr = 1;
+    p = {kingPosn.getRow(), kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow(), kingPosn.getCol() - incr};
+    }
+
+    // checking if King is in check from the right
+    incr = 1;
+    p = {kingPosn.getRow(), kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow(), kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from above
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol()};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol()};
+    }
+
+    // checking if King is in check from below
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol()};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol()};
+    }
+
+    // checking if King is in check from the bottom right
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from the top right
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from the top left
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol() - incr};
+    }
+
+    // checking if King is in check from the bottom left
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol() - incr};
+    }
+
+    // King is not in check
     return false;
+}
+
+bool Board::MovesLeft(const string &colour) {
+    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
+        if (((*it)->getColour() == colour) && ((*it)->numPossibleMoves() != 0)) {
+            return false;
+        }
+    }
+
+    return true;
 }

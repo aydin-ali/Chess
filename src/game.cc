@@ -57,6 +57,7 @@ void Game::setupGame(bool manualSetup) {
         // notifyObservers(gameBoard->getBoardArr());
     }
     notifyObservers(gameBoard->getBoardArr());
+    gameBoard->updateBoard();
 }
 
 // Check if the moves inputted are within the bounds of the board
@@ -227,8 +228,8 @@ void Game::mainGameLoop() {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     attach(textDisplay.get());
 
-    unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-    attach(graphicDisplay.get());
+    // unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+    // attach(graphicDisplay.get());
 
 
     setupGame(manualSetUp);
