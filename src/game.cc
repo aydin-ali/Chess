@@ -275,7 +275,7 @@ void Game::startGameLoop() {
         }
     }
     //output all the end of game stats
-    cout << "\n------------------------------" << endl;
+    cout << "------------------------------" << endl;
     cout << "Final Score:" << endl;
     cout << "White: " << whiteScore << endl;
     cout << "Black: " << blackScore << endl;
@@ -289,8 +289,8 @@ void Game::mainGameLoop() {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
 
-     unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-     attach(graphicDisplay.get());
+     // unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+     // attach(graphicDisplay.get());
 
     setupGame(manualSetUp);
 
@@ -335,20 +335,20 @@ void Game::mainGameLoop() {
 
         if (gameBoard->getWhiteInCheckmate()) {
             ++blackScore;
-            cout << "White is in checkmate!" << endl;
+            cout << "White is in checkmate!\n" << endl;
             break;
         } else if (gameBoard->getBlackInCheckmate()) {
             ++whiteScore;
-            cout << "Black is in checkmate!" << endl;
+            cout << "Black is in checkmate!\n" << endl;
             break;
         } else if (gameBoard->getWhiteInCheck()) {
-            cout << "White is in check!" << endl;
+            cout << "White is in check!\n" << endl;
         } else if (gameBoard->getBlackInCheck()) {
-            cout << "Black is in check!" << endl;
+            cout << "Black is in check!\n" << endl;
         } if (gameBoard->getBoardInStalemate()) {
             whiteScore += 0.5;
             blackScore += 0.5;
-            cout << "The board is in stalemate!" << endl;
+            cout << "The board is in stalemate!\n" << endl;
             break;
         }
 

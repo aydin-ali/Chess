@@ -85,7 +85,9 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() - 1]);
                     if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
                         p = {posn.getRow() - 1, posn.getCol() - 1};
-                        possibleMoves.emplace_back(p);
+                        if (moveAllowed(b, p)) {
+                            possibleMoves.emplace_back(p);
+                        }
                     }
                 } 
                 // Check if there is nothing to right and then skip
@@ -97,7 +99,9 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() + 1]);
                     if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
                         p = {posn.getRow() - 1, posn.getCol() + 1};
-                        possibleMoves.emplace_back(p);
+                        if (moveAllowed(b, p)) {
+                            possibleMoves.emplace_back(p);
+                        }
                     }
                 }
             }
@@ -112,9 +116,10 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() - 1]);
                     if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
                         p = {posn.getRow() + 1, posn.getCol() - 1};
-                        possibleMoves.emplace_back(p);
+                        if (moveAllowed(b, p)) {
+                            possibleMoves.emplace_back(p);
+                        }
                     }
-                    // possibleMoves.emplace_back(p);
                 } 
                 // Check if there is nothing to right and then skip
                 if (board[posn.getRow()][posn.getCol() + 1] == nullptr || posn.getCol() == 7){
@@ -125,7 +130,9 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     Pawn *pwn = static_cast<Pawn*>(board[posn.getRow()][posn.getCol() + 1]);
                     if(pwn->getEnpassantAble()){ // if the opposing piece meets all enpassant conditions
                         p = {posn.getRow() + 1, posn.getCol() + 1};
-                        possibleMoves.emplace_back(p);
+                        if (moveAllowed(b, p)) {
+                            possibleMoves.emplace_back(p);
+                        }
                     }
                 }
             }
