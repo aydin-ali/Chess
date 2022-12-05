@@ -45,6 +45,7 @@ public:
     bool canPromote(Move move, std::string colour, char promoteType);
     void actuallyPromote(Move move, std::string colour, char promoteType);
     bool pawnInIllegalRow();
+    bool kingBesideKing();
 };
 
 #endif

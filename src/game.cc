@@ -41,6 +41,8 @@ void Game::setupGame(bool manualSetup) {
                     if(gameBoard->pawnInIllegalRow()){
                         cout << "------You cannot have pawns placed in the first or last rows!------" << endl;
                         notifyObservers(gameBoard->getBoardArr());
+                    } else if(gameBoard->InCheck("white") || gameBoard->InCheck("black") || gameBoard->kingBesideKing()){
+                        cout << "------You cannot start the game with a king in check!------" << endl;
                     } else {
                         break;
                     }
@@ -281,8 +283,8 @@ void Game::mainGameLoop() {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
 
-    // unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-    // attach(graphicDisplay.get());
+     unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+     attach(graphicDisplay.get());
 
     setupGame(manualSetUp);
 

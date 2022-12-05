@@ -76,7 +76,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
             // If pawn is white
             if(colour == "white"){
                 // Check if there is nothing to left and then skip
-                if (board[posn.getRow()][posn.getCol() - 1] == nullptr){
+                if (board[posn.getRow()][posn.getCol() - 1] == nullptr || posn.getCol() == 0){
 
                 }
                 // Check if there is enemy pawn to left
@@ -88,7 +88,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     }
                 } 
                 // Check if there is nothing to right and then skip
-                if (board[posn.getRow()][posn.getCol() + 1] == nullptr){
+                if (board[posn.getRow()][posn.getCol() + 1] == nullptr || posn.getCol() == 7){
 
                 }
                 // Check if there is enemy pawn to right
@@ -103,7 +103,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
             // If pawn is black 
             else {
                 // Check if there is nothing to left and then skip
-                if (board[posn.getRow()][posn.getCol() - 1] == nullptr){
+                if (board[posn.getRow()][posn.getCol() - 1] == nullptr || posn.getCol() == 0){
 
                 }
                 // Check if there is enemy pawn to left
@@ -116,7 +116,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                     possibleMoves.emplace_back(p);
                 } 
                 // Check if there is nothing to right and then skip
-                if (board[posn.getRow()][posn.getCol() + 1] == nullptr){
+                if (board[posn.getRow()][posn.getCol() + 1] == nullptr || posn.getCol() == 7){
 
                 }
                 // Check if there is enemy pawn to right
