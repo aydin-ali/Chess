@@ -15,6 +15,7 @@ public:
     int getCol();
     bool positionWithinBounds();
     bool operator==(Position &other);
+    bool operator!=(Position &other);
 };
 
 #endif

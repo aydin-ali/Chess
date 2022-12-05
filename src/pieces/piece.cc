@@ -1,4 +1,5 @@
 #include "piece.h"
+#include "../board/board.h"
 using namespace std;
 
 class Move;
@@ -28,6 +29,25 @@ bool Piece::isMoved(){
     return moved;
 }
 
+bool Piece::moveAllowed(Board &b, Position p) {
+    bool ans;
+    Piece *tempPiece = nullptr;
+    Position tempPosn = posn;
+
+    swap(tempPiece, b.getBoardArr()[posn.getRow()][posn.getCol()]);
+    swap(tempPiece, b.getBoardArr()[p.getRow()][p.getCol()]);
+    
+    posn = p;
+    ans = !b.InCheck(colour);
+    posn = tempPosn;
+
+    swap(tempPiece, b.getBoardArr()[p.getRow()][p.getCol()]);
+    swap(tempPiece, b.getBoardArr()[posn.getRow()][posn.getCol()]);
+    
+
+    return ans;
+}
+
 bool Piece::inPossibleMoves(Position p) {
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((*it) == p) return true;
@@ -35,7 +55,10 @@ bool Piece::inPossibleMoves(Position p) {
     return false;
 }
 
+int Piece::numPossibleMoves() {
+    return possibleMoves.size();
+}
+
 void Piece::updatePosn(int row, int col) {
     posn = {row, col};
 }
-

@@ -13,7 +13,6 @@
 #include "../pieces/queen.h"
 #include "../pieces/rook.h"
 #include "../observer/subject.h"
-
 #include "../tools/move.h"
 
 class Piece;
@@ -26,7 +25,7 @@ private:
     std::vector<std::unique_ptr<Piece>> pieceArray;
 
     int numWhiteKings, numBlackKings;
-    bool whiteInCheck, blackInCheck;
+    bool WhiteInCheck, BlackInCheck, WhiteInCheckmate, BlackInCheckmate, BoardInStalemate;
     //std::map<std::string, Piece*> pieceMap;
 
 public:
@@ -39,11 +38,13 @@ public:
     int getNumWhiteKings();
     int getNumBlackKings();
     void updateBoard();
-    bool checkForCheck(const std::string &colour);
+    bool InCheck(const std::string &colour);
+    bool MovesLeft(const std::string &colour);
 
     bool inPositionToPromote(Move move);
     bool canPromote(Move move, std::string colour, char promoteType);
     void actuallyPromote(Move move, std::string colour, char promoteType);
+    bool pawnInIllegalRow();
 };
 
 #endif

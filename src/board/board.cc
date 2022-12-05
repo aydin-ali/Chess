@@ -6,8 +6,11 @@ Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
     numWhiteKings = 0;
     numBlackKings = 0;
-    whiteInCheck = false;
-    blackInCheck = false;
+    WhiteInCheck = false;
+    BlackInCheck = false;
+    WhiteInCheckmate = false;
+    BlackInCheckmate = false;
+    BoardInStalemate = false;
 }
 
 void Board::setupBoardDefault(){
@@ -46,9 +49,9 @@ void Board::setupBoardDefault(){
     board[0][1] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Bishop>("black", 0, 2));
     board[0][2] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<King>("black", 0, 3));
+    pieceArray.emplace_back(make_unique<Queen>("black", 0, 3));
     board[0][3] = pieceArray.back().get();
-    pieceArray.emplace_back(make_unique<Queen>("black", 0, 4));
+    pieceArray.emplace_back(make_unique<King>("black", 0, 4));
     board[0][4] = pieceArray.back().get();
     pieceArray.emplace_back(make_unique<Bishop>("black", 0, 5));
     board[0][5] = pieceArray.back().get();
@@ -57,7 +60,7 @@ void Board::setupBoardDefault(){
     pieceArray.emplace_back(make_unique<Rook>("black", 0, 7));
     board[0][7] = pieceArray.back().get();
 
-    updateBoard();
+    // updateBoard();
 }
 
 void Board::setupBoardManual(int row, int col, char type, char op){
@@ -122,6 +125,21 @@ void Board::setupBoardManual(int row, int col, char type, char op){
             break;
         }
     }
+    // updateBoard();
+}
+
+bool Board::pawnInIllegalRow(){
+    for(int col = 0; col < 8; ++col){
+        if(board[0][col] == nullptr){} 
+        else if(board[0][col]->getType() == 'p'){
+            return true;
+        }
+        if(board[7][col] == nullptr){} 
+        else if(board[7][col]->getType() == 'p'){
+            return true;
+        }
+    }
+    return false;
 }
 
 int Board::getNumWhiteKings(){
@@ -241,46 +259,173 @@ void Board::moveOnBoard(Move move){
             }
         }
     }
+
+
     //actually move the piece
     board[move.getEndRow()][move.getEndCol()] = board[move.getStartRow()][move.getStartCol()];//this has to be move ctor if it's taking a piece
     board[move.getEndRow()][move.getEndCol()]->updatePosn(move.getEndRow(), move.getEndCol());
-    // apply pawn promotion if possible
-/*     if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
-        
-    } */
 
     board[move.getStartRow()][move.getStartCol()] = nullptr;
+
+        // ----- Check if player made an enpassant move -----
+    // Check if piece moved is a pawn
+    if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
+        // Check if pawn is white
+        if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white"){
+            // Check if pawn moved diagonally up right into open space
+            if(move.getEndRow() == move.getStartRow() - 1 && move.getEndCol() == move.getStartCol() + 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() + 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() + 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() + 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() + 1][move.getEndCol()] = nullptr;
+                }
+            }
+            // Check if pawn moved diagonally up left into open space  
+            else if(move.getEndRow() == move.getStartRow() - 1 && move.getEndCol() == move.getStartCol() - 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() + 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() + 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() + 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() + 1][move.getEndCol()] = nullptr;
+                }
+            } 
+        } else if(board[move.getEndRow()][move.getEndCol()]->getColour() == "black"){
+            // Check if pawn moved diagonally down right into open space
+            if(move.getEndRow() == move.getStartRow() + 1 && move.getEndCol() == move.getStartCol() + 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() - 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() - 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() - 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() + 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() - 1][move.getEndCol()] = nullptr;
+                }
+            }
+            // Check if pawn moved diagonally down left into open space  
+            else if(move.getEndRow() == move.getStartRow() + 1 && move.getEndCol() == move.getStartCol() - 1){
+                // Check if nothing behind
+                if(board[move.getEndRow() - 1][move.getEndCol()] == nullptr){
+
+                }
+                // Check if there is an enemy pawn behind it once player's pawn moves
+                else if(board[move.getEndRow() - 1][move.getEndCol()]->getType() == 'p' && board[move.getEndRow() - 1][move.getEndCol()]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                    for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
+                        if(it->get() == board[move.getEndRow() - 1][move.getEndCol()]){
+                            pieceArray.erase(it);
+                            break;
+                        }
+                    }
+                    board[move.getEndRow() - 1][move.getEndCol()] = nullptr;
+                }
+            }
+        }
+    }
+
+    // ------ Check if a pawn moved such that they can be taken by enpassant by the opposing player ------
+    // Check if piece moved if a pawn
+    if(board[move.getEndRow()][move.getEndCol()]->getType() == 'p'){
+        Pawn *tmpPawn = dynamic_cast<Pawn*>(board[move.getEndRow()][move.getEndCol()]);
+        // Check if pawn white, if on first move, and if it double jumped
+        if(board[move.getEndRow()][move.getEndCol()]->getColour() == "white" && tmpPawn->getHasntMoved() && move.getEndRow() == 4){
+            // Check if there is nothing to the left
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the left 
+            else if(board[move.getEndRow()][move.getEndCol() - 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() - 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+            // Check if there is nothing to the right
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the right
+            else if(board[move.getEndRow()][move.getEndCol() + 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() + 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+        // Check if pawn black, if on first move, and if it double jumped
+        } else if(board[move.getEndRow()][move.getEndCol()]->getColour() == "black" && tmpPawn->getHasntMoved() && move.getEndRow() == 3){
+            // Check if there is nothing to the left
+            if(board[move.getEndRow()][move.getEndCol() - 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the left
+            else if(board[move.getEndRow()][move.getEndCol() - 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() - 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            } 
+            // Check if there is nothing to the right
+            if(board[move.getEndRow()][move.getEndCol() + 1] == nullptr){
+
+            }
+            // Check if there is an enemy pawn to the right
+            // SEG FAULT
+            else if(board[move.getEndRow()][move.getEndCol() + 1]->getType() == 'p' && board[move.getEndRow()][move.getEndCol() + 1]->getColour() != board[move.getEndRow()][move.getEndCol()]->getColour()){
+                tmpPawn->setEnpassantAble(true);
+            }
+        }
+    }
+
+    // Check if pawn enpassanted (check if start position and end position are diagonal from each other and then delete the piece behind the end position)
+    
     
     updateBoard();
     
-
-
-
     //castling + pawn promotion (later)
 }
 
 void Board::updateBoard() {
     for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
-        (*it)->updatePossibleMoves(board);
+        (*it)->updatePossibleMoves(board, *this);
     }
 
     //change to checking for other team's check once piece's possible moves is properly updated
-    if (checkForCheck("white")) {
-        whiteInCheck = true;
-        cout << "White in check" << endl;
-    } else {
-        whiteInCheck = false;
-    }
-    if (checkForCheck("black")) {
-        blackInCheck = true;
-        cout << "Black in check" << endl;
-    } else {
-        blackInCheck = false;
+    // cout << "Here 1" << endl;
+    WhiteInCheck = InCheck("white");
+    BlackInCheck = InCheck("black");
+    WhiteInCheckmate = InCheck("white") && MovesLeft("white");
+    BlackInCheckmate = InCheck("black") && MovesLeft("black");
+    BoardInStalemate = !InCheck("white") && !InCheck("black") && (MovesLeft("white") || MovesLeft("black"));
+
+    if (BoardInStalemate) {
+        cout << "Stalemate!" << endl;
+    } else if (WhiteInCheckmate) {
+        cout << "White in checkmate!" << endl;
+    } else if (BlackInCheckmate) {
+        cout << "Black in checkmate!" << endl;
+    } else if (WhiteInCheck) {
+        cout << "White in check!" << endl;
+    } else if (BlackInCheck) {
+        cout << "Black in check!" << endl;
     }
 }
 
-bool Board::checkForCheck(const string &colour) {
+bool Board::InCheck(const string &colour) {
     Position kingPosn{0, 0};
+    int incr;
+    Position p = {0, 0};
 
     // Finding the position of colour's king
     for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
@@ -288,16 +433,288 @@ bool Board::checkForCheck(const string &colour) {
             kingPosn = {(*it)->getPosn()};
             break;
         }
-    }
+    } 
 
-    // Checking if any pieces on the opposing team are attacking the King
-    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
-        if (((*it)->getType() != 'k') && ((*it)->getColour() != colour)) {
-            if ((*it)->inPossibleMoves(kingPosn)) {
-                return true;
+    // checking if King is in check by a pawn
+    if (colour == "white") {
+        p = {kingPosn.getRow() - 1, kingPosn.getCol() - 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }
+        p = {kingPosn.getRow() - 1, kingPosn.getCol() + 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }
+    } else {
+        p = {kingPosn.getRow() + 1, kingPosn.getCol() - 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
+            }
+        }   
+        p = {kingPosn.getRow() + 1, kingPosn.getCol() + 1};
+        if (p.positionWithinBounds()) {
+            if (board[p.getRow()][p.getCol()] != nullptr) {
+                if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                    if (board[p.getRow()][p.getCol()]->getType() == 'p') {
+                        return true;
+                    }
+                }
             }
         }
     }
 
+    // checking if King is in check from a knight
+    p = {kingPosn.getRow() - 2, kingPosn.getCol() - 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 1, kingPosn.getCol() - 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 2, kingPosn.getCol() + 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() - 1, kingPosn.getCol() + 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 2, kingPosn.getCol() - 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 1, kingPosn.getCol() - 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 2, kingPosn.getCol() + 1};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    p = {kingPosn.getRow() + 1, kingPosn.getCol() + 2};
+    if (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if (board[p.getRow()][p.getCol()]->getType() == 'n') {
+                    return true;
+                }
+            }
+        }
+    }
+
+    // checking if King is in check from the left
+    incr = 1;
+    p = {kingPosn.getRow(), kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow(), kingPosn.getCol() - incr};
+    }
+
+    // checking if King is in check from the right
+    incr = 1;
+    p = {kingPosn.getRow(), kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow(), kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from above
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol()};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol()};
+    }
+
+    // checking if King is in check from below
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol()};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'r')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol()};
+    }
+
+    // checking if King is in check from the bottom right
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from the top right
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol() + incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol() + incr};
+    }
+
+    // checking if King is in check from the top left
+    incr = 1;
+    p = {kingPosn.getRow() - incr, kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() - incr, kingPosn.getCol() - incr};
+    }
+
+    // checking if King is in check from the bottom left
+    incr = 1;
+    p = {kingPosn.getRow() + incr, kingPosn.getCol() - incr};
+
+    while (p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] != nullptr) {
+            if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+                if ((board[p.getRow()][p.getCol()]->getType() == 'q') || (board[p.getRow()][p.getCol()]->getType() == 'b')) {
+                    return true;
+                }
+            }
+            break;
+        }
+        ++incr;
+        p = {kingPosn.getRow() + incr, kingPosn.getCol() - incr};
+    }
+
+    // King is not in check
     return false;
+}
+
+bool Board::MovesLeft(const string &colour) {
+    for (auto it = pieceArray.begin(); it != pieceArray.end(); ++it) {
+        if (((*it)->getColour() == colour) && ((*it)->numPossibleMoves() != 0)) {
+            return false;
+        }
+    }
+
+    return true;
 }
