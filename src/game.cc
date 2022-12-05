@@ -57,7 +57,7 @@ void Game::setupGame(bool manualSetup) {
         }
         cout << "------You Have Begun a Custom Setup Game!------" << endl;
     } else { //default mode
-
+        whoStarts = "white";
         gameBoard->setupBoardDefault();
 
         cin.ignore(); //IDK WHY
@@ -236,7 +236,7 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("white"));
             } else if (whitePlayer.substr(0,8) == "computer") {
                 if (whiteLevel == 1) {
-                    // players.emplace_back(make_unique<ComputerL1>("white"));
+                    players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
                     // players.emplace_back(make_unique<ComputerL2>("white"));
                 } else if (whiteLevel == 3) {
@@ -250,7 +250,7 @@ void Game::startGameLoop() {
                 players.emplace_back(make_unique<Human>("black"));
             } else if (blackPlayer.substr(0,8) == "computer") {
                 if (blackLevel == 1) {
-                    // players.emplace_back(make_unique<ComputerL1>("black"));
+                    players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
                     // players.emplace_back(make_unique<ComputerL2>("black"));
                 } else if (blackLevel == 3) {

@@ -18,6 +18,8 @@ private:
 
 public:
     Move(std::string startPos, std::string endPos, std::string colour);
+    Move(int startRow, int startCol, int endRow, int endCol);
+
     void convert();
 
     std::string getColour();
