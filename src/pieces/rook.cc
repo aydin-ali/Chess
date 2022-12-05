@@ -119,3 +119,7 @@ void Rook::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
         }
     }
 }
+
+bool Rook::getHasMoved(){
+    return hasMoved;
+}

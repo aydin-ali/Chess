@@ -66,15 +66,15 @@ void Board::setupBoardDefault(){
 void Board::setupBoardManual(int row, int col, char type, char op){
     if(op == '+'){
         if(board[row][col] != nullptr){
+            if (board[row][col]->getType() == 'k') {
+                if (board[row][col]->getColour() == "white") {
+                    --numWhiteKings;
+                } else {
+                    --numBlackKings;
+                }
+            }
             for(auto it = pieceArray.begin(); it != pieceArray.end(); ++it){
                 if(board[row][col] == it->get()){
-                    if (board[row][col]->getType() == 'k') {
-                        if (board[row][col]->getColour() == "white") {
-                            --numWhiteKings;
-                        } else {
-                            --numBlackKings;
-                        }
-                    }
                     pieceArray.erase(it);
                 }
                 break;
@@ -443,24 +443,28 @@ void Board::moveOnBoard(Move move){
             // Check if King moved two moves from starting position to the right
             if(move.getStartRow() == 7 && move.getStartCol() == 4 && move.getEndRow() == 7 && move.getEndCol() == 6){
                 board[7][5] = board[7][7];
+                board[7][5]->updatePosn(7, 5);
                 board[7][7] = nullptr;
             }
             // Check if King moved two moves from starting position to the left
             if(move.getStartRow() == 7 && move.getStartCol() == 4 && move.getEndRow() == 7 && move.getEndCol() == 2){
                 board[7][3] = board[7][0];
+                board[7][3]->updatePosn(7, 3);
                 board[7][0] = nullptr;
             }
         }
         // Check if King is black
         else {
             // Check if King moved two moves from starting position to the right
-            if(move.getStartRow() == 0 && move.getStartCol() == 3 && move.getEndRow() == 0 && move.getEndCol() == 5){
-                board[0][4] = board[0][7];
+            if(move.getStartRow() == 0 && move.getStartCol() == 4 && move.getEndRow() == 0 && move.getEndCol() == 6){
+                board[0][5] = board[0][7];
+                board[0][5]->updatePosn(0, 5);
                 board[0][7] = nullptr;
             }
             // Check if King moved two moves from starting position to the left
-            if(move.getStartRow() == 0 && move.getStartCol() == 3 && move.getEndRow() == 0 && move.getEndCol() == 1){
-                board[0][2] = board[0][0];
+            if(move.getStartRow() == 0 && move.getStartCol() == 4 && move.getEndRow() == 0 && move.getEndCol() == 2){
+                board[0][3] = board[0][0];
+                board[0][3]->updatePosn(0, 3);
                 board[0][0] = nullptr;
             }
         }

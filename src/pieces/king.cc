@@ -1,4 +1,5 @@
 #include "king.h"
+#include "rook.h"
 using namespace std;
 
 King::King(const string &colour, int row, int col):
@@ -248,4 +249,50 @@ void King::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
         }
     }
 
+    // Check if can castle
+    if(!hasMoved){
+        if(colour == "white") {
+            // Check castle right
+            if (board[7][7] != nullptr) {
+                if(board[7][5] == nullptr && board[7][6] == nullptr && board[7][7]->getType() == 'r'){
+                    Rook *tmpRook = static_cast<Rook*>(board[7][7]);
+                    if(!tmpRook->getHasMoved()){
+                        p = {7, 6};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+            }
+            // Check castle left 
+            if (board[0][0] != nullptr) {
+                if(board[7][3] == nullptr && board[7][2] == nullptr && board[7][1] == nullptr && board[7][0]->getType() == 'r'){
+                    Rook *tmpRook = static_cast<Rook*>(board[7][0]);
+                    if(!tmpRook->getHasMoved()){
+                        p = {7, 2};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+            }
+        } else {
+            // Check castle right 
+            if (board[0][7] != nullptr) {
+                if(board[0][5] == nullptr && board[0][6] == nullptr && board[0][7]->getType() == 'r'){
+                    Rook *tmpRook = static_cast<Rook*>(board[0][7]);
+                    if(!tmpRook->getHasMoved()){
+                        p = {0, 6};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+            }
+            // Check castle left 
+            if (board[0][0] != nullptr) {
+                if(board[0][1] == nullptr && board[0][2] == nullptr && board[0][3] == nullptr && board[0][0]->getType() == 'r'){
+                    Rook *tmpRook = static_cast<Rook*>(board[0][0]);
+                    if(!tmpRook->getHasMoved()){
+                        p = {0, 2};
+                        possibleMoves.emplace_back(p);
+                    }
+                }
+            }
+        }
+    }
 }
