@@ -43,7 +43,6 @@ bool ComputerL1::playerMove(std::string input, Board &gameBoard) {
 
                     }
                 }
-
             }
         }
 

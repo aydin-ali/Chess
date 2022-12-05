@@ -28,6 +28,8 @@ public:
     int getEndRow();
     int getEndCol();
 
+    bool operator==(Move &other);
+
 };
 
 #endif

@@ -235,7 +235,7 @@ void Game::startGameLoop() {
                 if (whiteLevel == 1) {
                     players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
-                    // players.emplace_back(make_unique<ComputerL2>("white"));
+                    players.emplace_back(make_unique<ComputerL2>("white"));
                 } else if (whiteLevel == 3) {
                     // players.emplace_back(make_unique<ComputerL3>("white"));
                 } else if (whiteLevel == 4) {
@@ -249,7 +249,7 @@ void Game::startGameLoop() {
                 if (blackLevel == 1) {
                     players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
-                    // players.emplace_back(make_unique<ComputerL2>("black"));
+                    players.emplace_back(make_unique<ComputerL2>("black"));
                 } else if (blackLevel == 3) {
                     // players.emplace_back(make_unique<ComputerL3>("black"));
                 } else if (blackLevel == 4) {
@@ -289,8 +289,8 @@ void Game::mainGameLoop() {
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
     
-    unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-    attach(graphicDisplay.get()); 
+    //unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+    //attach(graphicDisplay.get()); 
 
     setupGame(manualSetUp);
 
