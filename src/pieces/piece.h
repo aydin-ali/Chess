@@ -13,6 +13,8 @@
     int y;
 }; */
 
+class Board;
+
 class Piece {
 
 private:
@@ -28,14 +30,16 @@ public:
     Piece(const std::string &colour, const char &type, int row, int col);
     virtual ~Piece();
     virtual bool validMove(Move move, std::vector<std::vector<Piece*>> board) = 0;
-    virtual void updatePossibleMoves(std::vector<std::vector<Piece*>> board) = 0;
+    virtual void updatePossibleMoves(std::vector<std::vector<Piece*>> board, Board &b) = 0;
 
     //virtual void checkForCheck()=0;
     std::string getColour();
     char getType();
     Position getPosn();
     bool isMoved();
+    bool moveAllowed(Board &b, Position p);
     bool inPossibleMoves(Position p);
+    int numPossibleMoves();
     void updatePosn(int row, int col);
   /*  void adjustMoved(); // NOT DONE
     virtual bool validMove( fill this out );*/

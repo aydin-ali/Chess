@@ -45,6 +45,7 @@ void Game::setupGame(bool manualSetup) {
         // notifyObservers(gameBoard->getBoardArr());
     }
     notifyObservers(gameBoard->getBoardArr());
+    gameBoard->updateBoard();
 }
 
 // Check if the moves inputted are within the bounds of the board

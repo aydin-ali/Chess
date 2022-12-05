@@ -5,7 +5,6 @@ Queen::Queen(const string &colour, int row, int col):
     Piece{colour, 'q', row, col}{}
 
 bool Queen::validMove(Move move, vector<vector<Piece*>> board) {
-    updatePossibleMoves(board);
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;
@@ -14,160 +13,190 @@ bool Queen::validMove(Move move, vector<vector<Piece*>> board) {
     return false;
 }
 
-void Queen::updatePossibleMoves(vector<vector<Piece*>> board) {
-    int row;
-    int col;
+void Queen::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
     int incr;
     Position p = {0, 0};
 
     possibleMoves.clear();
 
-    // Moving the Queen left
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving left
     incr = 1;
-    p = {row, col - incr};
+    p = {posn.getRow(), posn.getCol() - incr};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row, col - incr};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow(), posn.getCol() - incr};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Queen right
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving right
     incr = 1;
-    p = {row, col + incr};
+    p = {posn.getRow(), posn.getCol() + incr};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row, col + incr};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow(), posn.getCol() + incr};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Queen up
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving up
     incr = 1;
-    p = {row - incr, col};
+    p = {posn.getRow() - incr, posn.getCol()};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row - incr, col};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() - incr, posn.getCol()};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Queen down
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving down
     incr = 1;
-    p = {row + incr, col};
+    p = {posn.getRow() + incr, posn.getCol()};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row + incr, col};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() + incr, posn.getCol()};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving Queen Diagonally Up Left
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving to the top left
     incr = 1;
-    p = {row - incr, col - incr};
+    p = {posn.getRow() - incr, posn.getCol() - incr};
 
     while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row - incr, col - incr};
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() - incr, posn.getCol() - incr};
+            } else {
+                break;
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving Queen Diagonally Up Right
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving to the top right
     incr = 1;
-    p = {row - incr, col + incr};
+    p = {posn.getRow() - incr, posn.getCol() + incr};
 
     while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row - incr, col + incr};
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() - incr, posn.getCol() + incr};
+            } else {
+                break;
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving Queen Diagonally Down Right
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving to the top bottom right
     incr = 1;
-    p = {row + incr, col + incr};
+    p = {posn.getRow() + incr, posn.getCol() + incr};
 
     while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row + incr, col + incr};
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() + incr, posn.getCol() + incr};
+            } else {
+                break;
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving Queen Diagonally Down Left
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving to the bottom left
     incr = 1;
-    p = {row + incr, col - incr};
+    p = {posn.getRow() + incr, posn.getCol() - incr};
 
     while(p.positionWithinBounds()) {
         if (board[p.getRow()][p.getCol()] == nullptr) {
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row + incr, col + incr};
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() + incr, posn.getCol() - incr};
+            } else {
+                break;
+            }
         } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
-            possibleMoves.emplace_back(p);
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;

@@ -5,7 +5,6 @@ Rook::Rook(const string &colour, int row, int col):
     Piece{colour, 'r', row, col}{}
 
 bool Rook::validMove(Move move, vector<vector<Piece*>> board) {
-    updatePossibleMoves(board);
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;
@@ -14,7 +13,7 @@ bool Rook::validMove(Move move, vector<vector<Piece*>> board) {
     return false;
 }
 
-void Rook::updatePossibleMoves(vector<vector<Piece*>> board) {
+void Rook::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
     int row;
     int col;
     int incr;
@@ -22,76 +21,92 @@ void Rook::updatePossibleMoves(vector<vector<Piece*>> board) {
 
     possibleMoves.clear();
 
-    // Moving the Rook left
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving left
     incr = 1;
-    p = {row, col - incr};
+    p = {posn.getRow(), posn.getCol() - incr};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row, col - incr};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow(), posn.getCol() - incr};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Rook right
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving right
     incr = 1;
-    p = {row, col + incr};
+    p = {posn.getRow(), posn.getCol() + incr};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row, col + incr};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow(), posn.getCol() + incr};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Rook up
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving up
     incr = 1;
-    p = {row - incr, col};
+    p = {posn.getRow() - incr, posn.getCol()};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row - incr, col};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() - incr, posn.getCol()};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
         }
     }
 
-    // Moving the Rook down
-    row = posn.getRow();
-    col = posn.getCol();
+    // Moving down
     incr = 1;
-    p = {row + incr, col};
+    p = {posn.getRow() + incr, posn.getCol()};
     
-    while (p.positionWithinBounds()) {
-        if(board[p.getRow()][p.getCol()] == nullptr){
-            possibleMoves.emplace_back(p);
-            ++incr;
-            p = {row + incr, col};
-        } else if(board[p.getRow()][p.getCol()]->getColour() != colour){
-            possibleMoves.emplace_back(p);
+    while(p.positionWithinBounds()) {
+        if (board[p.getRow()][p.getCol()] == nullptr) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+                ++incr;
+                p = {posn.getRow() + incr, posn.getCol()};
+            } else {
+                break;
+            }
+        } else if (board[p.getRow()][p.getCol()]->getColour() != colour) {
+            if (moveAllowed(b, p)) {
+                possibleMoves.emplace_back(p);
+            }
             break;
         } else {
             break;
