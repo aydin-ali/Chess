@@ -7,7 +7,7 @@ class Human : public PlayerType {
 
 public:
     Human(std::string colour);
-    void playerMove() override;
+    bool playerMove(std::string input, Board &gameBoard) override;
 
 };
 
