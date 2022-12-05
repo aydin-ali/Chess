@@ -114,7 +114,7 @@ void Pawn::updatePossibleMoves(vector<vector<Piece*>> board, Board &b) {
                         p = {posn.getRow() + 1, posn.getCol() - 1};
                         possibleMoves.emplace_back(p);
                     }
-                    possibleMoves.emplace_back(p);
+                    // possibleMoves.emplace_back(p);
                 } 
                 // Check if there is nothing to right and then skip
                 if (board[posn.getRow()][posn.getCol() + 1] == nullptr){
