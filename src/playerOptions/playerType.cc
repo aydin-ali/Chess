@@ -1,12 +1,13 @@
 #include "playerType.h"
 
-PlayerType::PlayerType(std::string colour) : colour{colour} {
+PlayerType::PlayerType(std::string colour) : 
+colour{colour} {
 
 }
 
 PlayerType::~PlayerType() { }
 
-void PlayerType::playerMove() {
+bool PlayerType::playerMove(std::string input, Board &gameBoard) {
 
 }
 

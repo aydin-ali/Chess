@@ -5,10 +5,9 @@
 
 class Computer : public PlayerType{
 
-
 public:
-    virtual void playerMove();
-
+    Computer(std::string colour);
+    virtual bool playerMove(std::string input, Board &gameBoard);
 
 };
 
