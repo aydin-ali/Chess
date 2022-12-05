@@ -48,7 +48,29 @@ bool Piece::moveAllowed(Board &b, Position p) {
     swap(tempPiece, b.getBoardArr()[p.getRow()][p.getCol()]);
     swap(tempPiece, b.getBoardArr()[posn.getRow()][posn.getCol()]);
     
+    return ans;
+}
 
+bool Piece::checkingMove(Board &b, Position p) {
+    bool ans;
+    Piece *tempPiece = nullptr;
+    Position tempPosn = posn;
+
+    swap(tempPiece, b.getBoardArr()[posn.getRow()][posn.getCol()]);
+    swap(tempPiece, b.getBoardArr()[p.getRow()][p.getCol()]);
+    
+    posn = p;
+    if (colour == "white") {
+         ans = b.InCheck("black");
+    } else {
+        ans = b.InCheck("white");
+    }
+   
+    posn = tempPosn;
+
+    swap(tempPiece, b.getBoardArr()[p.getRow()][p.getCol()]);
+    swap(tempPiece, b.getBoardArr()[posn.getRow()][posn.getCol()]);
+    
     return ans;
 }
 
