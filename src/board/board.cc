@@ -6,11 +6,11 @@ Board::Board(){
     board.resize(8, vector<Piece*>(8, nullptr));
     numWhiteKings = 0;
     numBlackKings = 0;
-    WhiteInCheck = false;
-    BlackInCheck = false;
-    WhiteInCheckmate = false;
-    BlackInCheckmate = false;
-    BoardInStalemate = false;
+    whiteInCheck = false;
+    blackInCheck = false;
+    whiteInCheckmate = false;
+    blackInCheckmate = false;
+    boardInStalemate = false;
 }
 
 void Board::setupBoardDefault(){
@@ -150,9 +150,29 @@ int Board::getNumBlackKings(){
     return numBlackKings;
 }
 
+bool Board::getWhiteInCheck() {
+    return whiteInCheck;
+}
+
+bool Board::getBlackInCheck() {
+    return blackInCheck;
+}
+
+bool Board::getWhiteInCheckmate() {
+    return whiteInCheckmate;
+}
+bool Board::getBlackInCheckmate() {
+    return blackInCheckmate;
+}
+
+bool Board::getBoardInStalemate() {
+    return boardInStalemate;
+}
+
 vector<vector<Piece*>> &Board::getBoardArr() {
     return board;
 }
+
 bool Board::inPositionToPromote(Move move){
     if((board[move.getStartRow()][move.getStartCol()]->getColour() == "white") && (move.getEndRow() == 0)) return true;
     else if((board[move.getStartRow()][move.getStartCol()]->getColour() == "black") && (move.getEndRow() == 7)) return true;
@@ -391,7 +411,7 @@ void Board::moveOnBoard(Move move){
     // Check if pawn enpassanted (check if start position and end position are diagonal from each other and then delete the piece behind the end position)
     
     
-    updateBoard();
+    // updateBoard();
     
     //castling + pawn promotion (later)
 }
@@ -403,23 +423,11 @@ void Board::updateBoard() {
 
     //change to checking for other team's check once piece's possible moves is properly updated
     // cout << "Here 1" << endl;
-    WhiteInCheck = InCheck("white");
-    BlackInCheck = InCheck("black");
-    WhiteInCheckmate = InCheck("white") && MovesLeft("white");
-    BlackInCheckmate = InCheck("black") && MovesLeft("black");
-    BoardInStalemate = !InCheck("white") && !InCheck("black") && (MovesLeft("white") || MovesLeft("black"));
-
-    if (BoardInStalemate) {
-        cout << "Stalemate!" << endl;
-    } else if (WhiteInCheckmate) {
-        cout << "White in checkmate!" << endl;
-    } else if (BlackInCheckmate) {
-        cout << "Black in checkmate!" << endl;
-    } else if (WhiteInCheck) {
-        cout << "White in check!" << endl;
-    } else if (BlackInCheck) {
-        cout << "Black in check!" << endl;
-    }
+    whiteInCheck = InCheck("white");
+    blackInCheck = InCheck("black");
+    whiteInCheckmate = InCheck("white") && MovesLeft("white");
+    blackInCheckmate = InCheck("black") && MovesLeft("black");
+    boardInStalemate = !InCheck("white") && !InCheck("black") && (MovesLeft("white") || MovesLeft("black"));
 }
 
 bool Board::InCheck(const string &colour) {
