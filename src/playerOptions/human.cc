@@ -12,6 +12,8 @@ Human::Human(std::string colour) : PlayerType{colour} {
 
 }
 
+// -------------------------- helper functions --------------------------
+
 // Check if the moves inputted are within the bounds of the board
 bool moveOutOfRange(int startRow, int startCol, int endRow, int endCol){
     if((startRow < 0 || startRow > 7) || (startCol < 0 || startCol > 7) || (endRow < 0 || endRow > 7) || (endCol < 0 || endCol > 7)){
@@ -41,6 +43,9 @@ bool readMove(string in) {
     return true;
 }
 
+// ----------------------------------------------------------------------
+
+
 bool Human::playerMove(string input, Board &gameBoard) {
 
     //check if the move entered is valid (input wise)
@@ -58,13 +63,13 @@ bool Human::playerMove(string input, Board &gameBoard) {
         char promoteType;
         i >> promoteType;
 
-
         //convert the string to a move object
         Move m {startPos, endPos, colour};
 
-
-        // Check if move is valid            
+        // Check if the move is valid (board wise)         
         if (gameBoard.validMoveOnBoard(m)) { 
+
+            // EN PASSANT ---------------------------------------
             // Check if piece is a pawn
             if(gameBoard.getBoardArr()[m.getStartRow()][m.getStartCol()] != nullptr && gameBoard.getBoardArr()[m.getStartRow()][m.getStartCol()]->getType() == 'p'){
                 // Check if pawn is in position to promote 
@@ -76,25 +81,22 @@ bool Human::playerMove(string input, Board &gameBoard) {
                         promoteType = ' ';
                     } else {
                         cout << "------Not a valid piece to promote your pawn to!------" << endl;
-                        //notifyObservers(gameBoard->getBoardArr());
                         return false;
                     }
                 } else {
                     gameBoard.moveOnBoard(m);
                 }
+            // -------------------------------------------------------
             } else {
-                gameBoard.moveOnBoard(m);
+                gameBoard.moveOnBoard(m); //if the piece is NOT a pawn, just move it normally
             }
-            // (turn == 0) ? turn = 1 : turn = 0;
-            //print the new board
-            //notifyObservers(gameBoard->getBoardArr());
-            return true;
-            
-        } else {
+            return true;     
+
+        } else { //move is invalid on the board
             cout << "Invalid move: Invalid position(s)" << endl << endl;
         }
 
-    } else {
+    } else { //entered move is invalid input
         cout << "Invalid move: Invalid input" << endl << endl;
     }
 

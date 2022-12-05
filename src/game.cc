@@ -6,12 +6,12 @@
 
 #include "game.h"
 
-#include "tools/move.h" //can we make this just: class Move;?
+#include "tools/move.h"
 #include "playerOptions/human.h"
-// #include "playerOptions/computerL1.h"
-// #include "playerOptions/computerL2.h"
-// #include "playerOptions/computerL3.h"
-// #include "playerOptions/computerL4.h"
+#include "playerOptions/computerL1.h"
+#include "playerOptions/computerL2.h"
+#include "playerOptions/computerL3.h"
+#include "playerOptions/computerL4.h"
 
 
 using namespace std;
@@ -154,7 +154,8 @@ void Game::startGameLoop() {
                 ss >> blackPlayer;
 
                 if (game == "game") {
-                        
+                    
+                    //first param: white player
                     if (whitePlayer.substr(0,8) == "computer") {
                         try { 
                             whiteLevel = stoi(whitePlayer.substr(8));
@@ -168,6 +169,7 @@ void Game::startGameLoop() {
                         throw "Enter a valid player type";
                     }
 
+                    //second param: black player
                     if (blackPlayer == "human") {
                         gameModeChosen = true;
                     } else if (blackPlayer.substr(0,8) == "computer") {
@@ -189,7 +191,7 @@ void Game::startGameLoop() {
             } catch (char const* error) {
                 cout << endl << "------ Error: " << error << "  ------" << endl << endl;
             } 
-        }
+        } //end of first while loop
 
 
         // Player selects either a default game or to set up their own game
@@ -214,10 +216,11 @@ void Game::startGameLoop() {
                 cout << error << endl;
             }
 
-        }
+        } //end of second while loop
 
         if (gameModeChosen && setupModeChosen) {
 
+            // ------------------- Set player types -------------------
             if (whitePlayer == "human") {
                 players.emplace_back(make_unique<Human>("white"));
             } else if (whitePlayer.substr(0,8) == "computer") {
@@ -245,11 +248,14 @@ void Game::startGameLoop() {
                     // players.emplace_back(make_unique<ComputerL4>("black"));
                 }
             }
+            // --------------------------------------------------
 
             //this starts a single instance of a game
             mainGameLoop();
+
+            //after the end of a game:
             players.clear();
-            
+
             //output all the end of game stats
             cout << "White wins: " << endl;
             cout << "Black wins: " << endl;
@@ -271,15 +277,13 @@ void Game::mainGameLoop() {
 
     setupGame(manualSetUp);
 
-// players.emplace_back(make_unique<Human>("white"));
-// players.emplace_back(make_unique<Human>("black"));
-
     if (whoStarts == "black"){
         reverse(players.begin(), players.end());
     }
 
     int turn = 0;
 
+    //this loop runs the actual game
     while(!cin.eof()) {
         cout << players[turn]->getColour() << " enter a move: ";
         //if s is valid
@@ -298,7 +302,7 @@ void Game::mainGameLoop() {
         if (players[turn]->playerMove(input, *gameBoard)) {
             (turn == 0) ? turn = 1 : turn = 0;
         }
-        notifyObservers(gameBoard->getBoardArr());
+        notifyObservers(gameBoard->getBoardArr()); //display the board (after every move command)
 
 
     }
