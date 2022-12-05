@@ -356,4 +356,6 @@ void Game::mainGameLoop() {
     }
 
     detach(textDisplay.get());
+    detach(graphicDisplay.get());
+
 }

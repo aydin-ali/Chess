@@ -58,6 +58,8 @@ void GraphicDisplay::notify(std::vector<std::vector<Piece*>> &b) {
                 windowFrame->drawString(75 * j + 30, i * 75 + 40, type);
                 //75 is the distance between the pieces, 30/40 are the positions within the square
                 previousStateOfBoard[i][j] = type; //this should work... string in is case sensitive 
+            } else {
+                previousStateOfBoard[i][j] = " ";
             }
         }
     }
