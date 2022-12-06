@@ -30,9 +30,9 @@ public:
     //ctor dtor?
     Game();
     void startGameLoop();
-    void mainGameLoop();
+    bool mainGameLoop();
     void move();
-    void setupGame(bool normalMode);
+    bool setupGame(bool normalMode);
     void readSetupMove(std::string in);
     Piece* getState(int row, int col);
 };
