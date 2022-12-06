@@ -1,0 +1,47 @@
+
+
+
+DEFAULT
+
+
+SETUP MODE
+- add pieces
+- remove pieces
+- put piece on top of another
+- done
+    - success condition
+    - error conditions 
+        - one white king and one black king
+        - pawns in first/last row
+        - king in check
+        
+    
+
+KING
+- move one block any direction
+- can't move into check
+- castling
+- checkmate
+- stalemate
+
+
+PAWN 
+- single jump
+- diagonal take
+- double jump first move
+- enpassant
+- promotion
+
+ROOK 
+- move in a straight line any length of spaces
+- castling
+
+QUEEN 
+- move any direction any length of spaces
+
+KNIGHT
+- move in L shape
+
+BISHOP
+- move in diagonal line any length of spaces
+
