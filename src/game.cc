@@ -20,15 +20,16 @@ using namespace std;
 Game::Game():
     gameBoard{make_unique<Board>()}, whoStarts{"white"}, manualSetUp{false}, whiteScore{0}, blackScore{0} {}
 
-void Game::setupGame(bool manualSetup) {
-
+bool Game::setupGame(bool manualSetup) {
     gameBoard = make_unique<Board>(); //I THINK WE CAN REMOVE the gameboard initialization from the ctor
 
     //manual setup mode
     if (manualSetUp) {
         while(true){
             string in;
-            getline(cin, in);
+            if (!getline(cin, in)) {
+                return false;
+            }
             stringstream s{in};
             char equal;
             s >> equal;
@@ -66,6 +67,7 @@ void Game::setupGame(bool manualSetup) {
 
     gameBoard->updateBoard();
 
+    return true;
 }
 
 // Read a setup operation 
@@ -133,10 +135,10 @@ void Game::readSetupMove(string in){
 
 // Loop to begin each specific game instance
 void Game::startGameLoop() {
-
+    bool inputFail = false;
     cout << ("Welcome to Chess!") << endl;
 
-    while (!cin.eof()) {
+    while (true) {
 
         bool gameModeChosen = false;
         bool setupModeChosen = false;
@@ -155,7 +157,10 @@ void Game::startGameLoop() {
 
             try {
                 string inputLine;
-                getline(cin, inputLine);
+                if (!getline(cin, inputLine)) {
+                    inputFail = true;
+                    break;
+                }
                 stringstream ss {inputLine};
                 ss >> game;
                 ss >> whitePlayer;
@@ -201,6 +206,7 @@ void Game::startGameLoop() {
             } 
         } //end of first while loop
 
+        if (inputFail) break;
 
         // Player selects either a default game or to set up their own game
         while (!setupModeChosen) {
@@ -208,7 +214,10 @@ void Game::startGameLoop() {
 
             try {
                 string manual;
-                cin >> manual;
+                if (!(cin >> manual)) {
+                    inputFail = true;
+                    break;
+                }
                 if (manual == "setup") {
                     manualSetUp = true;
                     setupModeChosen = true;
@@ -225,6 +234,8 @@ void Game::startGameLoop() {
             }
 
         } //end of second while loop
+
+        if (inputFail) break;
 
         if (gameModeChosen && setupModeChosen) {
 
@@ -259,7 +270,9 @@ void Game::startGameLoop() {
             // --------------------------------------------------
 
             //this starts a single instance of a game
-            mainGameLoop();
+            if (!mainGameLoop()) {
+                break;
+            }
 
             //after the end of a game:
             players.clear();
@@ -275,7 +288,7 @@ void Game::startGameLoop() {
         }
     }
     //output all the end of game stats
-    cout << "------------------------------" << endl;
+    cout << "\n------------------------------" << endl;
     cout << "Final Score:" << endl;
     cout << "White: " << whiteScore << endl;
     cout << "Black: " << blackScore << endl;
@@ -284,15 +297,20 @@ void Game::startGameLoop() {
 }
 
 
-void Game::mainGameLoop() {
+bool Game::mainGameLoop() {
+
+    bool gameSuccess = false;
 
     unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
     attach(textDisplay.get());
     
-    //unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
-    //attach(graphicDisplay.get()); 
+    unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
+    attach(graphicDisplay.get()); 
 
-    setupGame(manualSetUp);
+    if (!setupGame(manualSetUp)) {
+        detach(textDisplay.get());
+        return gameSuccess;
+    }
 
     if (whoStarts == "black"){
         reverse(players.begin(), players.end());
@@ -301,11 +319,13 @@ void Game::mainGameLoop() {
     int turn = 0;
 
     //this loop runs the actual game
-    while(!cin.eof()) {
+    while (true) {
         cout << players[turn]->getColour() << " enter a move: ";
         //if s is valid
         string input;
-        getline(cin, input);
+        if (!getline(cin, input)) {
+            break;
+        }
         stringstream ss {input};
         string cmd;
         ss >> cmd;
@@ -324,6 +344,7 @@ void Game::mainGameLoop() {
                     ++whiteScore;
                 }
             }
+            gameSuccess = true;
             break;
         }
 
@@ -336,10 +357,12 @@ void Game::mainGameLoop() {
         if (gameBoard->getWhiteInCheckmate()) {
             ++blackScore;
             cout << "White is in checkmate!\n" << endl;
+            gameSuccess = true;
             break;
         } else if (gameBoard->getBlackInCheckmate()) {
             ++whiteScore;
             cout << "Black is in checkmate!\n" << endl;
+            gameSuccess = true;
             break;
         } else if (gameBoard->getWhiteInCheck()) {
             cout << "White is in check!\n" << endl;
@@ -349,6 +372,7 @@ void Game::mainGameLoop() {
             whiteScore += 0.5;
             blackScore += 0.5;
             cout << "The board is in stalemate!\n" << endl;
+            gameSuccess = true;
             break;
         }
 
@@ -356,4 +380,5 @@ void Game::mainGameLoop() {
     }
 
     detach(textDisplay.get());
+    return gameSuccess;
 }
