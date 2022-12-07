@@ -1,6 +1,5 @@
 #include "pawn.h"
 #include "board.h"
-#include <iostream>
 using namespace std;
 
 Pawn::Pawn(const string colour, int row, int col):
@@ -13,7 +12,6 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
     //all the checking should happen here
 
     //check if the given move is within the possibleMoves vector
-    cout << "Here" << endl;
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;

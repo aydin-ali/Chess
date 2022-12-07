@@ -78,11 +78,17 @@ void Game::readSetupMove(string in){
     i << in;
     string op;
     i >> op;
+    cout << endl;
     if(op == "+"){
         string type;
         i >> type;
         string pos;
         i >> pos;
+        if(pos.length() > 2){
+            cout << "------You did not enter a valid coordinate on the board!------" << endl;
+            notifyObservers(gameBoard->getBoardArr());
+            return;
+        }
         int row = 7 - pos[1] + 49;
         int col = pos[0] - 97;
         auto it = find(allowedPieces.begin(), allowedPieces.end(), type[0]);
@@ -154,7 +160,7 @@ void Game::startGameLoop() {
         // Player selects the match up style of the game instance 
         while (!gameModeChosen) {
             cout << ("Start a game as follows: 'game white-player black-player'") << endl;
-            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-4]'") << endl;;
+            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-4]' (e.g. game human computer2)") << endl;;
 
             try {
                 string inputLine;
@@ -312,6 +318,15 @@ bool Game::mainGameLoop() {
         return gameSuccess;
     }
 
+    if (gameBoard->getBoardInStalemate()) {
+        whiteScore += 0.5;
+        blackScore += 0.5;
+        cout << "The board is in stalemate!\n" << endl;
+        gameSuccess = true;
+        detach(textDisplay.get());
+        return gameSuccess;
+    }
+
     if (whoStarts == "black"){
         reverse(players.begin(), players.end());
     }
@@ -377,6 +392,7 @@ bool Game::mainGameLoop() {
         }
     }
     detach(textDisplay.get());
+    detach(graphicDisplay.get());
     return gameSuccess;
 }
 
