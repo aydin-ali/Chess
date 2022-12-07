@@ -160,7 +160,7 @@ void Game::startGameLoop() {
         // Player selects the match up style of the game instance 
         while (!gameModeChosen) {
             cout << ("Start a game as follows: 'game white-player black-player'") << endl;
-            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-4]' (e.g. game human computer2)") << endl;;
+            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-2]' (e.g. game human computer2)") << endl;;
 
             try {
                 string inputLine;
@@ -179,7 +179,7 @@ void Game::startGameLoop() {
                     if (whitePlayer.substr(0,8) == "computer") {
                         try { 
                             whiteLevel = stoi(whitePlayer.substr(8));
-                            if (whiteLevel < 1 || whiteLevel > 4) {
+                            if (whiteLevel < 1 || whiteLevel > 2) {
                                 throw "Enter a valid computer level"; 
                             }
                         } catch (const invalid_argument& other) {
@@ -195,7 +195,7 @@ void Game::startGameLoop() {
                     } else if (blackPlayer.substr(0,8) == "computer") {
                         try { 
                             blackLevel = stoi(blackPlayer.substr(8));
-                            if (blackLevel < 1 || blackLevel > 4) {
+                            if (blackLevel < 1 || blackLevel > 2) {
                                 throw "Enter a valid computer level"; 
                             }
                             gameModeChosen = true;
@@ -254,10 +254,6 @@ void Game::startGameLoop() {
                     players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
                     players.emplace_back(make_unique<ComputerL2>("white"));
-                } else if (whiteLevel == 3) {
-                    // players.emplace_back(make_unique<ComputerL3>("white"));
-                } else if (whiteLevel == 4) {
-                    // players.emplace_back(make_unique<ComputerL4>("white"));
                 }
             }
 
@@ -268,10 +264,6 @@ void Game::startGameLoop() {
                     players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
                     players.emplace_back(make_unique<ComputerL2>("black"));
-                } else if (blackLevel == 3) {
-                    // players.emplace_back(make_unique<ComputerL3>("black"));
-                } else if (blackLevel == 4) {
-                    // players.emplace_back(make_unique<ComputerL4>("black"));
                 }
             }
             // --------------------------------------------------
