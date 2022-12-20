@@ -301,7 +301,7 @@ bool Game::mainGameLoop() {
 
     bool gameSuccess = false;
 
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); 
     attach(textDisplay.get());
     
     unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
@@ -309,6 +309,7 @@ bool Game::mainGameLoop() {
 
     if (!setupGame(manualSetUp)) {
         detach(textDisplay.get());
+        detach(graphicDisplay.get());
         return gameSuccess;
     }
 
@@ -378,7 +379,7 @@ bool Game::mainGameLoop() {
 
 
     }
-
+    detach(graphicDisplay.get());
     detach(textDisplay.get());
     return gameSuccess;
 }
