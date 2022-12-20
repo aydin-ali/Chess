@@ -176,6 +176,4 @@ void Pawn::setEnpassantAble(bool set){
 bool Pawn::getEnpassantAble(){
     return enpassantAble;
 }
-//if the pawn moving leads to its own king being checked (LATER)
 
-//side note: to keep track of wins/losses in player, write a visitor?
