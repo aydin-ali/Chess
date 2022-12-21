@@ -20,7 +20,7 @@ Fully functional chess program supporting the following features:
 - Observer pattern (pub-sub)
 
 UML:
-[UML](FinalChessUML.png)
+![UML](FinalChessUML.png)
 
 
 ## III. Execution and Dependencies
