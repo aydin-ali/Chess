@@ -1,24 +1,35 @@
-# Chess
+## I. About
 
-...\
-Chess \
-...
+Fully functional chess program supporting the following features:
 
-## Git branching
+- All standard chess moves, checks, checkmates, pawn promotion, [en passant](https://en.wikipedia.org/wiki/En_passant), castling... etc.
+- Both a text and a graphical interface.
+- 3 game modes (human vs. human, human vs. computer, computer vs. computer)
+  - and the following levels of computer difficulty:
+    - level 1: random moves.
+    - level 2: preference for placing the opposing king in check/checkmate and capturing pieces.
+    - level 3: all of the above + a preference for avoiding capture (incomplete)
+- A 'setup' mode, enabling players to manually place pieces at positions across the board
+- Memory management handled via STD containers + smart pointers
 
-Creating and switching to a new branch
-1. `git branch <branch-name>`
-2. `git checkout <branch-name>`
 
-Pushing the branch
-1. `git push -u origin <branch-name>` 
-2. Afterwards, just make the PR on Github and merge yourself
+## II. Technical Details
 
-List all remote branches
-1. `git branch -a`
+- Object Oriented Programming
+- MVC
+- Observer pattern (pub-sub)
 
-Deleting branches
-1. If everything has been merged, the branch can be safely deleted with `git branch -d <branch-name>` 
-2. Otherwise, you can use `git branch -D <branch-name>` to delete a branch which hasn't been fully merged\
+UML:
 
-Or just delete branches after they've been merged through Github.
+
+
+## III. Execution and Dependencies
+
+Requires: C++ 14 and X11.
+
+Build and run:
+
+```
+make
+./chess
+```
