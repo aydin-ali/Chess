@@ -13,7 +13,6 @@ bool Pawn::validMove(Move move, vector<vector<Piece*>> board) {
     //all the checking should happen here
 
     //check if the given move is within the possibleMoves vector
-    cout << "Here" << endl;
     for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it) {
         if ((it->getRow() == move.getEndRow()) && (it->getCol() == move.getEndCol())) {
             return true;
@@ -176,6 +175,4 @@ void Pawn::setEnpassantAble(bool set){
 bool Pawn::getEnpassantAble(){
     return enpassantAble;
 }
-//if the pawn moving leads to its own king being checked (LATER)
 
-//side note: to keep track of wins/losses in player, write a visitor?

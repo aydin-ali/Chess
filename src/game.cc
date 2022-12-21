@@ -10,8 +10,6 @@
 #include "playerOptions/human.h"
 #include "playerOptions/computerL1.h"
 #include "playerOptions/computerL2.h"
-#include "playerOptions/computerL3.h"
-#include "playerOptions/computerL4.h"
 
 
 using namespace std;
@@ -77,11 +75,17 @@ void Game::readSetupMove(string in){
     i << in;
     string op;
     i >> op;
+    cout << endl;
     if(op == "+"){
         string type;
         i >> type;
         string pos;
         i >> pos;
+        if(pos.length() > 2){
+             cout << "------You did not enter a valid coordinate on the board!------" << endl;
+             notifyObservers(gameBoard->getBoardArr());
+             return;
+        }
         int row = 7 - pos[1] + 49;
         int col = pos[0] - 97;
         auto it = find(allowedPieces.begin(), allowedPieces.end(), type[0]);
@@ -153,7 +157,7 @@ void Game::startGameLoop() {
         // Player selects the match up style of the game instance 
         while (!gameModeChosen) {
             cout << ("Start a game as follows: 'game white-player black-player'") << endl;
-            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-4]'") << endl;;
+            cout << ("'white-player' and 'black-player' can be entered as either 'human' or 'computer[1-2]' (e.g. game human computer2)") << endl;;
 
             try {
                 string inputLine;
@@ -172,7 +176,7 @@ void Game::startGameLoop() {
                     if (whitePlayer.substr(0,8) == "computer") {
                         try { 
                             whiteLevel = stoi(whitePlayer.substr(8));
-                            if (whiteLevel < 1 || whiteLevel > 4) {
+                            if (whiteLevel < 1 || whiteLevel > 2) {
                                 throw "Enter a valid computer level"; 
                             }
                         } catch (const invalid_argument& other) {
@@ -188,7 +192,7 @@ void Game::startGameLoop() {
                     } else if (blackPlayer.substr(0,8) == "computer") {
                         try { 
                             blackLevel = stoi(blackPlayer.substr(8));
-                            if (blackLevel < 1 || blackLevel > 4) {
+                            if (blackLevel < 1 || blackLevel > 2) {
                                 throw "Enter a valid computer level"; 
                             }
                             gameModeChosen = true;
@@ -247,10 +251,6 @@ void Game::startGameLoop() {
                     players.emplace_back(make_unique<ComputerL1>("white"));
                 } else if (whiteLevel == 2) {
                     players.emplace_back(make_unique<ComputerL2>("white"));
-                } else if (whiteLevel == 3) {
-                    // players.emplace_back(make_unique<ComputerL3>("white"));
-                } else if (whiteLevel == 4) {
-                    // players.emplace_back(make_unique<ComputerL4>("white"));
                 }
             }
 
@@ -261,10 +261,6 @@ void Game::startGameLoop() {
                     players.emplace_back(make_unique<ComputerL1>("black"));
                 } else if (blackLevel == 2) {
                     players.emplace_back(make_unique<ComputerL2>("black"));
-                } else if (blackLevel == 3) {
-                    // players.emplace_back(make_unique<ComputerL3>("black"));
-                } else if (blackLevel == 4) {
-                    // players.emplace_back(make_unique<ComputerL4>("black"));
                 }
             }
             // --------------------------------------------------
@@ -300,7 +296,7 @@ bool Game::mainGameLoop() {
 
     bool gameSuccess = false;
 
-    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); //WHY IS THIS MAKING MULTIPLE? double check on someone else
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>(); 
     attach(textDisplay.get());
     
     unique_ptr<GraphicDisplay> graphicDisplay = make_unique<GraphicDisplay>(8, 8);
@@ -308,8 +304,18 @@ bool Game::mainGameLoop() {
 
     if (!setupGame(manualSetUp)) {
         detach(textDisplay.get());
+        detach(graphicDisplay.get());
         return gameSuccess;
     }
+
+    if (gameBoard->getBoardInStalemate()) {
+         whiteScore += 0.5;
+         blackScore += 0.5;
+         cout << "The board is in stalemate!\n" << endl;
+         gameSuccess = true;
+         detach(textDisplay.get());
+         return gameSuccess;
+     }
 
     if (whoStarts == "black"){
         reverse(players.begin(), players.end());
@@ -375,6 +381,7 @@ bool Game::mainGameLoop() {
             break;
         }
     }
+    detach(graphicDisplay.get());
     detach(textDisplay.get());
     return gameSuccess;
 }
