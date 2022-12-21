@@ -314,6 +314,7 @@ bool Game::mainGameLoop() {
          cout << "The board is in stalemate!\n" << endl;
          gameSuccess = true;
          detach(textDisplay.get());
+         detach(graphicDisplay.get());
          return gameSuccess;
      }
 
